@@ -21,6 +21,7 @@ const CustomButton = ({ fullWidth, buttonText, onClick, type, disable }) => {
         type={type}
         disable={disable}
       >
+
         {buttonText}
       </ButtonStyled>
     </>

@@ -1,17 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Container,
+  EyeIcon,
   FormStyled,
   GridContainer,
   GridForm,
   GridImage,
+  LinkStyled,
 } from "@/styles/Login.style";
 import Image from "next/image";
 import CustomInput from "@/components/CustomInput";
 import { useForm } from "react-hook-form";
 import CustomButton from "@/components/CustomButton";
+import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 
 const Login = () => {
+  const [isShowPassword, setShowPassword] = useState(false);
   const {
     control,
     handleSubmit,
@@ -22,6 +26,10 @@ const Login = () => {
       password: "",
     },
   });
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!isShowPassword);
+  };
 
   return (
     <Container>
@@ -34,7 +42,7 @@ const Login = () => {
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer
               et quam laoreet, molestie justo eu, tempus orci.
             </span>
-            <div style={{padding: "32px 0px"}}>
+            <div style={{ padding: "32px 0px" }}>
               <CustomInput
                 label="Correo electronico"
                 name="email"
@@ -44,18 +52,36 @@ const Login = () => {
                 label="Contraseña"
                 name="password"
                 control={control}
+                type={isShowPassword ? "text" : "password"}
+                icon={
+                  isShowPassword ? (
+                    <EyeIcon
+                      icon={faEyeSlash}
+                      onClick={togglePasswordVisibility}
+                    />
+                  ) : (
+                    <EyeIcon icon={faEye} onClick={togglePasswordVisibility} />
+                  )
+                }
               />
-              <CustomButton buttonText="Iniciar"/>
+              <CustomButton buttonText="Entrar" fullWidth />
             </div>
+            <span>
+              Aún no tienes cuenta?
+              <LinkStyled href="#">Registrate</LinkStyled>
+            </span>
           </FormStyled>
         </GridForm>
         <GridImage>
-          <Image
-            src="/img/pexels-mark-stebnicki-2252557.jpg"
-            width={820}
-            height={703}
-            style={{ width: "108%" }}
-          />
+          <div
+            style={{ position: "relative", width: "auto", height: "100%" }}
+          >
+            <Image
+              src="/img/pexels-mark-stebnicki-2252557.jpg"
+              layout="fill"
+              objectFit="cover"
+            />
+          </div>
         </GridImage>
       </GridContainer>
     </Container>
