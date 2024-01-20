@@ -13,18 +13,17 @@ export const Tabs = styled.div`
   gap: 20px;
 `;
 
-export const Tab = styled.a`
-  color: #888; /* Color predeterminado para pestañas inactivas */
-  text-decoration: none;
+export const Tab = styled.div`
+  color: #888;
   cursor: pointer;
   position: relative;
 
   &:hover {
-    color: #F27D16; /* Cambiar color al pasar el ratón por encima */
+    color: #F27D16;
   }
 
   &.active {
-    color: #F27D16; /* Color para pestaña activa */
+    color: #F27D16;
 
     &:after {
       content: "";
@@ -34,7 +33,7 @@ export const Tab = styled.a`
       transform: translateX(-50%);
       width: 100%;
       height: 2px;
-      background-color: #F27D16; /* Color para indicador de pestaña activa */
+      background-color: #F27D16;
     }
   }
 `;
