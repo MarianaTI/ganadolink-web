@@ -17,17 +17,33 @@ export const Tab = styled.a`
   color: #888; /* Color predeterminado para pestañas inactivas */
   text-decoration: none;
   cursor: pointer;
+  position: relative;
 
   &:hover {
-    color: #000; /* Cambiar color al pasar el ratón por encima */
+    color: #F27D16; /* Cambiar color al pasar el ratón por encima */
   }
 
   &.active {
     color: #F27D16; /* Color para pestaña activa */
+
+    &:after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      height: 2px;
+      background-color: #F27D16; /* Color para indicador de pestaña activa */
+    }
   }
 `;
 
-export const UserIcon = styled.img`
-  width: 30px;
-  height: 30px;
+export const UserIcon = styled.div`
+  cursor: pointer;
+  transition: color 0.3s ease;
+
+  &:hover {
+    color: #F27D16;
+  }
 `;

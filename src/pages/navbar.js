@@ -1,6 +1,6 @@
 import React from "react";
 import Link from 'next/link';
-import { NavbarContainer, Tabs, UserIcon } from '../styles/navbar.style';
+import { NavbarContainer, Tabs, Tab, UserIcon } from '../styles/navbar.style';
 import { Smartphone, User } from 'react-feather';
 
 const CustomNavbarPage = () => {
@@ -8,20 +8,22 @@ const CustomNavbarPage = () => {
     <React.Fragment>
       <NavbarContainer>
         <Smartphone size={32} />
-        
+
         <Tabs>
           <Link href="/">
-            Home
+            <Tab>Home</Tab>
           </Link>
           <Link href="/formularios">
-            Formularios
+            <Tab>Formularios</Tab>
           </Link>
           <Link href="/catalogo">
-            Catalogo
+            <Tab>Catalogo</Tab>
           </Link>
         </Tabs>
-        
-        <User size={24} />
+
+        <UserIcon>
+          <User size={24} />
+        </UserIcon>
       </NavbarContainer>
     </React.Fragment>
   );
