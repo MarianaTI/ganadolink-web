@@ -13,6 +13,9 @@ import CustomInput from "@/components/CustomInput";
 import { useForm } from "react-hook-form";
 import CustomButton from "@/components/CustomButton";
 import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
+import User from "@/domain/entities/user";
+import UserRepo from "@/infraestructure/implementation/httpRequest/axios/UserRepo";
+import SignInUserUseCase from "@/application/usecases/userUseCase/SignInUserCase";
 
 const Login = () => {
   const [isShowPassword, setShowPassword] = useState(false);
@@ -27,6 +30,21 @@ const Login = () => {
     },
   });
 
+  const onSubmit = async (data) => {
+    try {
+      const user = new User(null, null, null, data.email, data.password);
+      const userRepo = new UserRepo();
+      const signInUseCase = new SignInUserUseCase(userRepo);
+      const signInResponse = await signInUseCase.run(user);
+
+    } catch (error) {
+      console.error("Error durante el inicio de sesión:", error);
+      if (error.response && error.response.status === 400) {
+        console.log("Solicitud incorrecta o credenciales inválidas");
+      }
+    }
+  }
+
   const togglePasswordVisibility = () => {
     setShowPassword(!isShowPassword);
   };
@@ -36,7 +54,7 @@ const Login = () => {
       <GridContainer>
         <GridForm>
           <Image src="/img/Logo.png" alt="logo" width={148} height={150} />
-          <FormStyled>
+          <FormStyled onSubmit={handleSubmit(onSubmit)}>
             <h1>Iniciar sesión</h1>
             <span>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer
@@ -64,7 +82,7 @@ const Login = () => {
                   )
                 }
               />
-              <CustomButton buttonText="Entrar" fullWidth />
+              <CustomButton buttonText="Entrar" fullWidth type="submit"/>
             </div>
             <span>
               Aún no tienes cuenta?
