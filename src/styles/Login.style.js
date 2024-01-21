@@ -41,7 +41,7 @@ export const FormStyled = styled.form`
     font-size: 14px;
     font-weight: 400;
   }
-`;
+`; 
 
 export const GridImage = styled.div`
   background-color: aliceblue;

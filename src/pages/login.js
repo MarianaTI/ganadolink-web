@@ -20,11 +20,11 @@ const Login = () => {
     defaultValues: {
       email: "",
       password: "",
-    },
+    }, 
   });
 
   return (
-    <Container>
+    <Container> 
       <GridContainer>
         <GridForm>
           <Image src="/img/Logo.png" alt="logo" width={148} height={150} />
