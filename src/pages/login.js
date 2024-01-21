@@ -16,8 +16,11 @@ import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 import User from "@/domain/entities/user";
 import UserRepo from "@/infraestructure/implementation/httpRequest/axios/UserRepo";
 import SignInUserUseCase from "@/application/usecases/userUseCase/SignInUserCase";
+import Cookies from "js-cookie";
+import { useRouter } from "next/router";
 
 const Login = () => {
+  const route = useRouter();
   const [isShowPassword, setShowPassword] = useState(false);
   const {
     control,
@@ -36,6 +39,13 @@ const Login = () => {
       const userRepo = new UserRepo();
       const signInUseCase = new SignInUserUseCase(userRepo);
       const signInResponse = await signInUseCase.run(user);
+
+      if (signInResponse && signInResponse.token) {
+        await Cookies.set('authToken', signInResponse.token, {expires: 7});
+        //en lugar de dias, horas
+        //encriptar token cookie
+        route.push("/allUser");
+      }
 
     } catch (error) {
       console.error("Error durante el inicio de sesión:", error);

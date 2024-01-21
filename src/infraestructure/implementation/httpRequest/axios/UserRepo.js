@@ -1,11 +1,23 @@
 import IUserRepo from "@/domain/repositories/IUserRepo";
 import axios from "axios";
+import Cookies from "js-cookie";
 
 class UserRepo extends IUserRepo {
-    constructor(id_user) {
+    constructor() {
         super();
-        this.id_user = id_user;
+        this.url = "http://localhost:3000/getAll/users";
         this.urlSignIn = "http://localhost:3000/signin";
+    }
+
+    async getAll() {
+        const token = Cookies.get('authToken');
+        const response = await axios.get(this.url, {
+            headers: {
+                "Content-Type": "application/json",
+                authorization: `Bearer ${token}`,
+            },
+        });
+        return response.data;
     }
 
     async signIn(user) {
