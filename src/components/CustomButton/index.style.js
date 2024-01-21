@@ -1,7 +1,23 @@
 import styled from "@emotion/styled";
 
 export const ButtonStyled = styled.button`
-border-radius: 5px;
-background: #F27D16;
-width: 500px;
+  width: ${(props) => (props.fullWidth ? "100%" : "auto")};
+  height: 45px;
+  border-radius: 5px;
+  background: #f27d16;
+  font-family: Poppins; 
+  color: #fff;
+  font-size: 18px;
+  font-weight: 500;
+  border: none;
+  margin: 32px 0px;
+  cursor: pointer;
+  :hover{
+    background-color: #f59e50;
+    transition: background-color 0.3s ease; 
+    transform: scale(1);
+  }
+  :active {
+    transform: scale(1.0);
+  }
 `;

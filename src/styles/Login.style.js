@@ -1,4 +1,6 @@
 import styled from "@emotion/styled";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Link from "next/link";
 
 export const Container = styled.div`
   width: 100vw;
@@ -45,4 +47,20 @@ export const FormStyled = styled.form`
 
 export const GridImage = styled.div`
   background-color: aliceblue;
+`;
+
+export const EyeIcon = styled(FontAwesomeIcon)`
+  font-size: 20px;
+  color: #414141;
+  :active {
+    color: #f27d16;
+  }
+`;
+
+export const LinkStyled = styled(Link)`
+  color: #f27d16;
+  font-family: Poppins;
+  font-size: 14px;
+  font-weight: 600;
+  margin-left: 8px;
 `;
