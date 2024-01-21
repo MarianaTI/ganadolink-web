@@ -1,5 +1,6 @@
 import CustomButton from "@/components/CustomButton";
 import CustomCategories from "@/components/CustomCategories";
+import Indexfooter from "@/components/CustomFooter";
 import {
   ContainerCaracteImg,
   ContainerCaracteristicas,
@@ -9,72 +10,62 @@ import {
   ContenedorTexto,
   TextoImgInicio,
   TituloInicio,
-  FooterContainer,
-  FooterText,
-  Footercomp,
-  GridFooter,
-  SocialIcons,
-  SocialIcon,
   Titulo2,
+  GridInicio,
+  Imagen2,
+  GridHome,
+  StartContainer,
+  TextContainer,
 } from "@/styles/Index.style";
-import {
-  Container,
-  GridContainer,
-  GridForm,
-} from "@/styles/Login.style";
 import Image from "next/image";
-import { FaFacebook, FaInstagram } from "react-icons/fa";
+
+
 
 export default function Home() {
   return (
     <>
       <ContainerInicio>
-        <GridContainer>
-          <Containerimg>
+        <div style={{position:"relative", width:"auto", height:"600px"}}>
             <Image
               src="/img/imgInicio.png"
-              width={850}
-              height={750}
-              style={{ width: "108%" }}
+              layout="fill"
+              objectFit="cover"
+              alt="inicio"
             />
-            <TextoImgInicio>
+		        {/* <TextoImgInicio>
               <div>
-                <TituloInicio>
-                  <h1>Agro en un solo lugar</h1>
+                <Titulo2>
+                  <h2>Agro en un solo lugar</h2>
                   <p>
                     Un punto de encuentro virtual para el mundo agropecuario,
-                    onde la venta de ganado es más que un negocio
+                    donde la venta de ganado es más que un negocio
                   </p>
-                </TituloInicio>
+                </Titulo2>
               </div>
-            </TextoImgInicio>
-          </Containerimg>
-        </GridContainer>
-        <Container>
-          <GridContainer>
-            <GridForm>
-              <TituloInicio>
-                <div>
-                  <p>
+            </TextoImgInicio> */}
+            </div>
+          <div>
+            
+            <StartContainer >
+              <TextContainer>
+                  <span>
                     Nuestra plataforma simplifica por completo el proceso de
                     guías de tránsito, desde el llenado hasta la entrega,
                     garantizando que su ganado llegue a su destino con la
                     documentación correcta y completa.{" "}
-                  </p>
-                </div>
-              </TituloInicio>
-              <CustomButton buttonText="Comienza ahora"/>
-            </GridForm>
+                  </span>               
+                <CustomButton buttonText="Comienza ahora"/>
+              </TextContainer>                 
             <Containerimg2>
               <Image
                 src="/img/imgInicio2.png"
                 width={850}
                 height={750}
-                style={{ width: "108%" }}
               />
+		
             </Containerimg2>
-          </GridContainer>
-        </Container>
+            </StartContainer >
+          </div>
         <ContenedorTexto>
           <TituloInicio>
             <span>¿A que nos dedicamos?</span>
@@ -88,70 +79,25 @@ export default function Home() {
 
         <ContainerCaracteristicas>
           <Titulo2>
-            <h2>¡Aquí podrás encontrar!</h2>
+            <h1>¡Aquí podrás encontrar!</h1>
           </Titulo2>
         </ContainerCaracteristicas>
         <ContainerCaracteImg>
-          <TituloInicio>
-              <CustomCategories img="/img/caracteristicasimg1.jpg" title="Facilidad de uso" text="Crea formularios de tránsito de ganado de manera sencilla y sin complicaciones en solo unos pocos clics."/>
-          </TituloInicio>
-          <TituloInicio>
-            {/* <ImageContainer>
-              <Image
-                src="/img/caracteristicasimg2.jpg"
-                width={200}
-                height={200}
-              />
-              <h3>Descarga tus guias</h3>
-              <span>
-                Genera formularios personalizados de tránsito de ganado y
-                descárgalos fácilmente en formato PDF o Excel para un acceso y
-                almacenamiento aún más conveniente.
-              </span>
-            </ImageContainer> */}
-          </TituloInicio>
-          <TituloInicio>
-            {/* <ImageContainer>
-              <Image
-                src="/img/caracteristicasimg3.jpg"
-                width={200}
-                height={200}
-              />
-              <h3>Acceso centralizado a guias</h3>
-              <span>
-                Accede y visualiza todas tus guías de tránsito de ganado de
-                forma organizada y sencilla en un solo lugar, spanara un control
-                completo de tu actividad ganadera.
-              </span>
-            </ImageContainer> */}
-          </TituloInicio>
+              <CustomCategories img="/img/caracteristicasimg1.png" title="Facilidad de uso" 
+              text="Crea formularios de tránsito de ganado de manera sencilla y sin complicaciones en solo unos pocos clics.
+              "/>
+          <CustomCategories img="/img/caracteristicasimg2.png" title="Descarga tus guías" text="Genera formularios personalizados de tránsito de ganado y descárgalos 
+          fácilmente en formato PDF o Excel para un acceso y almacenamiento aún 
+          más conveniente.
+          "/>
+          <CustomCategories img="/img/caracteristicasimg3.png" title="Acceso Centralizado de Guías" text="Accede y visualiza todas tus guías de tránsito de ganado de forma 
+          organizada y sencilla en un solo lugar, para un control completo de tu 
+          actividad ganadera.
+          "/>
+         
         </ContainerCaracteImg>
       </ContainerInicio>
-      <FooterContainer>
-        <TituloInicio>
-          <FooterText>
-            <Footercomp>
-              <GridFooter>
-                <h2>GanadoLink</h2>
-                <span>
-                  Si tienes alguna duda pregunta o necesitas asistencia, no
-                  dudes contactanos
-                </span>
-                <span>&copy; 2024 GanadoLink</span>
-                <br />
-                <SocialIcons>
-                  <SocialIcon href="https://facebook.com" target="_blank">
-                    <FaFacebook />
-                  </SocialIcon>
-                  <SocialIcon href="https://instagram.com" target="_blank">
-                    <FaInstagram />
-                  </SocialIcon>
-                </SocialIcons>
-              </GridFooter>
-            </Footercomp>
-          </FooterText>
-        </TituloInicio>
-      </FooterContainer>
+      <Indexfooter/>
     </>
   );
 }

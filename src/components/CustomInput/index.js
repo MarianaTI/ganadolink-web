@@ -34,7 +34,7 @@ const CustomInput = ({
           value={field.value}
           name={field.name}
           inputRef={field.ref}
-          type={type}
+          type={type} 
           onKeyDown={onKeyDown}
           defaultValue={defaultValue}
         />

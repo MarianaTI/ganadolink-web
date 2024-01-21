@@ -1,8 +1,8 @@
 import styled from "@emotion/styled";
 
 export const Container = styled.div`
-    width: 300px;
-    height: auto;
+    width: 338px;
+    height: auto; 
     display: flex;
     justify-content: center;
     align-items: center;

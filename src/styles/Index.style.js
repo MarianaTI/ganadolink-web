@@ -2,13 +2,11 @@ import styled from "@emotion/styled";
 
 export const Containerimg = styled.div`
   display: flex;
-  align-items: center;
-  justify-content: space-between;
   background-color: #f0f0f0;
 
   img {
-    max-width: 100%;
-    height: 100%;
+    width: 1440px;
+    height: 679px;
     filter: brightness(60%);
   }
 `;
@@ -19,28 +17,26 @@ export const Containerimg2 = styled.div`
   justify-content: space-between;
 
   img {
-    max-width: 90%;
-    height: 60%;
+    height: 450px;
+    width: 679px;
   }
 `;
 
 export const TextoImgInicio = styled.div`
   text-align: right;
-  background-color: beige;
-  height: 100%;
-  width: 33%;
+  background: #F2EBDF;
+  height: 679px;
+  width: 520px;
   right: 0%;
   position: absolute;
   justify-content: center;
-  background-color: beige;
   display: flex;
   flex-direction: column;
   border-top-left-radius: 400px;
   border-bottom-left-radius: 400px;
 `;
 export const ContainerInicio = styled.div`
-  height: 340vh;
-  overflow: hidden;
+  height: 305vh;
 `;
 
 export const TituloInicio = styled.div`
@@ -48,19 +44,46 @@ export const TituloInicio = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  & H2 {
+    color: #2a2a2a;
+    text-align: center;
+    font-size: 70px;
+    font-weight: 400;
+    font-weight: bold;
+  }
   & span {
     color: #2a2a2a;
     text-align: center;
-    font-size: 22px;
+    font-size: 25px;
     font-weight: 400;
+    color: black;
+    text-align: center;
+  }
+  & span {
+    color: #2a2a2a;
+    text-align: center;
+    font-size: 25px;
+    color: black;
+    text-align: center;
   }
 `;
 
 export const Titulo2 = styled(TituloInicio)`
 padding: 48px;
     flex-direction: row;
+    flex-direction: column;
     & h2 {
-      color: red;
+      color: black;
+      text-align: center;
+      font-weight: bold;
+    }
+    & p {
+    color: #2a2a2a;
+    text-align: center;
+    font-size: 25px;
+    font-weight: 400;
+    color: black;
+    text-align: center;
     }
 `;
 
@@ -104,12 +127,12 @@ export const ContainerCaracteImg = styled.div`
   margin-bottom: 5px;
   display: flex;
   flex-direction: row;
-  gap: 150px;
+  gap: 140px;
 `;
 export const ImageContainer = styled.div`
   width: 300px;
   height: 10vh;
-  margin: 0 auto;
+  margin: 0 auto; 
   text-align: center;
   height: 250px;
   display: flex;
@@ -152,4 +175,43 @@ export const SocialIcon = styled.a`
   font-size: 28px;
   margin: 0 10px;
   text-decoration: none;
+`;
+
+export const GridInicio = styled.div`
+  height: 85vh;
+`;
+
+export const StartContainer = styled.div`
+  height: 95vh;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(20px, 8fr));
+
+`;
+export const GridHome = styled.div`
+  width: auto;
+  height: 600px;
+  background-color: red;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-direction: column;
+  margin: 0 auto;
+  @media (max-width: 400px) {
+    width: 300px;
+  }
+`;
+export const TextContainer = styled.div`
+  width: 500px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  margin: 64px;
+  & span {
+    color: #2a2a2a;
+    text-align: center;
+    font-size: 25px;
+    color: black;
+    text-align: center;
+  }
 `;
