@@ -8,12 +8,12 @@ export const NavbarContainer = styled.div`
   background-color: #f0f0f0;
 `;
 
-export const Tabs = styled.div`
+export const ContainerTabs = styled.div`
   display: flex;
   gap: 20px;
 `;
 
-export const Tab = styled.div`
+export const TabStyled = styled.div`
   color: #888;
   cursor: pointer;
   position: relative;

@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 import { BotonInicio, ContainerCaracteImg, ContainerCaracteristicas, ContainerIndex, ContainerInicio, Containerimg, 
 Containerimg2, ContenedorTexto, GridInicio, ImageContainer, TextoImgInicio, TituloInicio, FooterContainer, FooterText, 
 Footercomp, GridFooter, SocialIcons, SocialIcon } from "@/styles/Index.style";
@@ -130,6 +131,20 @@ export default function Home() {
         </FooterText>
       </TituloInicio>
         </FooterContainer>
+=======
+import Head from 'next/head'
+import Image from 'next/image'
+import { Inter } from 'next/font/google'
+import styles from '@/styles/Home.module.css'
+import CustomNavbarPage from '@/components/CustomNavbar'
+
+const inter = Inter({ subsets: ['latin'] })
+
+export default function Home() {
+  return (
+    <>
+      <CustomNavbarPage></CustomNavbarPage>
+>>>>>>> Stashed changes
     </>
   );
 }
