@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import { DropdownContainer, Option } from './index.style';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCog, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
+import { faSignOutAlt, faUser } from '@fortawesome/free-solid-svg-icons';
 import { User } from 'react-feather';
 import { UserIcon } from '../CustomNavbar/index.style';
 
@@ -35,8 +35,8 @@ const CustomUser = ({ isOpen, toggleDropdown, handleOptionClick }) => {
 
       {isOpen && (
         <DropdownContainer ref={dropdownRef} isOpen={isOpen}>
-          <Option className="option" onClick={() => handleOptionClick('Configuración')}>
-            <FontAwesomeIcon icon={faCog} />Configuración de Usuario
+          <Option className="option"> 
+             <FontAwesomeIcon icon={faUser} />Usuario Logueado 
           </Option>
           <Option className="option" onClick={() => handleOptionClick('Cerrar Sesión')}>
             <FontAwesomeIcon icon={faSignOutAlt} />Cerrar Sesión
