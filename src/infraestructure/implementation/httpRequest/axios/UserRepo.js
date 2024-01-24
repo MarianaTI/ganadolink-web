@@ -7,7 +7,7 @@ class UserRepo extends IUserRepo {
   constructor() {
     super();
     this.url = "http://localhost:3000/getAll/users";
-    this.urlSignIn = "http://localhost:3000/signin";
+    this.urlBase = "http://localhost:3000/api";
   }
 
   async getAll() {
@@ -26,7 +26,7 @@ class UserRepo extends IUserRepo {
 
   async signIn(user) {
     try {
-      const response = await axios.post(this.urlSignIn, user, {
+      const response = await axios.post(`${this.urlBase}/signin`, user, {
         headers: {
           "Content-Type": "application/json",
         },
