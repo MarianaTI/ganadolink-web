@@ -19,6 +19,8 @@ import SignInUserUseCase from "@/application/usecases/userUseCase/SignInUserCase
 import Cookies from "js-cookie";
 import { useRouter } from "next/router";
 import CryptoJS from "crypto-js";
+import loginImage from "../../public/img/pexels-mark-stebnicki-2252557.jpg";
+import logo from "../../public/img/Logo.png";
 
 const Login = () => {
   const route = useRouter();
@@ -44,8 +46,6 @@ const Login = () => {
       if (signInResponse && signInResponse.token) {
         const encryptedToken = CryptoJS.AES.encrypt(signInResponse.token, 'cookie-encrypted').toString();
         await Cookies.set('authToken', encryptedToken, {expires: 1/24});
-        //en lugar de dias, horas
-        //encriptar token cookie
         route.push("/allUser");
       }
 
@@ -65,14 +65,14 @@ const Login = () => {
     <Container> 
       <GridContainer>
         <GridForm>
-          <Image src="/img/Logo.png" alt="logo" width={148} height={150} />
+          <Image src={logo} alt="logo" width={148} height={150} />
           <FormStyled onSubmit={handleSubmit(onSubmit)}>
             <h1>Iniciar sesión</h1>
             <span>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer
               et quam laoreet, molestie justo eu, tempus orci.
             </span>
-            <div style={{ padding: "32px 0px" }}>
+            <div>
               <CustomInput
                 label="Correo electronico"
                 name="email"
@@ -107,7 +107,7 @@ const Login = () => {
             style={{ position: "relative", width: "auto", height: "100%" }}
           >
             <Image
-              src="/img/pexels-mark-stebnicki-2252557.jpg"
+              src={loginImage}
               layout="fill"
               objectFit="cover"
               alt="grid"
