@@ -18,6 +18,7 @@ import UserRepo from "@/infraestructure/implementation/httpRequest/axios/UserRep
 import SignInUserUseCase from "@/application/usecases/userUseCase/SignInUserCase";
 import Cookies from "js-cookie";
 import { useRouter } from "next/router";
+import CryptoJS from "crypto-js";
 
 const Login = () => {
   const route = useRouter();
@@ -41,7 +42,8 @@ const Login = () => {
       const signInResponse = await signInUseCase.run(user);
 
       if (signInResponse && signInResponse.token) {
-        await Cookies.set('authToken', signInResponse.token, {expires: 7});
+        const encryptedToken = CryptoJS.AES.encrypt(signInResponse.token, 'cookie-encrypted').toString();
+        await Cookies.set('authToken', encryptedToken, {expires: 1/24});
         //en lugar de dias, horas
         //encriptar token cookie
         route.push("/allUser");
@@ -96,7 +98,7 @@ const Login = () => {
             </div>
             <span>
               Aún no tienes cuenta?
-              <LinkStyled href="#">Registrate</LinkStyled>
+              <LinkStyled href="/register">Registrate</LinkStyled>
             </span>
           </FormStyled>
         </GridForm>
@@ -108,6 +110,7 @@ const Login = () => {
               src="/img/pexels-mark-stebnicki-2252557.jpg"
               layout="fill"
               objectFit="cover"
+              alt="grid"
             />
           </div>
         </GridImage>
