@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import CustomUser from "@/components/CustomUser";
 import { ContainerTabs, NavbarContainer, TabStyled } from "./index.style";
 
-const CustomNavbarPage = () => {
+const CustomNavbar = () => {
   const router = useRouter();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -46,4 +46,4 @@ const CustomNavbarPage = () => {
   );
 };
 
-export default CustomNavbarPage;
+export default CustomNavbar;
