@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 
 export const InputStyled = styled.input`
-  width: 100%;
+  width: ${(props) => (props.fullWidth ? "100%" : "500px")};
   height: 45px;
   margin: 4px 0px 8px 0px;
   border-radius: 5px;

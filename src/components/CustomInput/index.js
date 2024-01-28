@@ -8,6 +8,7 @@ const CustomInput = ({
   error,
   control,
   name,
+  fullWidth,
   type,
   defaultValue,
   onKeyValue,
@@ -29,6 +30,7 @@ const CustomInput = ({
       <InputWrapper>
         <InputStyled
           {...props}
+          fullWidth={fullWidth}
           onChange={field.onChange}
           onBlur={field.onBlur}
           value={field.value}
