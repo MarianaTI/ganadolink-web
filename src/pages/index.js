@@ -39,6 +39,8 @@ export default function Home() {
               width={850}
               height={750}
               style={{ width: "108%" }}
+              alt="inicio"
+              priority
             />
             <TextoImgInicio>
               <div>
@@ -76,6 +78,7 @@ export default function Home() {
                 width={850}
                 height={750}
                 style={{ width: "108%" }}
+                alt="inicio2"
               />
             </Containerimg2>
           </GridContainer>
@@ -111,6 +114,7 @@ export default function Home() {
                 src="/img/caracteristicasimg1.jpg"
                 width={200}
                 height={200}
+                alt="carac1"
               />
               <h3>Facilidad de uso</h3>
               <span>
@@ -125,6 +129,7 @@ export default function Home() {
                 src="/img/caracteristicasimg2.jpg"
                 width={200}
                 height={200}
+                alt="carac2"
               />
               <h3>Descarga tus guias</h3>
               <span>
@@ -140,6 +145,7 @@ export default function Home() {
                 src="/img/caracteristicasimg3.jpg"
                 width={200}
                 height={200}
+                alt="carac3"
               />
               <h3>Acceso centralizado a guias</h3>
               <span>
