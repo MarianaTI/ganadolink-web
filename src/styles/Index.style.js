@@ -35,6 +35,7 @@ export const TextoImgInicio = styled.div`
   border-top-left-radius: 400px;
   border-bottom-left-radius: 400px;
 `;
+
 export const ContainerInicio = styled.div`
   height: 305vh;
 `;
@@ -95,6 +96,7 @@ export const ContenedorTexto = styled.div`
   justify-content: center;
   text-align: center;
 `;
+
 export const BotonInicio = styled.div`
   text-align: center;
   justify-content: center;
@@ -114,12 +116,14 @@ export const BotonInicio = styled.div`
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   }
 `;
+
 export const ContainerCaracteristicas = styled.div`
   width: 100%;
   height: 25vh;
   justify-content: center;
   text-align: center;
 `;
+
 export const ContainerCaracteImg = styled.div`
   justify-content: center;
   grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
@@ -129,6 +133,7 @@ export const ContainerCaracteImg = styled.div`
   flex-direction: row;
   gap: 140px;
 `;
+
 export const ImageContainer = styled.div`
   width: 300px;
   height: 10vh;
@@ -138,15 +143,18 @@ export const ImageContainer = styled.div`
   display: flex;
   flex-direction: column;
 `;
+
 export const FooterContainer = styled.footer`
   width: 100%;
   height: 45vh;
   background-color: beige;
 `;
+
 export const FooterText = styled.div`
   width: 50vw;
   overflow: hidden;
 `;
+
 export const Footercomp = styled.div`
   display: grid;
   width: 100vh;
@@ -156,6 +164,7 @@ export const Footercomp = styled.div`
     grid-template-columns: 1fr;
   }
 `;
+
 export const GridFooter = styled.div`
   width: 300px;
   height: 40vh;
@@ -165,11 +174,13 @@ export const GridFooter = styled.div`
   flex-direction: column;
   margin: 0 auto;
 `;
+
 export const SocialIcons = styled.div`
   display: flex;
   justify-content: center;
   margin-top: 10px;
 `;
+
 export const SocialIcon = styled.a`
   color: #000;
   font-size: 28px;
@@ -187,6 +198,7 @@ export const StartContainer = styled.div`
   grid-template-columns: repeat(auto-fit, minmax(20px, 8fr));
 
 `;
+
 export const GridHome = styled.div`
   width: auto;
   height: 600px;
@@ -200,6 +212,7 @@ export const GridHome = styled.div`
     width: 300px;
   }
 `;
+
 export const TextContainer = styled.div`
   width: 500px;
   display: flex;
