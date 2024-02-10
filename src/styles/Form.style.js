@@ -1,4 +1,5 @@
 import styled from "@emotion/styled";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export const Container = styled.form`
   margin: 40px;
@@ -30,22 +31,23 @@ export const TabContent = styled.div`
 `;
 
 export const FlexForm = styled.div`
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 72px;
 `;
 
 export const FormContent = styled.div`
   display: flex;
   flex-direction: column;
-  width: 100vw;
   & span {
     padding: 16px 0px 16px 0px;
   }
 `;
 
 export const CheckboxContainer = styled.div`
-    gap: 72px;
-    display: flex;
-    margin-bottom: 16px;
+  gap: 72px;
+  display: flex;
+  margin-bottom: 16px;
 `;
 
 export const ButtonsContainer = styled.div`
@@ -53,4 +55,83 @@ export const ButtonsContainer = styled.div`
   justify-content: end;
   gap: 24px;
   margin-top: 40px;
+`;
+
+export const AddContainer = styled.div`
+  display: flex;
+  justify-content: end;
+`;
+
+export const FormContainer = styled.div`
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+`;
+
+export const ImageContainer = styled.div`
+  margin: 16px 0px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  & span {
+    color: #2a2a2a;
+    font-family: Poppins;
+    font-size: 16px;
+    font-weight: 500;
+  }
+`;
+
+export const TableStyled = styled.table`
+  width: 100%;
+  text-align: center;
+  margin: 80px 0;
+  border-collapse: collapse;
+`;
+
+export const TheadStyled = styled.thead`
+  background: #fcdfc5;
+`;
+
+export const TrStyled = styled.tr`
+  /* border-bottom: rgba(0, 0, 0, 0.25); */
+  & th {
+    color: #2a2a2a;
+    font-family: Poppins;
+    font-size: 16px;
+    font-weight: 500;
+    padding: 8px;
+  }
+  & td {
+    padding: 8px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+  }
+`;
+
+export const PenIcon = styled(FontAwesomeIcon)`
+  font-size: 16px;
+  color: #414141;
+  :active {
+    color: #f27d16;
+  }
+`;
+
+export const MarkIcon = styled(PenIcon)`
+  font-size: 22px;
+`;
+
+export const AccionButton = styled.button`
+  cursor: pointer;
+  background: none;
+  border: none;
+`;
+
+export const TdContainer = styled.td`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+`;
+
+export const FormDetails = styled(FormContainer)`
+  grid-template-columns: repeat(4, minmax(0, 1fr));
 `;

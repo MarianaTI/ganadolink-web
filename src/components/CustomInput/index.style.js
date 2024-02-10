@@ -1,7 +1,8 @@
+import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 
 export const InputStyled = styled.input`
-  width: ${(props) => (props.fullWidth ? "100%" : "500px")};
+  width: ${(props) => (props.fullWidth ? "100%" : "auto")};
   height: 45px;
   margin: 4px 0px 8px 0px;
   border-radius: 5px;
@@ -20,6 +21,11 @@ export const InputStyled = styled.input`
     padding: 12px;
     outline: none;
   }
+  ${(props) =>
+    props.customFormDesign &&
+    css`
+      width: 500px;
+    `}
 `;
 
 export const LabelStyled = styled.label`

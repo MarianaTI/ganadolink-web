@@ -2,11 +2,9 @@ import React from "react";
 import { CheckBoxInputStyled, LabelStyled } from "./index.style";
 import { useController } from "react-hook-form";
 
-const CustomCheckboxInput = ({ label, control, name }) => {
+const CustomCheckboxInput = ({ label, control, name, checked, onChange }) => {
   const {
     field,
-    fieldState: { invalid, isTouched, isDirty },
-    formState: { touchedFields, dirtyFields },
   } = useController({
     name,
     control,
@@ -16,9 +14,10 @@ const CustomCheckboxInput = ({ label, control, name }) => {
       <LabelStyled>
         <CheckBoxInputStyled
           type="checkbox"
-          onChange={field.onChange}
+          onChange={onChange}
           onBlur={field.onBlur}
           value={field.value}
+          checked={checked}
           name={field.name}
         />
         {label}

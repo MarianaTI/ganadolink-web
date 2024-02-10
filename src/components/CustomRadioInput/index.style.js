@@ -2,9 +2,8 @@ import styled from "@emotion/styled";
 
 export const CheckBoxInputStyled = styled.input`
   cursor: pointer;
-  &:checked{
-    background-color: red;
-  }
+  accent-color: #dc4b00;
+
 `;
 
 export const LabelStyled = styled.label`
