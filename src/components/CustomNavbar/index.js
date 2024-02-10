@@ -27,8 +27,8 @@ const CustomNavbar = () => {
           <Link href="/" passHref>
             <TabStyled className={router.pathname === '/' ? 'active' : ''}>Home</TabStyled>
           </Link>
-          <Link href="/formularios" passHref>
-            <TabStyled className={router.pathname === '/formularios' ? 'active' : ''}>Formularios</TabStyled>
+          <Link href="/form" passHref>
+            <TabStyled className={router.pathname === '/form' ? 'active' : ''}>Formularios</TabStyled>
           </Link>
           <Link href="/catalogo" passHref>
             <TabStyled className={router.pathname === '/catalogo' ? 'active' : ''}>Catalogo</TabStyled>

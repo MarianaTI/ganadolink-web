@@ -65,7 +65,7 @@ export const AddContainer = styled.div`
 export const FormContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 8px;
+  gap: 24px;
 `;
 
 export const ImageContainer = styled.div`
@@ -93,7 +93,6 @@ export const TheadStyled = styled.thead`
 `;
 
 export const TrStyled = styled.tr`
-  /* border-bottom: rgba(0, 0, 0, 0.25); */
   & th {
     color: #2a2a2a;
     font-family: Poppins;
@@ -134,4 +133,16 @@ export const TdContainer = styled.td`
 
 export const FormDetails = styled(FormContainer)`
   grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 24px;
+`;
+
+export const FormName = styled(FormDetails)`
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-top: 32px;
+`;
+
+export const CheckboxContainerBoolean = styled.div`
+  display: flex;
+  gap: 32px;
+  margin-top: 8px;
 `;
