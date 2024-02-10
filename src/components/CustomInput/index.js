@@ -8,7 +8,9 @@ const CustomInput = ({
   error,
   control,
   name,
+  fullWidth,
   type,
+  customFormDesign,
   defaultValue,
   onKeyValue,
   onKeyDown,
@@ -24,15 +26,17 @@ const CustomInput = ({
   });
 
   return (
-    <>
+    <div>
       <LabelStyled>{label}</LabelStyled>
       <InputWrapper>
         <InputStyled
           {...props}
+          fullWidth={fullWidth}
           onChange={field.onChange}
           onBlur={field.onBlur}
           value={field.value}
           name={field.name}
+          customFormDesign={customFormDesign}
           inputRef={field.ref}
           type={type}
           onKeyDown={onKeyDown}
@@ -41,7 +45,7 @@ const CustomInput = ({
         {icon && <IconWrapper>{icon}</IconWrapper>}
       </InputWrapper>
       {error && <ErrorMessage>{error}</ErrorMessage>}
-    </>
+    </div>
   );
 };
 

@@ -1,7 +1,6 @@
-import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 
-export const InputStyled = styled.input`
+export const SelectStyled = styled.select`
   width: ${(props) => (props.fullWidth ? "100%" : "auto")};
   height: 45px;
   margin: 4px 0px 8px 0px;
@@ -12,6 +11,7 @@ export const InputStyled = styled.input`
   font-weight: 400;
   color: #2a2a2a;
   caret-color: #f27d16;
+  cursor: pointer;
   &:focus {
     padding: 12px;
     border: 1.5px solid #f27d16;
@@ -21,11 +21,6 @@ export const InputStyled = styled.input`
     padding: 12px;
     outline: none;
   }
-  ${(props) =>
-    props.customFormDesign &&
-    css`
-      width: 500px;
-    `}
 `;
 
 export const LabelStyled = styled.label`
@@ -34,23 +29,12 @@ export const LabelStyled = styled.label`
   font-weight: 500;
 `;
 
-export const InputWrapper = styled.div`
+export const SelectWrapper = styled.div`
   position: relative;
   width: 100%;
 `;
 
-export const IconWrapper = styled.div`
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-58%);
-  font-size: 24px;
-  cursor: pointer;
-`;
-
-export const ErrorMessage = styled.p`
-  color: #8a8a8a;
-  font-size: 14px;
-  font-weight: 400;
-  margin: 4px 0px 8px;
+export const OptionStyled = styled.option`
+  color: #2a2a2a;
+  font-family: fantasy;
 `;
