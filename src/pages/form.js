@@ -25,12 +25,14 @@ import {
   TheadStyled,
   TrStyled,
 } from "@/styles/Form.style";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { faXmark, faPen } from "@fortawesome/free-solid-svg-icons";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import CustomSelect from "@/components/CustomSelect";
+import EspecieRepo from "@/infraestructure/implementation/httpRequest/axios/EspecieRepo";
+import GetAllEspecieRepo from "@/application/usecases/especieUseCase/GetAllEspecieCase";
 
 const formSchema = yup.object({
   sellName: yup.string().required("El nombre del vendedor es requerido"),
@@ -70,6 +72,19 @@ const Form = () => {
   const [selectedSpecies, setSelectedSpecies] = useState("");
   const [selectedReason, setSelectedReason] = useState("");
   const [selectedBoolean, setSelectedBoolean] = useState("");
+
+  const [especie, setEspecie] = useState([]);
+
+  const fetchEspecies = async () => {
+    const especieRepo = new EspecieRepo();
+    const getAllEspecie = new GetAllEspecieRepo(especieRepo);
+    try {
+      const response = await getAllEspecie.run();
+      setEspecie(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const {
     control,
@@ -140,6 +155,10 @@ const Form = () => {
   const handleReasonChange = (reasonName) => setSelectedReason(reasonName);
   const handleBooleanChange = (booleanName) => setSelectedBoolean(booleanName);
 
+  useEffect(() => {
+    fetchEspecies();
+  });
+
   return (
     <Container onSubmit={(e) => e.preventDefault()}>
       <TabsContainer>
@@ -158,32 +177,11 @@ const Form = () => {
           <span>ESPECIE A MOVILIZAR</span>
           <CheckboxContainer>
             <CustomCheckboxInput
-              label="Bovino"
-              name="bovino"
+              label=""
+              name=""
               control={control}
-              checked={selectedSpecies === "bovino"}
-              onChange={() => handleSpeciesChange("bovino")}
-            />
-            <CustomCheckboxInput
-              label="Porcino"
-              name="porcino"
-              control={control}
-              checked={selectedSpecies === "porcino"}
-              onChange={() => handleSpeciesChange("porcino")}
-            />
-            <CustomCheckboxInput
-              label="Aviar"
-              name="aviar"
-              control={control}
-              checked={selectedSpecies === "aviar"}
-              onChange={() => handleSpeciesChange("aviar")}
-            />
-            <CustomCheckboxInput
-              label="Otro"
-              name="other"
-              control={control}
-              checked={selectedSpecies === "otherSpecies"}
-              onChange={() => handleSpeciesChange("otherSpecies")}
+              checked={selectedSpecies === ""}
+              onChange={() => handleSpeciesChange("")}
             />
           </CheckboxContainer>
         </FormContent>
