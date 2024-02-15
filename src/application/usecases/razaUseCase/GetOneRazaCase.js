@@ -1,6 +1,6 @@
 import IRazaRepo from "@/domain/repositories/IRazaRepo";
 
-class GetAllRazaCase{
+class GetOneRazaCase{
     constructor(razaRepo){
         if(!(razaRepo instanceof IRazaRepo))
         throw new Error("razaRepo must be instance of IRazaRepo");
@@ -13,4 +13,4 @@ class GetAllRazaCase{
     }
 }
 
-export default GetAllRazaCase;
+export default GetOneRazaCase;
