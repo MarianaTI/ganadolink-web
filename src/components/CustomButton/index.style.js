@@ -11,7 +11,7 @@ export const ButtonStyled = styled.button`
   font-size: 18px;
   font-weight: 500;
   border: none;
-  margin: 32px 0px;
+  margin: 24px 0px;
   cursor: pointer;
   :hover {
     background-color: #f59e50;
@@ -43,6 +43,18 @@ export const ButtonStyled = styled.button`
       width: 150px;
       &:hover {
         background-color: white;
+      }
+    `}
+  ${(props) =>
+    props.customIndexDesign &&
+    css`
+      border-radius: 5px;
+      background-color: #f27d16;
+      color: #fff;
+      &:hover {
+        background-color: #f59e50;
+        transition: background-color 0.3s ease;
+        transform: scale(1);
       }
     `}
 `;
