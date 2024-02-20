@@ -22,7 +22,7 @@ const CustomNavbar = () => {
       <NavbarContainer>
         <Link href="/" passHref>
           <div style={{ display: 'flex', alignItems: 'center' }}>
-            <img src="././img/Logo.png" alt="Logo" style={{ maxWidth: '150px', maxHeight: '40px' }} />
+            <img src="././img/Logo.png" alt="Logo" style={{ maxWidth: '150px', maxHeight: '50px' }} />
             <span style={{ marginLeft: '10px', fontFamily: 'Salsa, sans-serif', fontSize: '20px' }}>Ganado Link</span>
           </div>
         </Link>
