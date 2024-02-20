@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import Link from 'next/link';
-import { Smartphone, User } from 'react-feather';
 import { useRouter } from 'next/router';
 import CustomUser from "@/components/CustomUser";
 import { ContainerTabs, NavbarContainer, TabStyled } from "./index.style";
@@ -21,7 +20,12 @@ const CustomNavbar = () => {
   return (
     <React.Fragment>
       <NavbarContainer>
-        <Smartphone size={32} />
+        <Link href="/" passHref>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <img src="././img/Logo.png" alt="Logo" style={{ maxWidth: '150px', maxHeight: '40px' }} />
+            <span style={{ marginLeft: '10px', fontFamily: 'Salsa, sans-serif', fontSize: '20px' }}>Ganado Link</span>
+          </div>
+        </Link>
 
         <ContainerTabs>
           <Link href="/" passHref>
@@ -30,8 +34,8 @@ const CustomNavbar = () => {
           <Link href="/form" passHref>
             <TabStyled className={router.pathname === '/form' ? 'active' : ''}>Formularios</TabStyled>
           </Link>
-          <Link href="/catalogo" passHref>
-            <TabStyled className={router.pathname === '/catalogo' ? 'active' : ''}>Catalogo</TabStyled>
+          <Link href="/catal" passHref>
+            <TabStyled className={router.pathname === '/catal' ? 'active' : ''}>Catálogo</TabStyled>
           </Link>
         </ContainerTabs>
 
