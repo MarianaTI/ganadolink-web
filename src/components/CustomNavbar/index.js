@@ -40,7 +40,7 @@ const CustomNavbar = () => {
             Formularios
           </TabStyled>
         </Link>
-        <Link href="/catalogo" passHref>
+        <Link href="/catalogue" passHref>
           <TabStyled
             className={router.pathname === "/catalogo" ? "active" : ""}
           >

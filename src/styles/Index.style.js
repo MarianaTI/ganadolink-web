@@ -49,12 +49,12 @@ export const GridContainer = styled.div`
 
 export const GridText = styled.div`
   height: 400px;
-  margin-left: 80px;
+  margin-left: 56px;
   background-color: #857363;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 50px 0 0 50px;
+  border-radius: 25px 0 0 25px;
   & span {
     width: 550px;
     font-size: 18px;
@@ -64,12 +64,12 @@ export const GridText = styled.div`
 
 export const GridImage = styled.div`
   height: 400px;
-  margin-right: 80px;
+  margin-right: 56px;
   background-color: #857363;
   display: flex;
   justify-content: start;
   padding-top: 48px;
-  border-radius: 0 50px 50px 0;
+  border-radius: 0 25px 25px 0;
   & img {
     position: absolute;
   }
