@@ -11,9 +11,7 @@ export const DropdownContainer = styled.div`
   border-radius: 4px;
   overflow: hidden;
   z-index: 1;
-
   animation: ${(props) => (props.isOpen ? 'slideDown' : 'fadeOut')} 0.3s ease-in-out;
-
   @keyframes slideDown {
     from {
       opacity: 0;
@@ -24,7 +22,6 @@ export const DropdownContainer = styled.div`
       transform: translateY(0);
     }
   }
-
   @keyframes fadeOut {
     from {
       opacity: 1;
@@ -45,15 +42,12 @@ export const Option = styled.div`
   color: #888;
   cursor: pointer;
   transition: color 0.3s ease;
-
   &:hover {
     color: #f27d16;
   }
-
   &:not(:last-child) {
     border-bottom: 1px solid #f0f0f0;
   }
-
   svg {
     margin-right: 8px;
     width: 20px;

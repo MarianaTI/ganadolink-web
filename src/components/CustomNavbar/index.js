@@ -1,8 +1,14 @@
 import React, { useState } from "react";
-import Link from 'next/link';
-import { useRouter } from 'next/router';
+import Link from "next/link";
+import { Smartphone, User } from "react-feather";
+import { useRouter } from "next/router";
 import CustomUser from "@/components/CustomUser";
-import { ContainerTabs, NavbarContainer, TabStyled } from "./index.style";
+import {
+  ContainerTabs,
+  LogoStyled,
+  NavbarContainer,
+  TabStyled,
+} from "./index.style";
 
 const CustomNavbar = () => {
   const router = useRouter();
@@ -18,35 +24,37 @@ const CustomNavbar = () => {
   };
 
   return (
-    <React.Fragment>
-      <NavbarContainer>
+    <NavbarContainer>
+      <LogoStyled>
+        <img src="/img/Logo.png" width="50px" height="60px" />
+        <span>GanadoLink</span>
+      </LogoStyled>
+      <ContainerTabs>
         <Link href="/" passHref>
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <img src="././img/Logo.png" alt="Logo" style={{ maxWidth: '150px', maxHeight: '50px' }} />
-            <span style={{ marginLeft: '10px', fontFamily: 'Salsa, sans-serif', fontSize: '20px' }}>Ganado Link</span>
-          </div>
+          <TabStyled className={router.pathname === "/" ? "active" : ""}>
+            Home
+          </TabStyled>
         </Link>
+        <Link href="/form" passHref>
+          <TabStyled className={router.pathname === "/form" ? "active" : ""}>
+            Formularios
+          </TabStyled>
+        </Link>
+        <Link href="/catalogue" passHref>
+          <TabStyled
+            className={router.pathname === "/catalogo" ? "active" : ""}
+          >
+            Catalogo
+          </TabStyled>
+        </Link>
+      </ContainerTabs>
 
-        <ContainerTabs>
-          <Link href="/" passHref>
-            <TabStyled className={router.pathname === '/' ? 'active' : ''}>Home</TabStyled>
-          </Link>
-          <Link href="/form" passHref>
-            <TabStyled className={router.pathname === '/form' ? 'active' : ''}>Formularios</TabStyled>
-          </Link>
-          <Link href="/catal" passHref>
-            <TabStyled className={router.pathname === '/catal' ? 'active' : ''}>Catálogo</TabStyled>
-          </Link>
-        </ContainerTabs>
-
-        <CustomUser
-          isOpen={isDropdownOpen}
-          toggleDropdown={toggleDropdown}
-          handleOptionClick={handleOptionClick}
-        />
-        
-      </NavbarContainer>
-    </React.Fragment>
+      <CustomUser
+        isOpen={isDropdownOpen}
+        toggleDropdown={toggleDropdown}
+        handleOptionClick={handleOptionClick}
+      />
+    </NavbarContainer>
   );
 };
 
