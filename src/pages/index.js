@@ -112,7 +112,7 @@ export default function Home() {
             <ImageContainer>
               <Image
                 src="/img/caracteristicasimg1.jpg"
-                width={200}
+                width={265}
                 height={200}
                 alt="carac1"
               />
@@ -127,7 +127,7 @@ export default function Home() {
             <ImageContainer>
               <Image
                 src="/img/caracteristicasimg2.jpg"
-                width={200}
+                width={250}
                 height={200}
                 alt="carac2"
               />
@@ -143,7 +143,7 @@ export default function Home() {
             <ImageContainer>
               <Image
                 src="/img/caracteristicasimg3.jpg"
-                width={200}
+                width={265}
                 height={200}
                 alt="carac3"
               />
