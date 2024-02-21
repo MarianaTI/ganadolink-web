@@ -25,10 +25,12 @@ const CustomNavbar = () => {
 
   return (
     <NavbarContainer>
-      <LogoStyled>
-        <img src="/img/Logo.png" width="50px" height="60px" />
-        <span>GanadoLink</span>
-      </LogoStyled>
+      <Link href="/" passHref>
+        <LogoStyled>
+          <img src="/img/Logo.png" width="50px" height="60px" />
+          <span>GanadoLink</span>
+        </LogoStyled>
+      </Link>
       <ContainerTabs>
         <Link href="/" passHref>
           <TabStyled className={router.pathname === "/" ? "active" : ""}>
@@ -42,9 +44,14 @@ const CustomNavbar = () => {
         </Link>
         <Link href="/catalogue" passHref>
           <TabStyled
-            className={router.pathname === "/catalogo" ? "active" : ""}
+            className={router.pathname === "/catalogue" ? "active" : ""}
           >
             Catalogo
+          </TabStyled>
+        </Link>
+        <Link href="/users" passHref>
+          <TabStyled className={router.pathname === "/users" ? "active" : ""}>
+            Usuarios
           </TabStyled>
         </Link>
       </ContainerTabs>

@@ -12,6 +12,7 @@ export const NavbarContainer = styled.div`
 export const ContainerTabs = styled.div`
   display: flex;
   gap: 20px;
+  align-items: center; /* Centrado vertical */
 `;
 
 export const TabStyled = styled.div`
