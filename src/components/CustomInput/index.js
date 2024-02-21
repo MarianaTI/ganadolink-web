@@ -6,7 +6,7 @@ const CustomInput = ({
   label,
   icon,
   error,
-  control,
+  control, 
   name,
   type,
   defaultValue,

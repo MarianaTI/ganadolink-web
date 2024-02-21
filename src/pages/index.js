@@ -12,7 +12,9 @@ import {
   Titulo2,
   StartContainer,
   TextContainer,
-} from "@/styles/Index.style";
+} from "@/styles/Index.style";  
+import AlertComponent from "@/components/CustomAlert";
+import CustomAlertSeverity from "@/components/CustomAlertSeverity";
 
 export default function Home() {
   return (
@@ -25,7 +27,7 @@ export default function Home() {
           alt="inicio"
         />
       </div>
-      
+      <AlertComponent imageSrc="/img/hecho.png"  text="Parece que ocurrio un problema" onClose={(null)} btmstyle/>
       <div>
         <StartContainer>
           <TextContainer>
