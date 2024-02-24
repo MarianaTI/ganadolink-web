@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { ButtonStyled } from '../components/CustomButton/index.style';
-import { Container, Form, Input, InputContainer, SearchIcon, Table, Th, Td, DownloadButton, DownloadPdfButton, Title, Line } from '../styles/catalogue.style';
+import { Container, Form, Input, InputContainer, SearchIcon, Table, Th, Td, DownloadButton, DownloadPdfButton, Title, Line, CancelButton } from '../styles/catalogue.style';
 import { FaSearch, FaDownload, FaFilePdf } from 'react-icons/fa';
 
 const CatalogPage = () => {
@@ -91,8 +91,8 @@ const CatalogPage = () => {
       </Table>
 
       <div style={{ display: 'flex', justifyContent: 'center', marginTop: '275px' }}>
-        <ButtonStyled style={{ marginRight: '10px' }}>Continuar</ButtonStyled>
-        <ButtonStyled>Cancelar</ButtonStyled>
+        <ButtonStyled style={{ marginRight: '25px' }}>Continuar</ButtonStyled>
+        <CancelButton>Cancelar</CancelButton>
       </div>
     </Container>
   );

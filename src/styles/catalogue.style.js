@@ -68,6 +68,28 @@ const DownloadButton = styled.button`
   }
 `;
 
+const CancelButton = styled.button`
+  width: 200px;
+  height: 45px;
+  border-radius: 5px;
+  background: #fff;
+  font-family: Poppins;
+  color: #bababa;
+  font-size: 18px;
+  font-weight: 500;
+  border: 2px solid #bababa; 
+  padding: 10px 20px; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+  svg { 
+    margin-left: 5px;
+  }
+  margin-top: 24px;
+`;
+
 const DownloadPdfButton = styled.button`
   width: 200px;
   height: 45px;
@@ -106,4 +128,4 @@ const Line = styled.hr`
   margin-bottom: 55px;
 `;
 
-export { Container, Form, Input, InputContainer, SearchIcon, DownloadButton, DownloadPdfButton, Table, Th, Td, Title, Line };
+export { Container, Form, Input, InputContainer, SearchIcon, DownloadButton, DownloadPdfButton, Table, Th, Td, Title, Line, CancelButton };
