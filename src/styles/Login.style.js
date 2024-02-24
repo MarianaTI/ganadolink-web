@@ -9,7 +9,7 @@ export const Container = styled.div`
 `;
 
 export const GridContainer = styled.div`
-  height: 100vh;
+  padding-bottom: 48px;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   @media (max-width: 768px) {

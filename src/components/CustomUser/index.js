@@ -1,9 +1,9 @@
-import React, { useRef, useEffect } from 'react';
-import { DropdownContainer, Option } from './index.style';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSignOutAlt, faUser } from '@fortawesome/free-solid-svg-icons';
-import { User } from 'react-feather';
-import { UserIcon } from '../CustomNavbar/index.style';
+import React, { useRef, useEffect } from "react";
+import { DropdownContainer, Option } from "./index.style";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSignOutAlt, faUser } from "@fortawesome/free-solid-svg-icons";
+import { User } from "react-feather";
+import { UserIcon } from "../CustomNavbar/index.style";
 
 const CustomUser = ({ isOpen, toggleDropdown, handleOptionClick }) => {
   const dropdownRef = useRef(null);
@@ -15,10 +15,10 @@ const CustomUser = ({ isOpen, toggleDropdown, handleOptionClick }) => {
       }
     };
 
-    document.addEventListener('click', handleOutsideClick);
+    document.addEventListener("click", handleOutsideClick);
 
     return () => {
-      document.removeEventListener('click', handleOutsideClick);
+      document.removeEventListener("click", handleOutsideClick);
     };
   }, [toggleDropdown]);
 
@@ -35,11 +35,13 @@ const CustomUser = ({ isOpen, toggleDropdown, handleOptionClick }) => {
 
       {isOpen && (
         <DropdownContainer ref={dropdownRef} isOpen={isOpen}>
-          <Option className="option"> 
-             <FontAwesomeIcon icon={faUser} />Usuario Logueado 
-          </Option>
-          <Option className="option" onClick={() => handleOptionClick('Cerrar Sesión')}>
-            <FontAwesomeIcon icon={faSignOutAlt} />Cerrar Sesión
+          <Option className="option">Usuario Logueado</Option>
+          <Option
+            className="option"
+            onClick={() => handleOptionClick("Cerrar Sesión")}
+          >
+            <FontAwesomeIcon icon={faSignOutAlt} />
+            Cerrar Sesión
           </Option>
         </DropdownContainer>
       )}
