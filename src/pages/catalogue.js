@@ -1,43 +1,50 @@
-import React, { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { Container, Form, Input, InputContainer, SearchIcon, Table, Th, Td, DownloadButton, DownloadPdfButton, Title, Line, ContinueButton, CancelButton } from '../styles/catalogue.style';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { ButtonStyled } from '../components/CustomButton/index.style';
+import { Container, Form, Input, InputContainer, SearchIcon, Table, Th, Td, DownloadButton, DownloadPdfButton, Title, Line } from '../styles/catalogue.style';
 import { FaSearch, FaDownload, FaFilePdf } from 'react-icons/fa';
 
-const Catal = () => {
-  const [data, setData] = useState([
-    {
-      numero_animal: '001',
-      patente_factura: 'AB123',
-      sexo: 'Macho',
-      color: 'Negro',
-      raza: 'Angus',
-      arete_siniiga: '12345',
-      figura_herraje: 'Cuadrado',
-    },
-    {
-      numero_animal: '002',
-      patente_factura: 'CD456',
-      sexo: 'Hembra',
-      color: 'Rojo',
-      raza: 'Hereford',
-      arete_siniiga: '67890',
-      figura_herraje: 'Círculo',
-    },
-  ]);
-  const { register, handleSubmit } = useForm();
+const CatalogPage = () => {
+  // Estado para almacenar los datos de la API
+  const [data, setData] = useState([]);
 
-  const onSubmit = (data) => {
-    // Aquí se haría la búsqueda en la API
-    console.log(data);
+  // Función que se ejecuta al cargar el componente para obtener los datos de la API
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  // Función para obtener el token de las cookies (simulada)
+  const getTokenCookies = () => {
+    return 'AQUÍ_DEBERÍAS_OBTENER_EL_TOKEN_DE_LAS_COOKIES';
+  };
+
+  // Función para realizar la petición a la API y actualizar el estado con los datos obtenidos
+  const fetchData = async () => {
+    try {
+      const token = getTokenCookies();
+      const response = await axios.get('URL_DE_TU_API', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setData(response.data);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+
+  // Función para manejar el envío del formulario (aún no implementada)
+  const onSubmit = (formData) => {
+    console.log(formData);
   };
 
   return (
     <Container>
       <Title style={{ marginLeft: '-1368px' }}>Catálogo</Title>
       <Line />
-      <Form onSubmit={handleSubmit}>
+      <Form onSubmit={onSubmit}>
         <InputContainer>
-          <Input type="text" placeholder="Buscar..." {...register('search')} />
+          <Input type="text" placeholder="Buscar..." />
           <SearchIcon>
             <FaSearch style={{ color: '#888' }} />
           </SearchIcon>
@@ -84,11 +91,11 @@ const Catal = () => {
       </Table>
 
       <div style={{ display: 'flex', justifyContent: 'center', marginTop: '275px' }}>
-        <ContinueButton>Continuar</ContinueButton>
-        <CancelButton>Cancelar</CancelButton>
+        <ButtonStyled style={{ marginRight: '10px' }}>Continuar</ButtonStyled>
+        <ButtonStyled>Cancelar</ButtonStyled>
       </div>
     </Container>
   );
 };
 
-export default Catal;
+export default CatalogPage;

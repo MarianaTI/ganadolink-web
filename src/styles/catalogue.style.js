@@ -69,16 +69,28 @@ const DownloadButton = styled.button`
 `;
 
 const DownloadPdfButton = styled.button`
-  background-color: #f27d16;
-  color: #fff;
-  border: 2px solid #f27d16;
+  width: 200px;
+  height: 45px;
   border-radius: 5px;
-  padding: 13px 20px;
+  background: #fff;
+  font-family: Poppins;
+  color: #bababa;
+  font-size: 18px;
+  font-weight: 500;
+  border: 2px solid #bababa; 
+  padding: 10px 20px; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
-  transition: border-color 0.3s;
-
+  transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+  svg { 
+    margin-left: 5px;
+  }
   &:hover {
-    border-color: #ff6600;
+    background-color: #f27d16;
+    color: white;
+    border-color: #f27d16;
   }
 `;
 
@@ -94,39 +106,4 @@ const Line = styled.hr`
   margin-bottom: 55px;
 `;
 
-const ContinueButton = styled.button`
-  background-color: #f27d16;
-  color: #fff;
-  border: 2px solid #ff6600; /* Borde de tono naranja más fuerte */
-  border-radius: 5px;
-  padding: 10px 20px; /* Un poco más pequeños */
-  cursor: pointer;
-  transition: background-color 0.3s, border-color 0.3s;
-  font-size: 16px; /* Tamaño de texto más pequeño */
-  font-family: 'Salsa', cursive; /* Fuente de letra salsa */
-
-  &:hover {
-    background-color: #ff8c40;
-    border-color: #ff8c40;
-  }
-`;
-
-const CancelButton = styled.button`
-  background-color: #888;
-  color: #fff;
-  border: 2px solid #888;
-  border-radius: 5px;
-  padding: 10px 20px; /* Un poco más pequeños */
-  margin-left: 20px;
-  cursor: pointer;
-  transition: background-color 0.3s, border-color 0.3s;
-  font-size: 16px; /* Tamaño de texto más pequeño */
-  font-family: 'Salsa', cursive; /* Fuente de letra salsa */
-
-  &:hover {
-    background-color: #666;
-    border-color: #666;
-  }
-`;
-
-export { Container, Form, Input, InputContainer, SearchIcon, DownloadButton, DownloadPdfButton, Table, Th, Td, Title, Line, ContinueButton, CancelButton };
+export { Container, Form, Input, InputContainer, SearchIcon, DownloadButton, DownloadPdfButton, Table, Th, Td, Title, Line };

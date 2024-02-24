@@ -1,33 +1,70 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { useForm } from 'react-hook-form';
 import { Container, Title, Form, Input, InputContainer, SearchIcon, Line, Table, Th, Td, EditButton, DeleteButton } from '../styles/users.style';
 import { FaEdit, FaTrash, FaSearch } from 'react-icons/fa';
 
 const Users = () => {
-  const [users, setUsers] = useState([
-    {
-      id: 1,
-      name: 'Juan Pérez',
-      role: 'Administrador',
-      email: 'juan@example.com',
-      password: '********',
-    },
-    {
-      id: 2,
-      name: 'María García',
-      role: 'Usuario',
-      email: 'maria@example.com',
-      password: '********',
-    },
-  ]);
+  // Estado para almacenar los usuarios
+  const [users, setUsers] = useState([]);
+  
+  // Estado para almacenar los usuarios filtrados
+  const [filteredUsers, setFilteredUsers] = useState([]);
+  
+  // Función para obtener el token de las cookies (simulada)
+  const getTokenCookies = () => {
+    return 'AQUÍ_DEBERÍAS_OBTENER_EL_TOKEN_DE_LAS_COOKIES';
+  };
+
+  // Función para obtener los usuarios de la API
+  const fetchUsers = async () => {
+    try {
+      const token = getTokenCookies();
+      const response = await axios.get('URL_DE_TU_API', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setUsers(response.data);
+      setFilteredUsers(response.data); // Al inicio, los usuarios filtrados son todos los usuarios
+    } catch (error) {
+      console.error('Error fetching users:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+
+  // Función para buscar usuarios
+  const handleSearch = (searchTerm) => {
+    const filtered = users.filter(user => 
+      user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      user.role.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      user.email.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setFilteredUsers(filtered);
+  };
 
   const { register, handleSubmit } = useForm();
+
+  // Función para manejar la edición de un usuario
+  const handleEditUser = (userId) => {
+    // Lógica para editar un usuario
+    console.log('Edit user with id:', userId);
+  };
+
+  // Función para manejar la eliminación de un usuario
+  const handleDeleteUser = (userId) => {
+    // Lógica para eliminar un usuario
+    console.log('Delete user with id:', userId);
+  };
 
   return (
     <Container>
       <Title style={{ marginLeft: '-1230px' }}>Usuarios Registrados</Title>
       <Line />
-      <Form onSubmit={handleSubmit}>
+      <Form onSubmit={handleSubmit(data => handleSearch(data.search))}>
         <InputContainer>
           <Input type="text" placeholder="Buscar..." {...register('search')} />
           <SearchIcon>
@@ -46,17 +83,17 @@ const Users = () => {
           </tr>
         </thead>
         <tbody>
-          {users.map(user => (
+          {filteredUsers.map(user => (
             <tr key={user.id}>
               <Td>{user.name}</Td>
               <Td>{user.role}</Td>
               <Td>{user.email}</Td>
               <Td>{user.password}</Td>
               <Td>
-                <EditButton>
+                <EditButton onClick={() => handleEditUser(user.id)}>
                   <FaEdit />
                 </EditButton>
-                <DeleteButton>
+                <DeleteButton onClick={() => handleDeleteUser(user.id)}>
                   <FaTrash />
                 </DeleteButton>
               </Td>
