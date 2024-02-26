@@ -3,22 +3,22 @@ import axios from 'axios';
 import { ButtonStyled } from '../components/CustomButton/index.style';
 import { Container, Form, Input, InputContainer, SearchIcon, Table, Th, Td, DownloadButton, DownloadPdfButton, Title, Line, CancelButton } from '../styles/catalogue.style';
 import { FaSearch, FaDownload, FaFilePdf } from 'react-icons/fa';
+import { PDFDownloadLink } from '@react-pdf/renderer';
+import CatalogPDF from '../components/CustomPDF/index';
 
 const CatalogPage = () => {
-  // Estado para almacenar los datos de la API
   const [data, setData] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
+  const [selectedItem, setSelectedItem] = useState(null);
 
-  // Función que se ejecuta al cargar el componente para obtener los datos de la API
   useEffect(() => {
     fetchData();
   }, []);
 
-  // Función para obtener el token de las cookies (simulada)
   const getTokenCookies = () => {
     return 'AQUÍ_DEBERÍAS_OBTENER_EL_TOKEN_DE_LAS_COOKIES';
   };
 
-  // Función para realizar la petición a la API y actualizar el estado con los datos obtenidos
   const fetchData = async () => {
     try {
       const token = getTokenCookies();
@@ -28,23 +28,36 @@ const CatalogPage = () => {
         },
       });
       setData(response.data);
+      setFilteredData(response.data);
     } catch (error) {
       console.error('Error fetching data:', error);
     }
   };
 
-  // Función para manejar el envío del formulario (aún no implementada)
-  const onSubmit = (formData) => {
-    console.log(formData);
+  const handleSearchChange = (event) => {
+    const searchTerm = event.target.value.toLowerCase();
+    const filtered = data.filter(item =>
+      item.numero_animal.toLowerCase().includes(searchTerm) ||
+      item.patente_factura.toLowerCase().includes(searchTerm) ||
+      item.sexo.toLowerCase().includes(searchTerm) ||
+      item.color.toLowerCase().includes(searchTerm) ||
+      item.raza.toLowerCase().includes(searchTerm) ||
+      item.arete_siniiga.toLowerCase().includes(searchTerm)
+    );
+    setFilteredData(filtered);
+  };
+
+  const handleDownloadPDF = (item) => {
+    setSelectedItem(item);
   };
 
   return (
     <Container>
       <Title style={{ marginLeft: '-1368px' }}>Catálogo</Title>
       <Line />
-      <Form onSubmit={onSubmit}>
+      <Form>
         <InputContainer>
-          <Input type="text" placeholder="Buscar..." />
+          <Input type="text" placeholder="Buscar..." onChange={handleSearchChange} />
           <SearchIcon>
             <FaSearch style={{ color: '#888' }} />
           </SearchIcon>
@@ -69,7 +82,7 @@ const CatalogPage = () => {
           </tr>
         </thead>
         <tbody>
-          {data.map((item, index) => (
+          {filteredData.map((item, index) => (
             <tr key={index}>
               <Td>{item.numero_animal}</Td>
               <Td>{item.patente_factura}</Td>
@@ -81,7 +94,7 @@ const CatalogPage = () => {
                 <img src={`/img/${item.figura_herraje}.jpg`} alt={item.figura_herraje} style={{ width: '50px', height: 'auto' }} />
               </Td>
               <Td>
-                <DownloadButton>
+                <DownloadButton onClick={() => handleDownloadPDF(item)}>
                   <FaDownload />
                 </DownloadButton>
               </Td>
@@ -94,6 +107,12 @@ const CatalogPage = () => {
         <ButtonStyled style={{ marginRight: '25px' }}>Continuar</ButtonStyled>
         <CancelButton>Cancelar</CancelButton>
       </div>
+
+      {selectedItem && (
+        <PDFDownloadLink document={<CatalogPDF item={selectedItem} />} fileName="data.pdf">
+          {({ blob, url, loading, error }) => (loading ? 'Generando PDF...' : 'Descargar PDF')}
+        </PDFDownloadLink>
+      )}
     </Container>
   );
 };
