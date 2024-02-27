@@ -1,7 +1,6 @@
 import IEspecieRepo from "@/domain/repositories/IEspecieRepo";
 import axios from "axios";
 
-
 class EspecieRepo extends IEspecieRepo {
   constructor() {
     super();
