@@ -1,54 +1,87 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React from 'react';
 import { ButtonStyled } from '../components/CustomButton/index.style';
 import { Container, Form, Input, InputContainer, SearchIcon, Table, Th, Td, DownloadButton, DownloadPdfButton, Title, Line, CancelButton } from '../styles/catalogue.style';
 import { FaSearch, FaDownload, FaFilePdf } from 'react-icons/fa';
-import { PDFDownloadLink } from '@react-pdf/renderer';
-import CatalogPDF from '../components/CustomPDF/index';
+import { PDFDocument, rgb, StandardFonts } from 'pdf-lib'; // Importa las funciones necesarias de pdf-lib
+
+// Función para generar y descargar el PDF
+const handleDownloadClick = async (data) => {
+  try {
+    // Crea un nuevo documento PDF
+    const pdfDoc = await PDFDocument.create();
+    const page = pdfDoc.addPage(); // Añade una página al documento
+    const { width, height } = page.getSize();
+
+    // Carga el logo de la empresa
+    const logoResponse = await fetch('/img/Logo.png');
+    const logoBuffer = await logoResponse.arrayBuffer();
+    const logoImage = await pdfDoc.embedPng(logoBuffer);
+    const logoWidth = 250;
+    const logoHeight = logoWidth * (logoImage.height / logoImage.width); // Ajusta la altura proporcionalmente
+    page.drawImage(logoImage, {
+      x: width / 2 - logoWidth / 2,
+      y: height - -50 - logoHeight, // Posiciona el logo en la parte superior de la página
+      width: logoWidth,
+      height: logoHeight,
+    });
+
+    // Centra el nombre de la empresa
+    const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica);
+    const nameWidth = helveticaFont.widthOfTextAtSize('Ganado Link', 24);
+    page.drawText('Ganado Link', {
+      x: width / 2 - nameWidth / 2, // Centra el texto horizontalmente
+      y: height - -130 - logoHeight - 40, // Coloca el texto justo encima del logo
+      size: 24,
+      font: helveticaFont,
+      color: rgb(0, 0, 0),
+    });
+
+    // Agrega los datos de la fila seleccionada en forma de lista
+    const dataText = [
+      `Número de animales: ${data.animals}`,
+      `Patente o factura: ${data.patent}`,
+      `Sexo: ${data.sex}`,
+      `Color: ${data.color}`,
+      `Raza: ${data.breed}`,
+      `Arete siniiga: ${data.tag}`,
+    ];
+    const textHeight = 225; // Posiciona la lista de datos debajo del logo y el nombre de la empresa
+    dataText.forEach((text, index) => {
+      page.drawText(text, {
+        x: 50,
+        y: textHeight - index * 25, // Añade espacio entre cada línea de texto
+        size: 20,
+        font: helveticaFont,
+        color: rgb(0, 0, 0),
+      });
+    });
+
+    // Genera el contenido del PDF como un blob
+    const pdfBytes = await pdfDoc.save();
+
+    // Crea un objeto URL para el blob generado
+    const pdfUrl = URL.createObjectURL(new Blob([pdfBytes], { type: 'application/pdf' }));
+
+    // Crea un enlace invisible y haz clic en él para descargar el PDF
+    const link = document.createElement('a');
+    link.href = pdfUrl;
+    link.setAttribute('download', 'catalogo.pdf');
+    document.body.appendChild(link);
+    link.click();
+  } catch (error) {
+    console.error('Error al generar el PDF:', error);
+  }
+};
 
 const CatalogPage = () => {
-  const [data, setData] = useState([]);
-  const [filteredData, setFilteredData] = useState([]);
-  const [selectedItem, setSelectedItem] = useState(null);
-
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  const getTokenCookies = () => {
-    return 'AQUÍ_DEBERÍAS_OBTENER_EL_TOKEN_DE_LAS_COOKIES';
-  };
-
-  const fetchData = async () => {
-    try {
-      const token = getTokenCookies();
-      const response = await axios.get('URL_DE_TU_API', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      setData(response.data);
-      setFilteredData(response.data);
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
-  };
-
-  const handleSearchChange = (event) => {
-    const searchTerm = event.target.value.toLowerCase();
-    const filtered = data.filter(item =>
-      item.numero_animal.toLowerCase().includes(searchTerm) ||
-      item.patente_factura.toLowerCase().includes(searchTerm) ||
-      item.sexo.toLowerCase().includes(searchTerm) ||
-      item.color.toLowerCase().includes(searchTerm) ||
-      item.raza.toLowerCase().includes(searchTerm) ||
-      item.arete_siniiga.toLowerCase().includes(searchTerm)
-    );
-    setFilteredData(filtered);
-  };
-
-  const handleDownloadPDF = (item) => {
-    setSelectedItem(item);
+  // Datos de la fila seleccionada (dummy data)
+  const rowData = {
+    animals: '123',
+    patent: 'Factura 456',
+    sex: 'Macho',
+    color: 'Negro',
+    breed: 'Raza 1',
+    tag: '789',
   };
 
   return (
@@ -57,7 +90,7 @@ const CatalogPage = () => {
       <Line />
       <Form>
         <InputContainer>
-          <Input type="text" placeholder="Buscar..." onChange={handleSearchChange} />
+          <Input type="text" placeholder="Buscar..." />
           <SearchIcon>
             <FaSearch style={{ color: '#888' }} />
           </SearchIcon>
@@ -82,24 +115,22 @@ const CatalogPage = () => {
           </tr>
         </thead>
         <tbody>
-          {filteredData.map((item, index) => (
-            <tr key={index}>
-              <Td>{item.numero_animal}</Td>
-              <Td>{item.patente_factura}</Td>
-              <Td>{item.sexo}</Td>
-              <Td>{item.color}</Td>
-              <Td>{item.raza}</Td>
-              <Td>{item.arete_siniiga}</Td>
-              <Td>
-                <img src={`/img/${item.figura_herraje}.jpg`} alt={item.figura_herraje} style={{ width: '50px', height: 'auto' }} />
-              </Td>
-              <Td>
-                <DownloadButton onClick={() => handleDownloadPDF(item)}>
-                  <FaDownload />
-                </DownloadButton>
-              </Td>
-            </tr>
-          ))}
+          <tr>
+            <Td>{rowData.animals}</Td>
+            <Td>{rowData.patent}</Td>
+            <Td>{rowData.sex}</Td>
+            <Td>{rowData.color}</Td>
+            <Td>{rowData.breed}</Td>
+            <Td>{rowData.tag}</Td>
+            <Td>
+              <img src="/img/figura_herraje.jpg" alt="Figura de herraje" style={{ width: '50px', height: 'auto' }} />
+            </Td>
+            <Td>
+              <DownloadButton onClick={() => handleDownloadClick(rowData)}> {/* Pasa los datos de la fila seleccionada */}
+                <FaDownload />
+              </DownloadButton>
+            </Td>
+          </tr>
         </tbody>
       </Table>
 
@@ -107,12 +138,6 @@ const CatalogPage = () => {
         <ButtonStyled style={{ marginRight: '25px' }}>Continuar</ButtonStyled>
         <CancelButton>Cancelar</CancelButton>
       </div>
-
-      {selectedItem && (
-        <PDFDownloadLink document={<CatalogPDF item={selectedItem} />} fileName="data.pdf">
-          {({ blob, url, loading, error }) => (loading ? 'Generando PDF...' : 'Descargar PDF')}
-        </PDFDownloadLink>
-      )}
     </Container>
   );
 };
