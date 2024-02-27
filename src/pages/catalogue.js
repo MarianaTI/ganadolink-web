@@ -1,42 +1,37 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { ButtonStyled } from '../components/CustomButton/index.style';
-import { Container, Form, Input, InputContainer, SearchIcon, Table, Th, Td, DownloadButton, DownloadPdfButton, Title, Line, CancelButton } from '../styles/catalogue.style';
-import { FaSearch, FaDownload, FaFilePdf } from 'react-icons/fa';
+import { Container, Form, Input, InputContainer, SearchIcon, Table, Th, Td, DownloadPdfButton, Title, Line, CancelButton, IconButton } from '../styles/catalogue.style';
+import { FaSearch, FaDownload, FaFilePdf, FaEye } from 'react-icons/fa';
+import VentaGanadoRepo from "@/infraestructure/implementation/httpRequest/axios/OrderRepo";
+import OrderRepo from '@/infraestructure/implementation/httpRequest/axios/OrderRepo';
+import GetAllOrderUseCase from '@/application/usecases/orderUseCase/GetAllOrderUseCase';
 
 const CatalogPage = () => {
-  // Estado para almacenar los datos de la API
-  const [data, setData] = useState([]);
 
-  // Función que se ejecuta al cargar el componente para obtener los datos de la API
-  useEffect(() => {
-    fetchData();
-  }, []);
+  const [orders, setOrders] = useState([]);
 
-  // Función para obtener el token de las cookies (simulada)
-  const getTokenCookies = () => {
-    return 'AQUÍ_DEBERÍAS_OBTENER_EL_TOKEN_DE_LAS_COOKIES';
-  };
+    const fetchOrder = async () => {
+      const orderRepo = new OrderRepo();
+      const getAllOrderUseCase = new GetAllOrderUseCase(orderRepo);
 
-  // Función para realizar la petición a la API y actualizar el estado con los datos obtenidos
-  const fetchData = async () => {
-    try {
-      const token = getTokenCookies();
-      const response = await axios.get('URL_DE_TU_API', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      setData(response.data);
-    } catch (error) {
-      console.error('Error fetching data:', error);
+      try {
+        const orderData = await getAllOrderUseCase.run();
+        console.log(orderData);
+        setOrders(orderData.orders);
+      } catch (error) {
+        console.log(error);
+      }
     }
-  };
 
   // Función para manejar el envío del formulario (aún no implementada)
   const onSubmit = (formData) => {
     console.log(formData);
   };
+
+  useEffect(() => {
+    fetchOrder();
+  }, []);
 
   return (
     <Container>
@@ -60,30 +55,34 @@ const CatalogPage = () => {
           <tr>
             <Th>Número de animales</Th>
             <Th>Patente o factura</Th>
-            <Th>Sexo</Th>
-            <Th>Color</Th>
-            <Th>Raza</Th>
+            <Th>Nombre del vendedor</Th>
+            <Th>Nombre del comprador</Th>
+            <Th>Tipo de Raza</Th>
             <Th>Arete siniiga</Th>
-            <Th>Figura de herraje</Th>
+            <Th>Modelo del vehiculo</Th>
             <Th>Acciones</Th>
           </tr>
         </thead>
         <tbody>
-          {data.map((item, index) => (
+          {orders.map((item, index) => (
             <tr key={index}>
-              <Td>{item.numero_animal}</Td>
-              <Td>{item.patente_factura}</Td>
-              <Td>{item.sexo}</Td>
-              <Td>{item.color}</Td>
-              <Td>{item.raza}</Td>
-              <Td>{item.arete_siniiga}</Td>
-              <Td>
+              <Td>{item._id}</Td>
+              <Td>{item.vendedor.nombre}</Td>
+              <Td>{item.vendedor.nombre}</Td>
+              <Td>{item.comprador.nombre}</Td>
+              <Td>{item.id_especie.name}</Td>
+              <Td>{item.ganado[0].siniiga}</Td>
+              <Td>{item.vehiculo.marca}</Td> 
+              {/* <Td>
                 <img src={`/img/${item.figura_herraje}.jpg`} alt={item.figura_herraje} style={{ width: '50px', height: 'auto' }} />
-              </Td>
+              </Td> */}
               <Td>
-                <DownloadButton>
+                <IconButton>
                   <FaDownload />
-                </DownloadButton>
+                </IconButton>
+                <IconButton>
+                  <FaEye />
+                </IconButton>
               </Td>
             </tr>
           ))}
