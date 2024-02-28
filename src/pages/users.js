@@ -1,31 +1,48 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { Container, Title, Form, Input, InputContainer, SearchIcon, Line, Table, Th, Td, EditButton, DeleteButton } from '../styles/users.style';
 import { FaEdit, FaTrash, FaSearch } from 'react-icons/fa';
+import {
+  Container,
+  Title,
+  Form,
+  Input,
+  InputContainer,
+  SearchIcon,
+  Line,
+  Table,
+  Th,
+  Td,
+  EditButton,
+  DeleteButton,
+} from '../styles/users.style';
+import GetAllUserUseCase from '@/application/usecases/userUseCase/GetAllUserCase';
+import UserRepo from '@/infraestructure/implementation/httpRequest/axios/UserRepo';
+import CustomButton from '@/components/CustomButton';
+import { Router } from 'next/router';
 
 const Users = () => {
-  const [users, setUsers] = useState([
-    {
-      id: 1,
-      name: 'Juan Pérez',
-      role: 'Administrador',
-      email: 'juan@example.com',
-      password: '********',
-    },
-    {
-      id: 2,
-      name: 'María García',
-      role: 'Usuario',
-      email: 'maria@example.com',
-      password: '********',
-    },
-  ]);
-
+  const [users, setUsers] = useState([]);
   const { register, handleSubmit } = useForm();
+
+  const fetchUser = async () => {
+    const userRepo = new UserRepo();
+    const getAllUserUseCase = new GetAllUserUseCase(userRepo);
+    try {
+      const userData = await getAllUserUseCase.run();
+      console.log(userData);
+      setUsers(userData.users);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  
+  useEffect(() => {
+    fetchUser();
+  }, []);
 
   return (
     <Container>
-      <Title style={{ marginLeft: '-1230px' }}>Usuarios Registrados</Title>
+      <Title style={{ marginLeft: '-1230px' }}>Usuarios</Title>
       <Line />
       <Form onSubmit={handleSubmit}>
         <InputContainer>
@@ -34,6 +51,8 @@ const Users = () => {
             <FaSearch style={{ color: '#888' }} />
           </SearchIcon>
         </InputContainer>
+
+        <CustomButton onClick={() => Router.push("/src/pages/registerUser")} buttonText={'Agregar Usuario'}/>
       </Form>
       <Table>
         <thead>
@@ -47,9 +66,9 @@ const Users = () => {
         </thead>
         <tbody>
           {users.map(user => (
-            <tr key={user.id}>
+            <tr key={user._id}>
               <Td>{user.name}</Td>
-              <Td>{user.role}</Td>
+              <Td>{user.rol}</Td>
               <Td>{user.email}</Td>
               <Td>{user.password}</Td>
               <Td>

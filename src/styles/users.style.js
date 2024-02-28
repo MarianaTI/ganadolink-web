@@ -43,7 +43,7 @@ const SearchIcon = styled.div`
 
 const Line = styled.hr`
   border: 0;
-  border-top: 2px solid #000;
+  border-top: 2px solid #F27D16;
   width: 100%;
   margin-top: -18px;
   margin-bottom: 55px;
@@ -56,10 +56,10 @@ const Table = styled.table`
 
 const Th = styled.th`
   padding: 10px;
-  border-top: 2px solid #555; /* Borde superior en gris elegante fuerte */
-  border-bottom: 2px solid #555; /* Borde inferior en gris elegante fuerte */
+  border-top: 2px solid #F8BE8B; /* Borde superior en gris elegante fuerte */
+  border-bottom: 2px solid #F8BE8B; /* Borde inferior en gris elegante fuerte */
   text-align: left;
-  background-color: #f2f2f2; /* Color de fondo gris */
+  background-color: #F8BE8B; /* Color de fondo gris */
   color: #333; /* Color del texto */
 `;
 

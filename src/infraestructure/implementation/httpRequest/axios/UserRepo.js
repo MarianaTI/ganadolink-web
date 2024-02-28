@@ -6,8 +6,10 @@ import CryptoJS from "crypto-js";
 class UserRepo extends IUserRepo {
   constructor() {
     super();
-    this.url = "http://localhost:3000/getAll/users";
-    this.urlSignIn = "http://localhost:3000/signin";
+    this.url = "http://localhost:3000/api/users";
+    this.urlSignIn = "http://localhost:3000/api/signin";
+    this.urlSignUp = "http://localhost:3000/api/signup";
+    
   }
 
   async getAll() {
@@ -40,6 +42,19 @@ class UserRepo extends IUserRepo {
     } catch (error) {
       console.error("Error signing in:", error.message);
       throw error;
+    }
+  }
+
+  async signUp(user){
+    try {
+      const response = await axios.post(this.urlSignUp, user,{
+        headers: {
+          "Content-Type": "application/json"
+        },
+      });
+      return response.data;
+    } catch (error) {
+      console.log("Error signUp:", error.message);
     }
   }
 }
