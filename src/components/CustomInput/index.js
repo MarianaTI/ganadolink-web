@@ -6,7 +6,7 @@ const CustomInput = ({
   label,
   icon,
   error,
-  control,
+  control, 
   name,
   fullWidth,
   type,
@@ -38,7 +38,7 @@ const CustomInput = ({
           name={field.name}
           customFormDesign={customFormDesign}
           inputRef={field.ref}
-          type={type}
+          type={type} 
           onKeyDown={onKeyDown}
           defaultValue={defaultValue}
         />

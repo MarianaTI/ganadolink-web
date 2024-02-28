@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { ButtonStyled } from "./index.style";
+import React from "react";
+import { ButtonStyled, Texto } from "./index.style";
 
 const CustomButton = ({
   fullWidth,

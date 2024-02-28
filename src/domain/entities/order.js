@@ -1,0 +1,64 @@
+class Order {
+    constructor(_id, id_especie, id_motivo, id_user, vendedor, comprador, ganado, vehiculo) {
+        this._id = _id;
+        this.id_especie = id_especie;
+        this.id_motivo = id_motivo;
+        this.id_user = id_user;
+        this.vendedor = vendedor;
+        this.comprador = comprador;
+        this.ganado = ganado;
+        this.vehiculo = vehiculo;
+    }
+}
+
+class Especie {
+    constructor(_id, name) {
+        this._id = _id;
+        this.name = name;
+    }
+}
+
+class Motivo {
+    constructor(_id, name) {
+        this._id = _id;
+        this.name = name;
+    }
+}
+
+class Vendedor {
+    constructor(nombre, domicilio, municipio) {
+        this.nombre = nombre;
+        this.domicilio = domicilio;
+        this.municipio = municipio;
+    }
+}
+
+class Comprador {
+    constructor (nombre, domicilio, municipio, predio) {
+        this.nombre = nombre;
+        this.domicilio = domicilio;
+        this.municipio = municipio;
+        this.predio = predio;
+    }
+}
+
+class Ganado {
+    constructor(patente, sexo, id_raza, color, siniiga) {
+        this.patente = patente;
+        this.sexo = sexo;
+        this.id_raza = id_raza;
+        this.color = color;
+        this.siniiga = siniiga;
+    }
+}
+
+class Vehiculo {
+    constructor(tipo, marca, modelo, placa, color, nombre_operador_vehiculo) {
+        this.tipo = tipo;
+        this.marca = marca;
+        this.modelo = modelo;
+        this.placa = placa;
+        this.color = color;
+        this.nombre_operador_vehiculo = nombre_operador_vehiculo;
+    }
+}
