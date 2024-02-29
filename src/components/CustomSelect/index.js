@@ -7,29 +7,44 @@ import {
 } from "./index.style";
 import { Controller } from "react-hook-form";
 
-const CustomSelect = ({
-  label,
-  defaultValue,
-  onChange,
-  options, // Añadido para pasar las opciones dinámicamente
-  fullWidth,
-}) => {
+const CustomSelect = ({ control, name, label, options, fullWidth }) => {
   return (
-    <div>
-      <LabelStyled>{label}</LabelStyled>
-      <SelectWrapper>
-        <SelectStyled
-          defaultValue={defaultValue}
-          onChange={onChange}
-          fullWidth={fullWidth}
-        >
-          {options?.map((option) => (
-            <option key={option._id} value={option._id}>{option.name}</option>
-          ))}
-        </SelectStyled>
-      </SelectWrapper>
-    </div>
+    <Controller
+      control={control}
+      name={name}
+      render={({ field }) => (
+        <div>
+          <LabelStyled>{label}</LabelStyled>
+          <SelectWrapper>
+            <SelectStyled fullWidth={fullWidth} {...field}>
+              {options?.map((option) => (
+                <option key={option._id} value={option._id}>
+                  {option.name}
+                </option>
+              ))}
+            </SelectStyled>
+          </SelectWrapper>
+        </div>
+      )}
+    />
   );
 };
 
 export default CustomSelect;
+
+// return (
+//   <div>
+//     <LabelStyled>{label}</LabelStyled>
+//     <SelectWrapper>
+//       <SelectStyled
+//         defaultValue={defaultValue}
+//         onChange={onChange}
+//         fullWidth={fullWidth}
+//       >
+//         {options?.map((option) => (
+//           <option key={option._id} value={option._id}>{option.name}</option>
+//         ))}
+//       </SelectStyled>
+//     </SelectWrapper>
+//   </div>
+// );

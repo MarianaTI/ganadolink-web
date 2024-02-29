@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-export const Container = styled.form`
+export const Container = styled.div`
   margin: 40px;
 `;
 
@@ -62,7 +62,7 @@ export const AddContainer = styled.div`
   justify-content: end;
 `;
 
-export const FormContainer = styled.div`
+export const FormContainer = styled.form`
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 24px;

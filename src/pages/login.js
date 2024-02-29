@@ -43,8 +43,8 @@ const Login = () => {
 
       if (signInResponse && signInResponse.token) {
         const encryptedToken = CryptoJS.AES.encrypt(signInResponse.token, 'cookie-encrypted').toString();
-        await Cookies.set('authToken', encryptedToken, {expires: 1/24});
-        route.push("/allUser");
+        Cookies.set('authToken', encryptedToken, { expires: 1 / 24 });
+        route.push("/");
       }
 
     } catch (error) {
