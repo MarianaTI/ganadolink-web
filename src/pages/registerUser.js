@@ -39,7 +39,7 @@ const signUp = () => {
 
   const onSignUpSubmit = async (data) => {
     try {
-      const user = new User(null, data.name, data.rol, data.email, data.password); // Ajusta según los datos requeridos para el registro
+      const user = new User(null, data.name, data.rol, data.email, data.password); 
       const userRepo = new UserRepo();
       const signUpUseCase = new SignUpUserUseCase(userRepo);
       const signUpResponse = await signUpUseCase.run(user);

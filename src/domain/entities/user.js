@@ -5,7 +5,7 @@ class User {
         this.id_rol = id_rol;
         this.email = email;
         this.password = password;
-    }
+    } 
 }
 
 export default User; 

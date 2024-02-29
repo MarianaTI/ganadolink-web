@@ -10,20 +10,22 @@ import { Controller } from "react-hook-form";
 const CustomSelect = ({
   label,
   defaultValue,
+  onChange,
+  options, // Añadido para pasar las opciones dinámicamente
   fullWidth,
 }) => {
-  const [categories, setCategories] = useState([]);
-
   return (
     <div>
       <LabelStyled>{label}</LabelStyled>
       <SelectWrapper>
         <SelectStyled
+          defaultValue={defaultValue}
+          onChange={onChange}
           fullWidth={fullWidth}
         >
-          {/* <OptionStyled value="" disabled hidden>
-            Selecciona una categoria
-          </OptionStyled> */}
+          {options?.map((option) => (
+            <option key={option._id} value={option._id}>{option.name}</option>
+          ))}
         </SelectStyled>
       </SelectWrapper>
     </div>
