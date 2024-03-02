@@ -81,8 +81,8 @@ const Login = () => {
                 label="Contraseña"
                 name="password"
                 control={control}
-                type={isShowPassword ? "text" : "password"}
                 fullWidth
+                type={isShowPassword ? "text" : "password"}
                 icon={
                   isShowPassword ? (
                     <EyeIcon
