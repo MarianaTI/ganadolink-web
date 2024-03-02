@@ -3,7 +3,6 @@ import { useState, useEffect } from 'react';
 import { ButtonStyled } from '../components/CustomButton/index.style';
 import { Container, Form, Input, InputContainer, SearchIcon, Table, Th, Td, DownloadPdfButton, Title, Line, CancelButton, IconButton } from '../styles/catalogue.style';
 import { FaSearch, FaDownload, FaFilePdf, FaEye } from 'react-icons/fa';
-import VentaGanadoRepo from "@/infraestructure/implementation/httpRequest/axios/OrderRepo";
 import OrderRepo from '@/infraestructure/implementation/httpRequest/axios/OrderRepo';
 import GetAllOrderUseCase from '@/application/usecases/orderUseCase/GetAllOrderUseCase';
 
