@@ -1,77 +1,78 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { useForm } from 'react-hook-form';
-import { Container, Title, Form, Input, InputContainer, SearchIcon, Line, Table, Th, Td, EditButton, DeleteButton } from '../styles/users.style';
-import { FaEdit, FaTrash, FaSearch } from 'react-icons/fa';
+import React, { useEffect, useState } from "react";
+import GetAllUserUseCase from "@/application/usecases/userUseCase/GetAllUserCase";
+import UserRepo from "@/infraestructure/implementation/httpRequest/axios/UserRepo";
+import CustomButton from "@/components/CustomButton";
+import { useRouter } from "next/router";
+import { FaSearch, FaEdit, FaTrash } from 'react-icons/fa';
+import {
+  Container,
+  Title,
+  Form,
+  Input,
+  InputContainer,
+  SearchIcon,
+  Line,
+  Table,
+  Th,
+  Td,
+  EditButton,
+  DeleteButton,
+} from '../styles/users.style';
 
-const Users = () => {
-  // Estado para almacenar los usuarios
+const AllUser = () => {
+  const route = useRouter();
   const [users, setUsers] = useState([]);
-  
-  // Estado para almacenar los usuarios filtrados
   const [filteredUsers, setFilteredUsers] = useState([]);
-  
-  // Función para obtener el token de las cookies (simulada)
-  const getTokenCookies = () => {
-    return 'AQUÍ_DEBERÍAS_OBTENER_EL_TOKEN_DE_LAS_COOKIES';
+
+  const fetchUsers = async () => {
+    const userRepo = new UserRepo();
+    const getAllUserUseCase = new GetAllUserUseCase(userRepo);
+
+    try {
+      const userData = await getAllUserUseCase.run();
+      setUsers(userData.users);
+      setFilteredUsers(userData.users);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  // Función para obtener los usuarios de la API
-  const fetchUsers = async () => {
-    try {
-      const token = getTokenCookies();
-      const response = await axios.get('URL_DE_TU_API', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      setUsers(response.data);
-      setFilteredUsers(response.data); // Al inicio, los usuarios filtrados son todos los usuarios
-    } catch (error) {
-      console.error('Error fetching users:', error);
-    }
+  const handleSearch = (searchTerm) => {
+    const filtered = users.filter(user => 
+      user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      user.rol.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      user.email.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setFilteredUsers(filtered);
+  };
+
+  const handleEditUser = (userId) => {
+    console.log('Edit user with id:', userId);
+    // Agrega aquí la lógica para editar un usuario según el ID
+  };
+
+  const handleDeleteUser = (userId) => {
+    console.log('Delete user with id:', userId);
+    // Agrega aquí la lógica para eliminar un usuario según el ID
   };
 
   useEffect(() => {
     fetchUsers();
   }, []);
 
-  // Función para buscar usuarios
-  const handleSearch = (searchTerm) => {
-    const filtered = users.filter(user => 
-      user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      user.role.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      user.email.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-    setFilteredUsers(filtered);
-  };
-
-  const { register, handleSubmit } = useForm();
-
-  // Función para manejar la edición de un usuario
-  const handleEditUser = (userId) => {
-    // Lógica para editar un usuario
-    console.log('Edit user with id:', userId);
-  };
-
-  // Función para manejar la eliminación de un usuario
-  const handleDeleteUser = (userId) => {
-    // Lógica para eliminar un usuario
-    console.log('Delete user with id:', userId);
-  };
-
   return (
     <Container>
-      <Title style={{ marginLeft: '-1230px' }}>Usuarios Registrados</Title>
+      <Title style={{ marginLeft: '-1230px' }}>Usuarios</Title>
       <Line />
-      <Form onSubmit={handleSubmit(data => handleSearch(data.search))}>
+      {/* <Form onSubmit={handleSubmit(data => handleSearch(data.search))}>
         <InputContainer>
           <Input type="text" placeholder="Buscar..." {...register('search')} />
           <SearchIcon>
             <FaSearch style={{ color: '#888' }} />
           </SearchIcon>
         </InputContainer>
-      </Form>
+        <CustomButton onClick={() => route.push("/src/pages/registerUser")} buttonText={'Agregar Usuario'}/>
+      </Form> */}
       <Table>
         <thead>
           <tr>
@@ -86,7 +87,7 @@ const Users = () => {
           {filteredUsers.map(user => (
             <tr key={user.id}>
               <Td>{user.name}</Td>
-              <Td>{user.role}</Td>
+              <Td>{user.rol}</Td>
               <Td>{user.email}</Td>
               <Td>{user.password}</Td>
               <Td>
@@ -105,4 +106,4 @@ const Users = () => {
   );
 };
 
-export default Users;
+export default AllUser;
