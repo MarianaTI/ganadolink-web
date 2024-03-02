@@ -31,7 +31,6 @@ const signUp = () => {
     formState: { errors, isDirty },
   } = useForm({
     defaultValues: {
-      name:"",
       email: "",
       password: "",
     }, 
