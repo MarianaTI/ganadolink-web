@@ -81,8 +81,8 @@ const Login = () => {
                 label="Contraseña"
                 name="password"
                 control={control}
-                type={isShowPassword ? "text" : "password"}
                 fullWidth
+                type={isShowPassword ? "text" : "password"}
                 icon={
                   isShowPassword ? (
                     <EyeIcon
@@ -96,10 +96,6 @@ const Login = () => {
               />
               <CustomButton buttonText="Entrar" fullWidth type="submit"/>
             </div>
-            <span>
-              Aún no tienes cuenta?
-              <LinkStyled href="/register">Registrate</LinkStyled>
-            </span>
           </FormStyled>
         </GridForm>
         <GridImage>

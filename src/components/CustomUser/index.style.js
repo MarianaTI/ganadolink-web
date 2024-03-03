@@ -1,5 +1,10 @@
 import styled from '@emotion/styled';
-
+export const Container = styled.div`
+  position: relative;
+  @media (max-width: 740px) {
+    display: none;
+  }
+`;
 export const DropdownContainer = styled.div`
   display: ${(props) => (props.isOpen ? 'block' : 'none')};
   position: absolute;

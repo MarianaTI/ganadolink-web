@@ -1,19 +1,5 @@
 import styled from "@emotion/styled";
-
-export const NavbarContainer = styled.div`
-  display: flex;
-  height: 60px;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0px 48px;
-  background-color: #fff;
-`;
-
-export const ContainerTabs = styled.div`
-  display: flex;
-  gap: 20px;
-  align-items: center; /* Centrado vertical */
-`;
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export const TabStyled = styled.div`
   color: #888;
@@ -43,4 +29,71 @@ export const LogoStyled = styled.div`
   font-family: "Bitter", serif;
   font-weight: 600;
   color: #261704;
+`;
+
+export const Menu = styled.div`
+  display: none;
+  position: absolute;
+  top: 12px;
+  right: 8px;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 36px;
+  height: 32px;
+  @media (max-width: 740px) {
+    display: flex;
+  }
+`;
+
+export const IconMenu = styled(FontAwesomeIcon)`
+  cursor: pointer;
+  color: #261704;
+  font-size: 32px;
+`;
+
+export const NavStyled = styled.nav`
+  display: flex;
+  justify-content: space-between;
+  padding: 0px 32px;
+  align-items: center;
+  background-color: #fff;
+  height: 55px;
+  width: 100%;
+  @media (max-width: 740px) {
+    flex-direction: column;
+    align-items: start;
+    height: auto;
+    width: auto;
+  }
+  & ul {
+    display: flex;
+    gap: 32px;
+    @media (max-width: 740px) {
+      display: none;
+      flex-direction: column;
+      margin-bottom: 8px;
+    }
+    & li {
+      list-style: none;
+      @media (max-width: 740px) {
+        width: 100%;
+        text-align: start;
+      }
+    }
+    .closeSession {
+      display: none;
+      color: #888;
+      cursor: pointer;
+      position: relative;
+      &:hover {
+        color: #493829;
+      }
+      @media (max-width: 740px) {
+        display: flex;
+      }
+    }
+  }
+  .open {
+    display: flex;
+  }
 `;
