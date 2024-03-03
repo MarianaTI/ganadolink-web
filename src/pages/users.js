@@ -17,6 +17,9 @@ import {
   Td,
   EditButton,
   DeleteButton,
+  TableStyled,
+  TheadStyled,
+  TrStyled,
 } from '../styles/users.style';
 
 const AllUser = () => {
@@ -62,7 +65,7 @@ const AllUser = () => {
 
   return (
     <Container>
-      <Title style={{ marginLeft: '-1230px' }}>Usuarios</Title>
+      <Title>Usuarios</Title>
       <Line />
       {/* <Form onSubmit={handleSubmit(data => handleSearch(data.search))}>
         <InputContainer>
@@ -73,35 +76,35 @@ const AllUser = () => {
         </InputContainer>
         <CustomButton onClick={() => route.push("/src/pages/registerUser")} buttonText={'Agregar Usuario'}/>
       </Form> */}
-      <Table>
-        <thead>
-          <tr>
-            <Th>Nombre</Th>
-            <Th>Rol</Th>
-            <Th>Email</Th>
-            <Th>Contraseña</Th>
-            <Th>Acciones</Th>
-          </tr>
-        </thead>
+      <TableStyled>
+        <TheadStyled>
+          <TrStyled>
+            <th>Nombre</th>
+            <th>Rol</th>
+            <th>Email</th>
+            <th>Contraseña</th>
+            <th>Acciones</th>
+          </TrStyled>
+        </TheadStyled>
         <tbody>
           {filteredUsers.map(user => (
-            <tr key={user.id}>
-              <Td>{user.name}</Td>
-              <Td>{user.rol}</Td>
-              <Td>{user.email}</Td>
-              <Td>{user.password}</Td>
-              <Td>
+            <TrStyled key={user.id}>
+              <td>{user.name}</td>
+              <td>{user.rol}</td>
+              <td>{user.email}</td>
+              <td>{user.password}</td>
+              <td>
                 <EditButton onClick={() => handleEditUser(user.id)}>
-                  <FaEdit />
+                  <FaEdit style={{fontSize: "24px"}} />
                 </EditButton>
                 <DeleteButton onClick={() => handleDeleteUser(user.id)}>
-                  <FaTrash />
+                  <FaTrash style={{fontSize: "22px"}}/>
                 </DeleteButton>
-              </Td>
-            </tr>
+              </td>
+            </TrStyled>
           ))}
         </tbody>
-      </Table>
+      </TableStyled>
     </Container>
   );
 };
