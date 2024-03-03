@@ -75,12 +75,14 @@ const Login = () => {
                 label="Correo electronico"
                 name="email"
                 control={control}
+                fullWidth
               />
               <CustomInput
                 label="Contraseña"
                 name="password"
                 control={control}
                 type={isShowPassword ? "text" : "password"}
+                fullWidth
                 icon={
                   isShowPassword ? (
                     <EyeIcon

@@ -42,6 +42,19 @@ class UserRepo extends IUserRepo {
       throw error;
     }
   }
+
+  async signUp(user){
+    try {
+      const response = await axios.post(this.urlSignUp, user,{
+        headers: {
+          "Content-Type": "application/json"
+        },
+      });
+      return response.data;
+    } catch (error) {
+      console.log("Error signUp:", error.message);
+    }
+  }
 }
 
 export default UserRepo;

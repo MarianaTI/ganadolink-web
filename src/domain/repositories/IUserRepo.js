@@ -1,5 +1,6 @@
 class IUserRepo{
     signIn(user){throw "not implemented";}
+    signUp(user){throw "not implemented";}
     getAll(){throw "not implemented";}
 }
-export default IUserRepo;
+export default IUserRepo; 

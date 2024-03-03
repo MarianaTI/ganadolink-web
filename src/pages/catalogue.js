@@ -1,63 +1,44 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React from 'react';
+import { useState, useEffect } from 'react';
 import { ButtonStyled } from '../components/CustomButton/index.style';
-import { Container, Form, Input, InputContainer, SearchIcon, Table, Th, Td, DownloadButton, DownloadPdfButton, Title, Line, CancelButton } from '../styles/catalogue.style';
-import { FaSearch, FaDownload, FaFilePdf } from 'react-icons/fa';
-import { PDFDownloadLink } from '@react-pdf/renderer';
-import CatalogPDF from '../components/CustomPDF/index';
+import { Container, Form, Input, InputContainer, SearchIcon, Table, Th, Td, DownloadPdfButton, Title, Line, CancelButton, IconButton } from '../styles/catalogue.style';
+import { FaSearch, FaDownload, FaFilePdf, FaEye } from 'react-icons/fa';
+import OrderRepo from '@/infraestructure/implementation/httpRequest/axios/OrderRepo';
+import GetAllOrderUseCase from '@/application/usecases/orderUseCase/GetAllOrderUseCase';
 
 const CatalogPage = () => {
-  const [data, setData] = useState([]);
-  const [filteredData, setFilteredData] = useState([]);
-  const [selectedItem, setSelectedItem] = useState(null);
+
+  const [orders, setOrders] = useState([]);
+
+    const fetchOrder = async () => {
+      const orderRepo = new OrderRepo();
+      const getAllOrderUseCase = new GetAllOrderUseCase(orderRepo);
+
+      try {
+        const orderData = await getAllOrderUseCase.run();
+        console.log(orderData);
+        setOrders(orderData.orders);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+  // Función para manejar el envío del formulario (aún no implementada)
+  const onSubmit = (formData) => {
+    console.log(formData);
+  };
 
   useEffect(() => {
-    fetchData();
+    fetchOrder();
   }, []);
-
-  const getTokenCookies = () => {
-    return 'AQUÍ_DEBERÍAS_OBTENER_EL_TOKEN_DE_LAS_COOKIES';
-  };
-
-  const fetchData = async () => {
-    try {
-      const token = getTokenCookies();
-      const response = await axios.get('URL_DE_TU_API', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      setData(response.data);
-      setFilteredData(response.data);
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
-  };
-
-  const handleSearchChange = (event) => {
-    const searchTerm = event.target.value.toLowerCase();
-    const filtered = data.filter(item =>
-      item.numero_animal.toLowerCase().includes(searchTerm) ||
-      item.patente_factura.toLowerCase().includes(searchTerm) ||
-      item.sexo.toLowerCase().includes(searchTerm) ||
-      item.color.toLowerCase().includes(searchTerm) ||
-      item.raza.toLowerCase().includes(searchTerm) ||
-      item.arete_siniiga.toLowerCase().includes(searchTerm)
-    );
-    setFilteredData(filtered);
-  };
-
-  const handleDownloadPDF = (item) => {
-    setSelectedItem(item);
-  };
 
   return (
     <Container>
       <Title style={{ marginLeft: '-1368px' }}>Catálogo</Title>
       <Line />
-      <Form>
+      <Form onSubmit={onSubmit}>
         <InputContainer>
-          <Input type="text" placeholder="Buscar..." onChange={handleSearchChange} />
+          <Input type="text" placeholder="Buscar..." />
           <SearchIcon>
             <FaSearch style={{ color: '#888' }} />
           </SearchIcon>
@@ -73,30 +54,34 @@ const CatalogPage = () => {
           <tr>
             <Th>Número de animales</Th>
             <Th>Patente o factura</Th>
-            <Th>Sexo</Th>
-            <Th>Color</Th>
-            <Th>Raza</Th>
+            <Th>Nombre del vendedor</Th>
+            <Th>Nombre del comprador</Th>
+            <Th>Tipo de Raza</Th>
             <Th>Arete siniiga</Th>
-            <Th>Figura de herraje</Th>
+            <Th>Modelo del vehiculo</Th>
             <Th>Acciones</Th>
           </tr>
         </thead>
         <tbody>
-          {filteredData.map((item, index) => (
+          {orders.map((item, index) => (
             <tr key={index}>
-              <Td>{item.numero_animal}</Td>
-              <Td>{item.patente_factura}</Td>
-              <Td>{item.sexo}</Td>
-              <Td>{item.color}</Td>
-              <Td>{item.raza}</Td>
-              <Td>{item.arete_siniiga}</Td>
-              <Td>
+              <Td>{item._id}</Td>
+              <Td>{item.vendedor.nombre}</Td>
+              <Td>{item.vendedor.nombre}</Td>
+              <Td>{item.comprador.nombre}</Td>
+              <Td>{item.id_especie.name}</Td>
+              <Td>{item.ganado[0].siniiga}</Td>
+              <Td>{item.vehiculo.marca}</Td> 
+              {/* <Td>
                 <img src={`/img/${item.figura_herraje}.jpg`} alt={item.figura_herraje} style={{ width: '50px', height: 'auto' }} />
-              </Td>
+              </Td> */}
               <Td>
-                <DownloadButton onClick={() => handleDownloadPDF(item)}>
+                <IconButton>
                   <FaDownload />
-                </DownloadButton>
+                </IconButton>
+                <IconButton>
+                  <FaEye />
+                </IconButton>
               </Td>
             </tr>
           ))}
@@ -107,12 +92,6 @@ const CatalogPage = () => {
         <ButtonStyled style={{ marginRight: '25px' }}>Continuar</ButtonStyled>
         <CancelButton>Cancelar</CancelButton>
       </div>
-
-      {selectedItem && (
-        <PDFDownloadLink document={<CatalogPDF item={selectedItem} />} fileName="data.pdf">
-          {({ blob, url, loading, error }) => (loading ? 'Generando PDF...' : 'Descargar PDF')}
-        </PDFDownloadLink>
-      )}
     </Container>
   );
 };

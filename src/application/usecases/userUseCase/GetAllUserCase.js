@@ -12,5 +12,5 @@ class GetAllUserUseCase{
         return getAllUser;
     }
 }
-
+ 
 export default GetAllUserUseCase;
