@@ -8,8 +8,21 @@ const Container = styled.div`
   padding: 20px;
 `;
 
-const Title = styled.h1`
+export const Title = styled.h1`
   font-size: 24px;
+  font-weight: 500;
+  padding: 0px 34px;
+  color: #454545;
+  text-align: start;
+  width: 100%;
+`;
+
+export const Line = styled.hr`
+  border: 0;
+  border-top: 1px solid #ccc;
+  width: 100%;
+  margin-top: -8px;
+  margin-bottom: 32px;
 `;
 
 const Form = styled.form`
@@ -21,51 +34,57 @@ const Form = styled.form`
   margin-bottom: 20px;
 `;
 
-const InputContainer = styled.div`
+export const InputContainer = styled.div`
   position: relative;
   width: 30%;
 `;
 
-const Input = styled.input`
-  padding: 10px;
+export const Input = styled.input`
+  padding: 8px 16px;
   border: 1px solid #ccc;
+  font-family: Poppins;
   border-radius: 5px;
   font-size: 16px;
   width: calc(100% - 30px);
+  &:focus {
+    outline: none;
+    border-color: #f7ae6d;
+    background-color: #fff;
+    box-shadow: 0 0 0 4px #fdefe2;
+  }
 `;
 
-const SearchIcon = styled.div`
+export const SearchIcon = styled.div`
   position: absolute;
   top: 55%;
   right: 40px;
   transform: translateY(-50%);
 `;
 
-const Line = styled.hr`
-  border: 0;
-  border-top: 2px solid #000;
-  width: 100%;
-  margin-top: -18px;
-  margin-bottom: 55px;
-`;
 
-const Table = styled.table`
+export const TableStyled = styled.table`
   width: 100%;
+  text-align: center;
+  margin: 16px 0;
   border-collapse: collapse;
 `;
 
-const Th = styled.th`
-  padding: 10px;
-  border-top: 2px solid #555; /* Borde superior en gris elegante fuerte */
-  border-bottom: 2px solid #555; /* Borde inferior en gris elegante fuerte */
-  text-align: left;
-  background-color: #f2f2f2; /* Color de fondo gris */
-  color: #333; /* Color del texto */
+export const TheadStyled = styled.thead`
+  background: #fcdfc5;
 `;
 
-const Td = styled.td`
-  padding: 10px;
-  border: none; /* Sin bordes en las celdas de la tabla */
+export const TrStyled = styled.tr`
+  & th {
+    color: #2a2a2a;
+    font-family: Poppins;
+    font-size: 16px;
+    font-weight: 500;
+    padding: 8px;
+  }
+  & td {
+    padding: 8px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+  }
 `;
 
 const EditButton = styled.button`
@@ -91,4 +110,12 @@ const DeleteButton = styled.button`
   }
 `;
 
-export { Container, Form, Input, InputContainer, SearchIcon, Title, Line, Table, Th, Td, EditButton, DeleteButton };
+export const TdContainer = styled.td`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+`;
+
+
+export { Container, Form, EditButton, DeleteButton };

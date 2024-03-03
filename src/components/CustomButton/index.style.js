@@ -41,8 +41,20 @@ export const ButtonStyled = styled.button`
       border: 2px solid #bababa;
       background-color: transparent;
       color: #bababa;
-      &:hover {
-        background-color: white;
+      &::before {
+        content: "";
+        background-color: #f6f6f6;
+        width: 0;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: -1;
+        transition: width 700ms ease-in-out;
+        display: inline-block;
+      }
+      &:hover::before {
+        width: 100%;
       }
     `}
   ${(props) =>

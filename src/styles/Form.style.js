@@ -80,7 +80,7 @@ export const ImageContainer = styled.div`
     font-weight: 500;
   }
 `;
-
+//
 export const TableStyled = styled.table`
   width: 100%;
   text-align: center;
