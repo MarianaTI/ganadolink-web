@@ -1,7 +1,5 @@
 import CustomButton from "@/components/CustomButton";
-import CustomImage from "@/components/CustomImage";
 import CustomInput from "@/components/CustomInput";
-import CustomCheckboxInput from "@/components/CustomRadioInput";
 import {
   AccionButton,
   AddContainer,
@@ -9,19 +7,16 @@ import {
   CheckboxContainer,
   CheckboxContainerBoolean,
   Container,
-  FlexForm,
+  DetailsGrid,
   FormContainer,
+  FormContainerDatosGenerales,
   FormContent,
-  FormDetails,
-  FormName,
-  ImageContainer,
   MarkIcon,
   PenIcon,
   Tab,
   TabContent,
   TableStyled,
   TabsContainer,
-  TdContainer,
   TheadStyled,
   TrStyled,
 } from "@/styles/Form.style";
@@ -37,15 +32,22 @@ import MotivoRepo from "@/infraestructure/implementation/httpRequest/axios/Motiv
 import GetAllMotivoRepo from "@/application/usecases/motivoUseCase/GetAllMotivoRepo";
 import RazaRepo from "@/infraestructure/implementation/httpRequest/axios/RazaRepo";
 import GetAllRazaCase from "@/application/usecases/razaUseCase/GetAllRazaCase";
+import Image from "next/image";
+import CustomCheckboxInput from "@/components/CustomRadioInput";
+import CustomImage from "@/components/CustomImage";
 
 const Form = () => {
-  const [files, setFiles] = useState({});
-  const [selectedBoolean, setSelectedBoolean] = useState("");
   const [registerAnimals, setRegisterAnimals] = useState([]);
+  const [registerGenerals, setRegisterGeneral] = useState([]);
+  const [registerVehicule, setRegisterVehicule] = useState([]);
   const [activeTab, setActiveTab] = useState(0);
   const [especies, setEspecie] = useState([]);
   const [motivos, setMotivo] = useState([]);
   const [razas, setRaza] = useState([]);
+  const [imageUrl, setImageUrl] = useState("");
+  const [selectedEspecie, setSelectedEspecie] = useState("");
+  const [selectedMotivo, setSelectedMotivo] = useState("");
+  const [selectedBoolean, setSelectedBoolean] = useState("");
 
   const fetchEspecies = async () => {
     const especieRepo = new EspecieRepo();
@@ -80,35 +82,135 @@ const Form = () => {
     }
   };
 
-  const genderOptions = [
-    { _id: 'macho', name: 'macho' },
-    { _id: 'hembra', name: 'hembra' }
-  ];
-
-  const handleTabClick = (tabIndex) => {
-    setActiveTab(tabIndex);
+  const onSubmitDatosGenerales = (data) => {
+    const datosGenerales = {
+      id_especie: selectedEspecie,
+      id_motivo: selectedMotivo,
+      id_user: "65ac5d280c369418e04c7f9a",
+      Vendedor: {
+        nombre: data.sellName,
+        domicilio: data.sellAddress,
+        municipio: data.sellState,
+      },
+      Comprador: {
+        nombre: data.buyerName,
+        domicilio: data.buyerAddress,
+        municipio: data.buyerState,
+        predo: data.buyerRanch,
+      },
+    };
+    console.log("Datos generales:", datosGenerales);
+    setRegisterGeneral([...registerGenerals, datosGenerales]);
+    setActiveTab(1);
   };
 
+  ///! funcion que recibe el objeto para pintar la tabla
   const onSubmitAnimal = (data) => {
-    setRegisterAnimals((currentRegister) => [...currentRegister, data]);
+    const completeData = { ...data, animalImage: imageUrl };
+    setRegisterAnimals((currentRegister) => [...currentRegister, completeData]);
+    setImageUrl("");
+    reset({
+      animalPatente: '',
+      animalGender: '',
+      animalRaza: '',
+      animalColor: '',
+      animalEarring: '',
+      animalImage: '',
+    })
   };
+
+  const handleDeleteAnimal = (index) => {
+    setRegisterAnimals((currentRegister) => {
+      const deleteRegister = [...currentRegister];
+      deleteRegister.splice(index, 1);
+      return deleteRegister;
+    });
+  };
+
+  ///! Convertir los objetos en una lista de objetos
+  const handleClickContinuar = () => {
+    const ganadoData = {
+      ganado: registerAnimals.map((registro) => ({
+        patente: registro.animalPatente,
+        sexo: registro.animalGender,
+        id_raza: registro.animalRaza,
+        color: registro.animalColor,
+        siniiga: registro.animalEarring,
+        figura_herraje: registro.animalImage || "",
+      })),
+    };
+    const datosFinales = {
+      ...ganadoData,
+    };
+
+    console.log("Datos finales para procesar:", datosFinales);
+    setActiveTab(2);
+  };
+
+  const onSubmitVehicule = (data) => {
+    const dataVehicule = {
+      tipo: data.type,
+      marca: data.brand,
+      modelo: data.model,
+      placa: data.plate,
+      color: data.trailerColor,
+      nombre_operador_vehiculo: data.vehicleName,
+    };
+    setRegisterVehicule([...registerVehicule, dataVehicule]);
+
+    ///! Mapea todos los objetos para crear la estructura
+    handleFinalize();
+  };
+
+  const handleFinalize = () => {
+    const datosGenerales = registerGenerals[registerGenerals.length - 1];
+    const datosVehiculo = registerVehicule[registerVehicule.length - 1];
+
+    const order = {
+      ...datosGenerales,
+      ganado: registerAnimals,
+      vehiculo: datosVehiculo,
+    };
+
+    ///! consumir el create order
+
+    console.log("Orden final para procesar:", order);
+  };
+
+  const {
+    control: controlGeneral,
+    handleSubmit: handleSubmitGeneral,
+    formState: { errors: errorsGeneral },
+  } = useForm({});
 
   const {
     control,
     handleSubmit,
-    trigger,
+    reset,
     formState: { errors },
   } = useForm({});
 
-  const handleSelectionChange = (selectedIds) => {
-    console.log(selectedIds);
+  const {
+    control: controlVehic,
+    handleSubmit: handleSubmitVehic,
+    formState: { errors: errorsVehic },
+  } = useForm({});
+
+  const handleEspecieChange = (id) => {
+    setSelectedEspecie(id);
   };
 
-  const handleChange = (e) => {
-    console.log(e.target.value);
+  const handleMotivoChange = (id) => {
+    setSelectedMotivo(id);
   };
 
-  const handleBooleanChange = (booleanName) => setSelectedBoolean(booleanName);
+  const handleOptionsChange = (id) => {
+    setSelectedBoolean(id);
+  };
+
+  const handleTabClick = (tabIndex) => {
+    setActiveTab(tabIndex);
+  };
 
   useEffect(() => {
     fetchEspecies();
@@ -129,7 +231,88 @@ const Form = () => {
           DATOS DEL VEHÍCULO
         </Tab>
       </TabsContainer>
-      <TabContent active={activeTab === 0}></TabContent>
+      {/* Tab Datos Generales */}
+      <TabContent active={activeTab === 0}>
+        <FormContainerDatosGenerales
+          onSubmit={handleSubmitGeneral(onSubmitDatosGenerales)}
+        >
+          <div>
+            <span>ESPECIE A MOVILIZAR</span>
+            <CheckboxContainer>
+              <CustomCheckboxInput
+                data={especies}
+                name="id_especie"
+                onSelectionChange={handleEspecieChange}
+              />
+            </CheckboxContainer>
+          </div>
+          <FormContent>
+            <div className="formSection">
+              <span>DATOS DEL REMITENTE (VENDEDOR)</span>
+              <CustomInput
+                label="Nombre"
+                name="sellName"
+                control={controlGeneral}
+                customFormDesign
+              />
+              <CustomInput
+                label="Domicilio"
+                name="sellAddress"
+                control={controlGeneral}
+                customFormDesign
+              />
+              <CustomInput
+                label="Municipio"
+                name="sellState"
+                control={controlGeneral}
+                customFormDesign
+              />
+            </div>
+            <div className="formSection">
+              <span>DATOS DEL DESTINATARIO (COMPRADOR)</span>
+              <CustomInput
+                label="Nombre"
+                name="buyerName"
+                control={controlGeneral}
+                customFormDesign
+              />
+              <CustomInput
+                label="Domicilio"
+                name="buyerAddress"
+                control={controlGeneral}
+                customFormDesign
+              />
+              <CustomInput
+                label="Municipio"
+                name="buyerState"
+                control={controlGeneral}
+                customFormDesign
+              />
+              <CustomInput
+                label="Rancho o predo"
+                name="buyerRanch"
+                control={controlGeneral}
+                customFormDesign
+              />
+            </div>
+          </FormContent>
+          <div>
+            <span>MOTIVO DE LA MOVILIZACIÓN</span>
+            <CheckboxContainer>
+              <CustomCheckboxInput
+                data={motivos}
+                name="id_motivo"
+                onSelectionChange={handleMotivoChange}
+              />
+            </CheckboxContainer>
+          </div>
+          <ButtonsContainer>
+            <CustomButton customDesign buttonText="Cancelar" />
+            <CustomButton buttonText="Continuar" type="submit" />
+          </ButtonsContainer>
+        </FormContainerDatosGenerales>
+      </TabContent>
+      {/* Tab Datos del ganado */}
       <TabContent active={activeTab === 1}>
         <AddContainer>
           <CustomButton
@@ -149,14 +332,17 @@ const Form = () => {
             label="Sexo"
             name="animalGender"
             control={control}
-            options={genderOptions}
+            data={[
+              { value: "macho", label: "Macho" },
+              { value: "hembra", label: "Hembra" },
+            ]}
             fullWidth
           />
           <CustomSelect
-            label="Seleccionar raza"
+            label="Raza"
             name="animalRaza"
             control={control}
-            options={razas}
+            data={razas}
             fullWidth
           />
           <CustomInput
@@ -170,6 +356,17 @@ const Form = () => {
             name="animalEarring"
             control={control}
             fullWidth
+          />
+          <CustomImage
+            name="animalImage"
+            onChange={(e) => {
+              const file = e.target.files[0];
+              if (file) {
+                const imageUrl = URL.createObjectURL(file);
+                console.log("Imagen seleccionada:", file, imageUrl);
+                setImageUrl(imageUrl);
+              }
+            }}
           />
         </FormContainer>
         <div>
@@ -194,24 +391,107 @@ const Form = () => {
                   <td>{registro.animalGender}</td>
                   <td>{registro.animalColor}</td>
                   <td>{registro.animalRaza}</td>
-                  <td>{registro.animalRaza}</td>
                   <td>{registro.animalEarring}</td>
-                  <TdContainer>
-                    <AccionButton>
+                  <td>
+                    {registro.animalImage && (
+                      <Image
+                        src={registro.animalImage}
+                        alt="Animal"
+                        width={100}
+                        height={100}
+                      />
+                    )}
+                  </td>
+                  <td>
+                    <AccionButton onClick={() => handleDeleteAnimal(index)}>
                       <MarkIcon icon={faXmark} />
                     </AccionButton>
-                    <AccionButton>
+                    {/* <AccionButton>
                       <PenIcon icon={faPen} />
-                    </AccionButton>
-                  </TdContainer>
-                  <TdContainer></TdContainer>
+                    </AccionButton> */}
+                  </td>
                 </TrStyled>
               ))}
             </tbody>
           </TableStyled>
         </div>
+        <ButtonsContainer>
+          <CustomButton customDesign buttonText="Cancelar" />
+          <CustomButton
+            buttonText="Continuar"
+            onClick={handleClickContinuar}
+            type="button"
+          />
+        </ButtonsContainer>
       </TabContent>
-      <TabContent active={activeTab === 2}></TabContent>
+      {/* Tab Datos del vehiculo */}
+      <TabContent active={activeTab === 2}>
+        <FormContainerDatosGenerales
+          onSubmit={handleSubmitVehic(onSubmitVehicule)}
+        >
+          <span>DETALLES</span>
+          <DetailsGrid>
+            <CustomInput
+              label="Tipo"
+              name="type"
+              control={controlVehic}
+              fullWidth
+            />
+            <CustomInput
+              label="Marca"
+              name="brand"
+              control={controlVehic}
+              fullWidth
+            />
+            <CustomInput
+              label="Modelo"
+              name="model"
+              control={controlVehic}
+              fullWidth
+            />
+            <CustomInput
+              label="Placa"
+              name="plate"
+              control={controlVehic}
+              fullWidth
+            />
+            <div className="fullWidth">
+              <span>Remolque</span>
+              <CheckboxContainerBoolean>
+                <CustomCheckboxInput
+                  label="Opciones"
+                  name="remolque"
+                  data={[
+                    { value: "si", label: "Si" },
+                    { value: "no", label: "No" },
+                  ]}
+                  control={controlVehic}
+                  onSelectionChange={handleOptionsChange}
+                  fullWidth
+                />
+              </CheckboxContainerBoolean>
+            </div>
+            <CustomInput
+              label="Color"
+              name="trailerColor"
+              control={controlVehic}
+              className="halfWidth"
+              fullWidth
+            />
+            <CustomInput
+              label="Nombre del operador del vehiculo"
+              name="vehicleName"
+              control={controlVehic}
+              className="halfWidth"
+              fullWidth
+            />
+          </DetailsGrid>
+          <ButtonsContainer>
+            <CustomButton customDesign buttonText="Cancelar" />
+            <CustomButton buttonText="Continuar" type="submit" />
+          </ButtonsContainer>
+        </FormContainerDatosGenerales>
+      </TabContent>
     </Container>
   );
 };
