@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from "react";
-import { DropdownContainer, Option } from "./index.style";
+import { Container, DropdownContainer, Option } from "./index.style";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
 import { User } from "react-feather";
@@ -40,7 +40,7 @@ const CustomUser = ({ isOpen, toggleDropdown, handleOptionClick }) => {
   };
 
   return (
-    <div>
+    <Container>
       <UserIcon onClick={handleUserIconClick}>
         <User size={24} />
       </UserIcon>
@@ -52,7 +52,7 @@ const CustomUser = ({ isOpen, toggleDropdown, handleOptionClick }) => {
           </Option>
         </DropdownContainer>
       )}
-    </div>
+    </Container>
   );
 };
 

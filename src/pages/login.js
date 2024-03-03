@@ -96,10 +96,6 @@ const Login = () => {
               />
               <CustomButton buttonText="Entrar" fullWidth type="submit"/>
             </div>
-            <span>
-              Aún no tienes cuenta?
-              <LinkStyled href="/register">Registrate</LinkStyled>
-            </span>
           </FormStyled>
         </GridForm>
         <GridImage>
