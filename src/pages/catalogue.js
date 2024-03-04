@@ -1,28 +1,38 @@
-import React from 'react';
-import { useState, useEffect } from 'react';
-import { ButtonStyled } from '../components/CustomButton/index.style';
-import { Container, Form, Input, InputContainer, SearchIcon, Table, Th, Td, DownloadPdfButton, Title, Line, CancelButton, IconButton } from '../styles/catalogue.style';
-import { FaSearch, FaDownload, FaFilePdf, FaEye } from 'react-icons/fa';
-import VentaGanadoRepo from "@/infraestructure/implementation/httpRequest/axios/OrderRepo";
-import OrderRepo from '@/infraestructure/implementation/httpRequest/axios/OrderRepo';
-import GetAllOrderUseCase from '@/application/usecases/orderUseCase/GetAllOrderUseCase';
+import React from "react";
+import { useState, useEffect } from "react";
+import {
+  Container,
+  Form,
+  Input,
+  InputContainer,
+  SearchIcon,
+  DownloadPdfButton,
+  Title,
+  Line,
+  IconButton,
+  TableStyled,
+  TheadStyled,
+  TrStyled,
+} from "../styles/catalogue.style";
+import { FaSearch, FaDownload, FaFilePdf, FaEye } from "react-icons/fa";
+import OrderRepo from "@/infraestructure/implementation/httpRequest/axios/OrderRepo";
+import GetAllOrderUseCase from "@/application/usecases/orderUseCase/GetAllOrderUseCase";
 
 const CatalogPage = () => {
-
   const [orders, setOrders] = useState([]);
 
-    const fetchOrder = async () => {
-      const orderRepo = new OrderRepo();
-      const getAllOrderUseCase = new GetAllOrderUseCase(orderRepo);
+  const fetchOrder = async () => {
+    const orderRepo = new OrderRepo();
+    const getAllOrderUseCase = new GetAllOrderUseCase(orderRepo);
 
-      try {
-        const orderData = await getAllOrderUseCase.run();
-        console.log(orderData);
-        setOrders(orderData.orders);
-      } catch (error) {
-        console.log(error);
-      }
+    try {
+      const orderData = await getAllOrderUseCase.run();
+      console.log(orderData);
+      setOrders(orderData.orders);
+    } catch (error) {
+      console.log(error);
     }
+  };
 
   // Función para manejar el envío del formulario (aún no implementada)
   const onSubmit = (formData) => {
@@ -35,64 +45,58 @@ const CatalogPage = () => {
 
   return (
     <Container>
-      <Title style={{ marginLeft: '-1368px' }}>Catálogo</Title>
+      <Title>Catálogo</Title>
       <Line />
       <Form onSubmit={onSubmit}>
         <InputContainer>
           <Input type="text" placeholder="Buscar..." />
           <SearchIcon>
-            <FaSearch style={{ color: '#888' }} />
+            <FaSearch style={{ color: "#888" }} />
           </SearchIcon>
         </InputContainer>
         <DownloadPdfButton>
           Descargar PDF
-          <FaFilePdf style={{ marginLeft: '5px' }} />
+          <FaFilePdf style={{ marginLeft: "5px" }} />
         </DownloadPdfButton>
       </Form>
-
-      <Table>
-        <thead>
-          <tr>
-            <Th>Número de animales</Th>
-            <Th>Patente o factura</Th>
-            <Th>Nombre del vendedor</Th>
-            <Th>Nombre del comprador</Th>
-            <Th>Tipo de Raza</Th>
-            <Th>Arete siniiga</Th>
-            <Th>Modelo del vehiculo</Th>
-            <Th>Acciones</Th>
-          </tr>
-        </thead>
+      <TableStyled>
+        <TheadStyled>
+          <TrStyled>
+            <th>Número de animales</th>
+            <th>Patente o factura</th>
+            <th>Nombre del vendedor</th>
+            <th>Nombre del comprador</th>
+            <th>Tipo de Raza</th>
+            <th>Arete siniiga</th>
+            <th>Modelo del vehiculo</th>
+            <th>Acciones</th>
+          </TrStyled>
+        </TheadStyled>
         <tbody>
           {orders.map((item, index) => (
-            <tr key={index}>
-              <Td>{item._id}</Td>
-              <Td>{item.vendedor.nombre}</Td>
-              <Td>{item.vendedor.nombre}</Td>
-              <Td>{item.comprador.nombre}</Td>
-              <Td>{item.id_especie.name}</Td>
-              <Td>{item.ganado[0].siniiga}</Td>
-              <Td>{item.vehiculo.marca}</Td> 
-              {/* <Td>
+            <TrStyled key={index}>
+              <td>{item._id}</td>
+              <td>{item.vendedor.nombre}</td>
+              <td>{item.vendedor.nombre}</td>
+              <td>{item.comprador.nombre}</td>
+              <td>{item.id_especie.name}</td>
+              <td>{item.ganado[0].siniiga}</td>
+              <td>{item.vehiculo.marca}</td>
+              {/* <td>
                 <img src={`/img/${item.figura_herraje}.jpg`} alt={item.figura_herraje} style={{ width: '50px', height: 'auto' }} />
-              </Td> */}
-              <Td>
+              </td> */}
+              <td>
                 <IconButton>
                   <FaDownload />
                 </IconButton>
                 <IconButton>
                   <FaEye />
                 </IconButton>
-              </Td>
-            </tr>
+              </td>
+            </TrStyled>
           ))}
         </tbody>
-      </Table>
-
-      <div style={{ display: 'flex', justifyContent: 'center', marginTop: '275px' }}>
-        <ButtonStyled style={{ marginRight: '25px' }}>Continuar</ButtonStyled>
-        <CancelButton>Cancelar</CancelButton>
-      </div>
+      </TableStyled>
     </Container>
   );
 };
