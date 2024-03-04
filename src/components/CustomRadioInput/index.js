@@ -1,31 +1,33 @@
 import React, { useState } from "react";
 import { CheckBoxInputStyled, LabelStyled } from "./index.style";
 
-const CustomCheckboxInput = ({ data, onSelectionChange }) => {
+const CustomCheckboxInput = ({ data, onSelectionChange, name }) => {
   const [selectedId, setSelectedId] = useState(null);
 
-  const handleCheckboxChange = (id) => {
-   
-    const newSelectedId = selectedId === id ? null : id;
+  const normalizedData = data.map((item) => ({
+    id: item._id || item.value,
+    label: item.name || item.label,
+  }));
 
+  const handleCheckboxChange = (id) => {
+    const newSelectedId = selectedId === id ? null : id;
     setSelectedId(newSelectedId);
-    // Llama a onSelectionChange con el nuevo id seleccionado o null si se deseleccionó
     onSelectionChange(newSelectedId);
   };
 
   return (
     <>
-      {data?.length > 0 ? (
-        data.map((item) => (
-          <div key={item._id}>
+      {normalizedData?.length > 0 ? (
+        normalizedData.map((item) => (
+          <div key={item.id}>
             <CheckBoxInputStyled
               type="checkbox"
-              id={item._id}
-              // Marca el checkbox como checked si el id actual es el seleccionado
-              checked={selectedId === item._id}
-              onChange={() => handleCheckboxChange(item._id)}
+              id={item.id}
+              name={name}
+              checked={selectedId === item.id}
+              onChange={() => handleCheckboxChange(item.id)}
             />
-            <label htmlFor={item._id}>{item.name}</label>
+            <label htmlFor={item.id}>{item.label}</label>
           </div>
         ))
       ) : (

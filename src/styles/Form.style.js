@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-export const Container = styled.form`
+export const Container = styled.div`
   margin: 40px;
 `;
 
@@ -30,16 +30,29 @@ export const TabContent = styled.div`
   display: ${({ active }) => (active ? "block" : "none")};
 `;
 
-export const FlexForm = styled.div`
+export const FormContainer = styled.form`
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 72px;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 24px;
+`;
+
+export const FormContainerDatosGenerales = styled.form`
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 `;
 
 export const FormContent = styled.div`
-  display: flex;
-  flex-direction: column;
-  & span {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+
+  .formSection {
+    display: flex;
+    flex-direction: column;
+  }
+
+  & > div > span {
     padding: 16px 0px 16px 0px;
   }
 `;
@@ -62,24 +75,21 @@ export const AddContainer = styled.div`
   justify-content: end;
 `;
 
-export const FormContainer = styled.div`
+export const DetailsGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 24px;
-`;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: minmax(min-content, max-content); 
+  gap: 16px;
+  align-items: center;
 
-export const ImageContainer = styled.div`
-  margin: 16px 0px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  & span {
-    color: #2a2a2a;
-    font-family: Poppins;
-    font-size: 16px;
-    font-weight: 500;
+  .fullWidth {
+    grid-column: 1 / -1;
+  }
+  .halfWidth {
+    grid-column: span 2;
   }
 `;
+
 
 export const TableStyled = styled.table`
   width: 100%;
@@ -122,23 +132,6 @@ export const AccionButton = styled.button`
   cursor: pointer;
   background: none;
   border: none;
-`;
-
-export const TdContainer = styled.td`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-`;
-
-export const FormDetails = styled(FormContainer)`
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 24px;
-`;
-
-export const FormName = styled(FormDetails)`
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  margin-top: 32px;
 `;
 
 export const CheckboxContainerBoolean = styled.div`

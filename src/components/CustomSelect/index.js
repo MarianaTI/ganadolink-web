@@ -7,29 +7,29 @@ import {
 } from "./index.style";
 import { Controller } from "react-hook-form";
 
-const CustomSelect = ({
-  label,
-  defaultValue,
-  onChange,
-  options, // Añadido para pasar las opciones dinámicamente
-  fullWidth,
-}) => {
+const CustomSelect = ({ control, name, label, data, fullWidth }) => {
   return (
-    <div>
-      <LabelStyled>{label}</LabelStyled>
-      <SelectWrapper>
-        <SelectStyled
-          defaultValue={defaultValue}
-          onChange={onChange}
-          fullWidth={fullWidth}
-        >
-          {options?.map((option) => (
-            <option key={option._id} value={option._id}>{option.name}</option>
-          ))}
-        </SelectStyled>
-      </SelectWrapper>
-    </div>
+    <Controller
+      control={control}
+      name={name}
+      render={({ field: { onChange, value, ...fieldProps } }) => (
+        <div>
+          <LabelStyled>{label}</LabelStyled>
+          <SelectWrapper>
+            <SelectStyled fullWidth={fullWidth} onChange={onChange} value={value} {...fieldProps}>
+              <option value="" disabled={value !== ""}>{`Seleccionar ${label}`}</option>
+              {data?.map((option) => (
+                <option key={option._id || option.value} value={option._id || option.value}>
+                  {option.name || option.label}
+                </option>
+              ))}
+            </SelectStyled>
+          </SelectWrapper>
+        </div>
+      )}
+    />
   );
 };
 
 export default CustomSelect;
+

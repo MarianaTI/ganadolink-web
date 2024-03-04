@@ -43,8 +43,8 @@ const Login = () => {
 
       if (signInResponse && signInResponse.token) {
         const encryptedToken = CryptoJS.AES.encrypt(signInResponse.token, 'cookie-encrypted').toString();
-        await Cookies.set('authToken', encryptedToken, {expires: 1/24});
-        route.push("/allUser");
+        Cookies.set('authToken', encryptedToken, { expires: 1 / 24 });
+        route.push("/");
       }
 
     } catch (error) {
@@ -75,11 +75,13 @@ const Login = () => {
                 label="Correo electronico"
                 name="email"
                 control={control}
+                fullWidth
               />
               <CustomInput
                 label="Contraseña"
                 name="password"
                 control={control}
+                fullWidth
                 type={isShowPassword ? "text" : "password"}
                 icon={
                   isShowPassword ? (
@@ -94,10 +96,6 @@ const Login = () => {
               />
               <CustomButton buttonText="Entrar" fullWidth type="submit"/>
             </div>
-            <span>
-              Aún no tienes cuenta?
-              <LinkStyled href="/register">Registrate</LinkStyled>
-            </span>
           </FormStyled>
         </GridForm>
         <GridImage>
