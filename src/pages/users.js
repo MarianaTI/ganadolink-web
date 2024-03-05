@@ -68,6 +68,7 @@ const AllUser = () => {
     <Container>
       <Title>Usuarios</Title>
       <Line />
+      <form> <CustomButton onClick={() => route.push("/src/pages/registerUser")} buttonText={'Agregar Usuario'}/></form>
       {/* <Form onSubmit={handleSubmit(data => handleSearch(data.search))}>
         <InputContainer>
           <Input type="text" placeholder="Buscar..." {...register('search')} />
