@@ -7,7 +7,7 @@ import {
   GridForm,
   GridImage,
   LinkStyled,
-} from "@/styles/Login.style";
+} from "@/styles/Register.style";
 import Image from "next/image";
 import CustomInput from "@/components/CustomInput";
 import { useForm } from "react-hook-form";
