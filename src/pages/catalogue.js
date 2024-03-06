@@ -14,6 +14,8 @@ import {
   TheadStyled,
   TrStyled,
 } from "../styles/catalogue.style";
+import { generatePDF } from "../components/CustomPDF/index";
+import DownloadAllPDF from "../components/CustomPDF/indexFull";
 import { FaSearch, FaDownload, FaFilePdf, FaEye } from "react-icons/fa";
 import OrderRepo from "@/infraestructure/implementation/httpRequest/axios/OrderRepo";
 import GetAllOrderUseCase from "@/application/usecases/orderUseCase/GetAllOrderUseCase";
@@ -43,6 +45,10 @@ const CatalogPage = () => {
     fetchOrder();
   }, []);
 
+  const handleDownloadPDF = (order) => {
+    generatePDF(order);
+  };
+
   return (
     <Container>
       <Title>Catálogo</Title>
@@ -54,10 +60,7 @@ const CatalogPage = () => {
             <FaSearch style={{ color: "#888" }} />
           </SearchIcon>
         </InputContainer>
-        <DownloadPdfButton>
-          Descargar PDF
-          <FaFilePdf style={{ marginLeft: "5px" }} />
-        </DownloadPdfButton>
+        <DownloadAllPDF orders={orders} />
       </Form>
       <TableStyled>
         <TheadStyled>
@@ -87,7 +90,7 @@ const CatalogPage = () => {
               </td> */}
               <td>
                 <IconButton>
-                  <FaDownload />
+                  <FaDownload onClick={() => handleDownloadPDF(item)} />
                 </IconButton>
                 <IconButton>
                   <FaEye />
