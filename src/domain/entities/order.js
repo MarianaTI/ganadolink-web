@@ -62,3 +62,5 @@ class Vehiculo {
         this.nombre_operador_vehiculo = nombre_operador_vehiculo;
     }
 }
+
+export default Order;

@@ -35,6 +35,8 @@ import GetAllRazaCase from "@/application/usecases/razaUseCase/GetAllRazaCase";
 import Image from "next/image";
 import CustomCheckboxInput from "@/components/CustomRadioInput";
 import CustomImage from "@/components/CustomImage";
+import OrderRepo from "@/infraestructure/implementation/httpRequest/axios/OrderRepo";
+import CreateOrderUseCase from "@/application/usecases/orderUseCase/CreateOrderUseCase";
 
 const Form = () => {
   const [registerAnimals, setRegisterAnimals] = useState([]);
@@ -82,21 +84,24 @@ const Form = () => {
     }
   };
 
+  const orderRepo = new OrderRepo();
+  const createOrderUseCase = new CreateOrderUseCase(orderRepo);
+
   const onSubmitDatosGenerales = (data) => {
     const datosGenerales = {
       id_especie: selectedEspecie,
       id_motivo: selectedMotivo,
-      id_user: "65ac5d280c369418e04c7f9a",
-      Vendedor: {
+      id_user: "65b03ceb8887bd492a37921a",
+      vendedor: {
         nombre: data.sellName,
         domicilio: data.sellAddress,
         municipio: data.sellState,
       },
-      Comprador: {
+      comprador: {
         nombre: data.buyerName,
         domicilio: data.buyerAddress,
         municipio: data.buyerState,
-        predo: data.buyerRanch,
+        predio: data.buyerRanch,
       },
     };
     console.log("Datos generales:", datosGenerales);
@@ -110,13 +115,13 @@ const Form = () => {
     setRegisterAnimals((currentRegister) => [...currentRegister, completeData]);
     setImageUrl("");
     reset({
-      animalPatente: '',
-      animalGender: '',
-      animalRaza: '',
-      animalColor: '',
-      animalEarring: '',
-      animalImage: '',
-    })
+      patente: "",
+      sexo: "",
+      id_raza: "",
+      color: "",
+      siniiga: "",
+      animalImage: "",
+    });
   };
 
   const handleDeleteAnimal = (index) => {
@@ -131,11 +136,11 @@ const Form = () => {
   const handleClickContinuar = () => {
     const ganadoData = {
       ganado: registerAnimals.map((registro) => ({
-        patente: registro.animalPatente,
-        sexo: registro.animalGender,
-        id_raza: registro.animalRaza,
-        color: registro.animalColor,
-        siniiga: registro.animalEarring,
+        patente: registro.patente,
+        sexo: registro.sexo,
+        id_raza: registro.id_raza,
+        color: registro.color,
+        siniiga: registro.siniiga,
         figura_herraje: registro.animalImage || "",
       })),
     };
@@ -156,25 +161,33 @@ const Form = () => {
       color: data.trailerColor,
       nombre_operador_vehiculo: data.vehicleName,
     };
+    console.log(dataVehicule);
+
     setRegisterVehicule([...registerVehicule, dataVehicule]);
 
     ///! Mapea todos los objetos para crear la estructura
     handleFinalize();
   };
 
-  const handleFinalize = () => {
-    const datosGenerales = registerGenerals[registerGenerals.length - 1];
-    const datosVehiculo = registerVehicule[registerVehicule.length - 1];
+  const handleFinalize = async () => {
+    try {
+      const datosGenerales = registerGenerals[registerGenerals.length - 1];
+      const datosVehiculo = registerVehicule[registerVehicule.length - 1];
 
-    const order = {
-      ...datosGenerales,
-      ganado: registerAnimals,
-      vehiculo: datosVehiculo,
-    };
+      const order = {
+        ...datosGenerales,
+        ganado: Array.isArray(registerAnimals) ? registerAnimals : [registerAnimals],
+        vehiculo: datosVehiculo,
+      };
+      
+      console.log(order);
 
-    ///! consumir el create order
+      const createdOrder = await createOrderUseCase.run(order);
+      console.log(createdOrder);
 
-    console.log("Orden final para procesar:", order);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const {
@@ -324,13 +337,13 @@ const Form = () => {
         <FormContainer onSubmit={handleSubmit(onSubmitAnimal)}>
           <CustomInput
             label="Patente o factura"
-            name="animalPatente"
+            name="patente"
             control={control}
             fullWidth
           />
           <CustomSelect
             label="Sexo"
-            name="animalGender"
+            name="sexo"
             control={control}
             data={[
               { value: "macho", label: "Macho" },
@@ -340,20 +353,20 @@ const Form = () => {
           />
           <CustomSelect
             label="Raza"
-            name="animalRaza"
+            name="id_raza"
             control={control}
             data={razas}
             fullWidth
           />
           <CustomInput
             label="Color"
-            name="animalColor"
+            name="color"
             control={control}
             fullWidth
           />
           <CustomInput
             label="Arete siniiga"
-            name="animalEarring"
+            name="siniiga"
             control={control}
             fullWidth
           />
@@ -387,11 +400,11 @@ const Form = () => {
               {registerAnimals.map((registro, index) => (
                 <TrStyled key={index}>
                   <td>{index + 1}</td>
-                  <td>{registro.animalPatente}</td>
-                  <td>{registro.animalGender}</td>
-                  <td>{registro.animalColor}</td>
-                  <td>{registro.animalRaza}</td>
-                  <td>{registro.animalEarring}</td>
+                  <td>{registro.patente}</td>
+                  <td>{registro.sexo}</td>
+                  <td>{registro.color}</td>
+                  <td>{registro.id_raza}</td>
+                  <td>{registro.siniiga}</td>
                   <td>
                     {registro.animalImage && (
                       <Image
