@@ -72,14 +72,14 @@ const CatalogPage = () => {
           </TrStyled>
         </TheadStyled>
         <tbody>
-          {orders.map((item, index) => (
+          {orders?.map((item, index) => (
             <TrStyled key={index}>
               <td>{item.vendedor.nombre}</td>
               <td>{item.vendedor.nombre}</td>
               <td>{item.comprador.nombre}</td>
               <td>{item.id_especie.name}</td>
               <td>{item.ganado[0].siniiga}</td>
-              <td>{item.vehiculo.marca}</td>
+              <td>{item?.vehiculo?.marca}</td>
               {/* <td>
                 <img src={`/img/${item.figura_herraje}.jpg`} alt={item.figura_herraje} style={{ width: '50px', height: 'auto' }} />
               </td> */}

@@ -16,7 +16,7 @@ const CustomSelect = ({ control, name, label, data, fullWidth }) => {
         <div>
           <LabelStyled>{label}</LabelStyled>
           <SelectWrapper>
-            <SelectStyled fullWidth={fullWidth} onChange={onChange} value={value} {...fieldProps}>
+            <SelectStyled fullWidth={fullWidth} onChange={onChange} value={value || ""} {...fieldProps}>
               <option value="" disabled={value !== ""}>{`Seleccionar ${label}`}</option>
               {data?.map((option) => (
                 <option key={option._id || option.value} value={option._id || option.value}>
