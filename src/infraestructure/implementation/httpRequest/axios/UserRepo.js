@@ -8,6 +8,10 @@ class UserRepo extends IUserRepo {
     super();
     this.url = "http://localhost:3000/api/users";
     this.urlSignIn = "http://localhost:3000/api/signin";
+
+    this.urlSignUp = "http://localhost:3000/api/signup";
+
+
   }
 
   async getAll() {

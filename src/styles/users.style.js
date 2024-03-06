@@ -10,6 +10,19 @@ const Container = styled.div`
 
 const Title = styled.h1`
   font-size: 24px;
+  font-weight: 500;
+  padding: 0px 34px;
+  color: #454545;
+  text-align: start;
+  width: 100%;
+`;
+
+const Line = styled.hr`
+  border: 0;
+  border-top: 1px solid #ccc;
+  width: 100%;
+  margin-top: -8px;
+  margin-bottom: 32px;
 `;
 
 const Form = styled.form`
@@ -41,12 +54,29 @@ const SearchIcon = styled.div`
   transform: translateY(-50%);
 `;
 
-const Line = styled.hr`
-  border: 0;
-  border-top: 2px solid #F27D16;
+export const TableStyled = styled.table`
   width: 100%;
-  margin-top: -18px;
-  margin-bottom: 55px;
+  text-align: center;
+  margin: 16px 0;
+  border-collapse: collapse;
+`;
+
+export const TheadStyled = styled.thead`
+  background: #fcdfc5;
+`;
+
+export const TrStyled = styled.tr`
+  & th {
+    color: #2a2a2a;
+    font-family: Poppins;
+    font-size: 16px;
+    font-weight: 500;
+    padding: 8px;
+  }
+  & td {
+    padding: 8px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+  }
 `;
 
 const Table = styled.table`
@@ -74,7 +104,7 @@ const EditButton = styled.button`
   cursor: pointer;
   margin-right: 5px;
   transition: color 0.3s;
-
+  
   &:hover {
     color: #ffc107; /* Color representativo de editar */
   }

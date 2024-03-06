@@ -13,13 +13,26 @@ export const ButtonStyled = styled.button`
   border: none;
   margin: 24px 0px;
   cursor: pointer;
-  :hover {
-    background-color: #f59e50;
-    transition: background-color 0.3s ease;
-    transform: scale(1);
+  position: relative;
+  box-sizing: border-box;
+  background-repeat: no-repeat;
+  transition: all 0.3s ease-in-out;
+  z-index: 1;
+  overflow: hidden;
+  &::before {
+    content: "";
+    background-color: #f48d33;
+    width: 0;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    transition: width 700ms ease-in-out;
+    display: inline-block;
   }
-  :active {
-    transform: scale(1);
+  &:hover::before {
+    width: 100%;
   }
   ${(props) =>
     props.customDesign &&
@@ -56,5 +69,11 @@ export const ButtonStyled = styled.button`
         transition: background-color 0.3s ease;
         transform: scale(1);
       }
+    `}
+    ${(props) =>
+    props.customLogin &&
+    css`
+      width: auto;
+      padding: 0px 16px;
     `}
 `;

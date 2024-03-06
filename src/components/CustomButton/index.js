@@ -9,7 +9,8 @@ const CustomButton = ({
   disable,
   customDesign,
   customAddDesig,
-  customIndexDesign
+  customIndexDesign,
+  customLogin
 }) => {
   return (
     <>
@@ -21,6 +22,7 @@ const CustomButton = ({
         customDesign={customDesign}
         customAddDesig={customAddDesig}
         customIndexDesign={customIndexDesign}
+        customLogin={customLogin}
       >
         {buttonText}
       </ButtonStyled>
