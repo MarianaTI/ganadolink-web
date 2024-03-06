@@ -91,7 +91,7 @@ const Form = () => {
     const datosGenerales = {
       id_especie: selectedEspecie,
       id_motivo: selectedMotivo,
-      id_user: "65b03ceb8887bd492a37921a",
+      id_user: "65ac5d280c369418e04c7f9a",
       vendedor: {
         nombre: data.sellName,
         domicilio: data.sellAddress,
@@ -104,15 +104,16 @@ const Form = () => {
         predio: data.buyerRanch,
       },
     };
-    console.log("Datos generales:", datosGenerales);
     setRegisterGeneral([...registerGenerals, datosGenerales]);
     setActiveTab(1);
   };
 
   ///! funcion que recibe el objeto para pintar la tabla
   const onSubmitAnimal = (data) => {
-    const completeData = { ...data, animalImage: imageUrl };
+    const completeData = { ...data, figura_herraje: imageUrl };
     setRegisterAnimals((currentRegister) => [...currentRegister, completeData]);
+
+    // Limpia el estado de la imagen para la próxima selección
     setImageUrl("");
     reset({
       patente: "",
@@ -120,7 +121,6 @@ const Form = () => {
       id_raza: "",
       color: "",
       siniiga: "",
-      animalImage: "",
     });
   };
 
@@ -132,23 +132,22 @@ const Form = () => {
     });
   };
 
-  ///! Convertir los objetos en una lista de objetos
-  const handleClickContinuar = () => {
+  const handleClickContinuar = async () => {
     const ganadoData = {
-      ganado: registerAnimals.map((registro) => ({
-        patente: registro.patente,
-        sexo: registro.sexo,
-        id_raza: registro.id_raza,
-        color: registro.color,
-        siniiga: registro.siniiga,
-        figura_herraje: registro.animalImage || "",
-      })),
-    };
-    const datosFinales = {
-      ...ganadoData,
+      ganado: registerAnimals.map(
+        ({ patente, sexo, id_raza, color, siniiga, figura_herraje }) => ({
+          patente,
+          sexo,
+          id_raza,
+          color,
+          siniiga,
+          figura_herraje,
+        })
+      ),
     };
 
-    console.log("Datos finales para procesar:", datosFinales);
+    const datosFinales = { ...ganadoData };
+
     setActiveTab(2);
   };
 
@@ -161,30 +160,29 @@ const Form = () => {
       color: data.trailerColor,
       nombre_operador_vehiculo: data.vehicleName,
     };
-    console.log(dataVehicule);
 
-    setRegisterVehicule([...registerVehicule, dataVehicule]);
+    // Actualiza el estado para reflejar el nuevo vehículo
+    setRegisterVehicule((current) => [...current, dataVehicule]);
 
-    ///! Mapea todos los objetos para crear la estructura
-    handleFinalize();
+    handleFinalize(dataVehicule);
   };
 
-  const handleFinalize = async () => {
+  const handleFinalize = async (newVehicule) => {
     try {
       const datosGenerales = registerGenerals[registerGenerals.length - 1];
-      const datosVehiculo = registerVehicule[registerVehicule.length - 1];
+      const datosVehiculo =
+        newVehicule || registerVehicule[registerVehicule.length - 1];
 
       const order = {
         ...datosGenerales,
-        ganado: Array.isArray(registerAnimals) ? registerAnimals : [registerAnimals],
+        ganado: Array.isArray(registerAnimals)
+          ? registerAnimals
+          : [registerAnimals],
         vehiculo: datosVehiculo,
       };
-      
-      console.log(order);
 
       const createdOrder = await createOrderUseCase.run(order);
       console.log(createdOrder);
-
     } catch (error) {
       console.log(error);
     }
@@ -358,12 +356,7 @@ const Form = () => {
             data={razas}
             fullWidth
           />
-          <CustomInput
-            label="Color"
-            name="color"
-            control={control}
-            fullWidth
-          />
+          <CustomInput label="Color" name="color" control={control} fullWidth />
           <CustomInput
             label="Arete siniiga"
             name="siniiga"
@@ -375,9 +368,13 @@ const Form = () => {
             onChange={(e) => {
               const file = e.target.files[0];
               if (file) {
-                const imageUrl = URL.createObjectURL(file);
-                console.log("Imagen seleccionada:", file, imageUrl);
-                setImageUrl(imageUrl);
+                const reader = new FileReader();
+                reader.onloadend = function () {
+                  // Aquí `reader.result` contiene la representación base64 de la imagen
+                  console.log("Imagen en base64:", reader.result);
+                  setImageUrl(reader.result); // Ahora `imageUrl` almacenará la cadena base64 de la imagen
+                };
+                reader.readAsDataURL(file);
               }
             }}
           />
@@ -406,15 +403,17 @@ const Form = () => {
                   <td>{registro.id_raza}</td>
                   <td>{registro.siniiga}</td>
                   <td>
-                    {registro.animalImage && (
+                    {registro.figura_herraje && (
                       <Image
-                        src={registro.animalImage}
+                        src={registro.figura_herraje}
                         alt="Animal"
-                        width={100}
+                        width={100} 
                         height={100}
+                        layout="fixed"
                       />
                     )}
                   </td>
+
                   <td>
                     <AccionButton onClick={() => handleDeleteAnimal(index)}>
                       <MarkIcon icon={faXmark} />

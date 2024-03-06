@@ -63,7 +63,7 @@ const CatalogPage = () => {
           </tr>
         </thead>
         <tbody>
-          {orders.map((item, index) => (
+          {orders?.map((item, index) => (
             <tr key={index}>
               <Td>{item._id}</Td>
               <Td>{item.vendedor.nombre}</Td>
@@ -71,7 +71,7 @@ const CatalogPage = () => {
               <Td>{item.comprador.nombre}</Td>
               <Td>{item.id_especie.name}</Td>
               <Td>{item.ganado[0].siniiga}</Td>
-              <Td>{item.vehiculo.marca}</Td> 
+              <Td>{item?.vehiculo?.marca}</Td> 
               {/* <Td>
                 <img src={`/img/${item.figura_herraje}.jpg`} alt={item.figura_herraje} style={{ width: '50px', height: 'auto' }} />
               </Td> */}
