@@ -35,8 +35,12 @@ import GetAllRazaCase from "@/application/usecases/razaUseCase/GetAllRazaCase";
 import Image from "next/image";
 import CustomCheckboxInput from "@/components/CustomRadioInput";
 import CustomImage from "@/components/CustomImage";
+import OrderRepo from "@/infraestructure/implementation/httpRequest/axios/OrderRepo";
+import CreateOrderUseCase from "@/application/usecases/orderUseCase/CreateOrderUseCase";
+import { useRouter } from "next/router";
 
 const Form = () => {
+  const router = useRouter();
   const [registerAnimals, setRegisterAnimals] = useState([]);
   const [registerGenerals, setRegisterGeneral] = useState([]);
   const [registerVehicule, setRegisterVehicule] = useState([]);
@@ -86,8 +90,8 @@ const Form = () => {
     const datosGenerales = {
       id_especie: selectedEspecie,
       id_motivo: selectedMotivo,
-      id_user: "65ac5d280c369418e04c7f9a",
-      Vendedor: {
+      id_user: "65a80ea7857560689289978b",
+      vendedor: {
         nombre: data.sellName,
         domicilio: data.sellAddress,
         municipio: data.sellState,
@@ -147,7 +151,7 @@ const Form = () => {
     setActiveTab(2);
   };
 
-  const onSubmitVehicule = (data) => {
+  const onSubmitVehicule = async (data) => {
     const dataVehicule = {
       tipo: data.type,
       marca: data.brand,
@@ -158,8 +162,12 @@ const Form = () => {
     };
     setRegisterVehicule([...registerVehicule, dataVehicule]);
 
-    ///! Mapea todos los objetos para crear la estructura
-    handleFinalize();
+    // Actualiza el estado para reflejar el nuevo vehículo
+    setRegisterVehicule((current) => [...current, dataVehicule]);
+
+    await handleFinalize(dataVehicule);
+
+    router.push("/catalogue");
   };
 
   const handleFinalize = () => {
@@ -488,7 +496,7 @@ const Form = () => {
           </DetailsGrid>
           <ButtonsContainer>
             <CustomButton customDesign buttonText="Cancelar" />
-            <CustomButton buttonText="Continuar" type="submit" />
+            <CustomButton buttonText="Confirmar" type="submit" />
           </ButtonsContainer>
         </FormContainerDatosGenerales>
       </TabContent>
