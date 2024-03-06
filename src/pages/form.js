@@ -328,7 +328,6 @@ const Form = () => {
         <AddContainer>
           <CustomButton
             buttonText="Agregar"
-            customAddDesig
             onClick={handleSubmit(onSubmitAnimal)}
           />
         </AddContainer>
