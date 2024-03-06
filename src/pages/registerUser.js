@@ -85,13 +85,13 @@ const SignUp = () => {
           <Image src="/img/Logo.png" alt="logo" width={148} height={150} />
           <FormStyled onSubmit={handleSubmit(onSignUpSubmit)}>
             {/* campos a llenar para el registro */}
-            <CustomInput label="Nombre" name="name" control={control} />
+            <CustomInput label="Nombre" name="name" control={control} fullWidth/>
             {errors.name && <p>Este campo es requerido</p>}
 
-            <CustomInput label="Email" name="email" control={control} />
+            <CustomInput label="Email" name="email" control={control} fullWidth/>
             {errors.email && <p>Este campo es requerido</p>}
 
-            <CustomInput type={isShowPassword ? "text" : "password"} label="Contraseña" name="password" control={control} />
+            <CustomInput type={isShowPassword ? "text" : "password"} fullWidth label="Contraseña" name="password" control={control} />
             {errors.password && <p>Este campo es requerido</p>}
 
             {/* Botón para alternar la visibilidad de la contraseña */}

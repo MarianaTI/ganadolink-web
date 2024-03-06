@@ -42,6 +42,19 @@ class OrderRepo extends IOrderRepo {
       throw error;
     }
   }
+
+  // Creación de una orden con manejo de errores y validaciones
+  async create(order) {
+    try {
+      const response = await axios.post(`${this.url}/create`, order, {
+        headers: { "Content-Type": "application/json" },
+      });
+      return response.data;
+    } catch (error) {
+      console.error("Error al crear la orden:", error);
+      throw error;
+    }
+  }
 }
 
 export default OrderRepo;

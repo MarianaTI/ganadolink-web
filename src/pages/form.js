@@ -35,8 +35,12 @@ import GetAllRazaCase from "@/application/usecases/razaUseCase/GetAllRazaCase";
 import Image from "next/image";
 import CustomCheckboxInput from "@/components/CustomRadioInput";
 import CustomImage from "@/components/CustomImage";
+import OrderRepo from "@/infraestructure/implementation/httpRequest/axios/OrderRepo";
+import CreateOrderUseCase from "@/application/usecases/orderUseCase/CreateOrderUseCase";
+import { useRouter } from "next/router";
 
 const Form = () => {
+  const router = useRouter();
   const [registerAnimals, setRegisterAnimals] = useState([]);
   const [registerGenerals, setRegisterGeneral] = useState([]);
   const [registerVehicule, setRegisterVehicule] = useState([]);
@@ -82,41 +86,44 @@ const Form = () => {
     }
   };
 
+  const orderRepo = new OrderRepo();
+  const createOrderUseCase = new CreateOrderUseCase(orderRepo);
+
   const onSubmitDatosGenerales = (data) => {
     const datosGenerales = {
       id_especie: selectedEspecie,
       id_motivo: selectedMotivo,
-      id_user: "65ac5d280c369418e04c7f9a",
-      Vendedor: {
+      id_user: "65a80ea7857560689289978b",
+      vendedor: {
         nombre: data.sellName,
         domicilio: data.sellAddress,
         municipio: data.sellState,
       },
-      Comprador: {
+      comprador: {
         nombre: data.buyerName,
         domicilio: data.buyerAddress,
         municipio: data.buyerState,
-        predo: data.buyerRanch,
+        predio: data.buyerRanch,
       },
     };
-    console.log("Datos generales:", datosGenerales);
     setRegisterGeneral([...registerGenerals, datosGenerales]);
     setActiveTab(1);
   };
 
   ///! funcion que recibe el objeto para pintar la tabla
   const onSubmitAnimal = (data) => {
-    const completeData = { ...data, animalImage: imageUrl };
+    const completeData = { ...data, figura_herraje: imageUrl };
     setRegisterAnimals((currentRegister) => [...currentRegister, completeData]);
+
+    // Limpia el estado de la imagen para la próxima selección
     setImageUrl("");
     reset({
-      animalPatente: '',
-      animalGender: '',
-      animalRaza: '',
-      animalColor: '',
-      animalEarring: '',
-      animalImage: '',
-    })
+      patente: "",
+      sexo: "",
+      id_raza: "",
+      color: "",
+      siniiga: "",
+    });
   };
 
   const handleDeleteAnimal = (index) => {
@@ -127,27 +134,26 @@ const Form = () => {
     });
   };
 
-  ///! Convertir los objetos en una lista de objetos
-  const handleClickContinuar = () => {
+  const handleClickContinuar = async () => {
     const ganadoData = {
-      ganado: registerAnimals.map((registro) => ({
-        patente: registro.animalPatente,
-        sexo: registro.animalGender,
-        id_raza: registro.animalRaza,
-        color: registro.animalColor,
-        siniiga: registro.animalEarring,
-        figura_herraje: registro.animalImage || "",
-      })),
-    };
-    const datosFinales = {
-      ...ganadoData,
+      ganado: registerAnimals.map(
+        ({ patente, sexo, id_raza, color, siniiga, figura_herraje }) => ({
+          patente,
+          sexo,
+          id_raza,
+          color,
+          siniiga,
+          figura_herraje,
+        })
+      ),
     };
 
-    console.log("Datos finales para procesar:", datosFinales);
+    const datosFinales = { ...ganadoData };
+
     setActiveTab(2);
   };
 
-  const onSubmitVehicule = (data) => {
+  const onSubmitVehicule = async (data) => {
     const dataVehicule = {
       tipo: data.type,
       marca: data.brand,
@@ -156,25 +162,34 @@ const Form = () => {
       color: data.trailerColor,
       nombre_operador_vehiculo: data.vehicleName,
     };
-    setRegisterVehicule([...registerVehicule, dataVehicule]);
 
-    ///! Mapea todos los objetos para crear la estructura
-    handleFinalize();
+    // Actualiza el estado para reflejar el nuevo vehículo
+    setRegisterVehicule((current) => [...current, dataVehicule]);
+
+    await handleFinalize(dataVehicule);
+
+    router.push("/catalogue");
   };
 
-  const handleFinalize = () => {
-    const datosGenerales = registerGenerals[registerGenerals.length - 1];
-    const datosVehiculo = registerVehicule[registerVehicule.length - 1];
+  const handleFinalize = async (newVehicule) => {
+    try {
+      const datosGenerales = registerGenerals[registerGenerals.length - 1];
+      const datosVehiculo =
+        newVehicule || registerVehicule[registerVehicule.length - 1];
 
-    const order = {
-      ...datosGenerales,
-      ganado: registerAnimals,
-      vehiculo: datosVehiculo,
-    };
+      const order = {
+        ...datosGenerales,
+        ganado: Array.isArray(registerAnimals)
+          ? registerAnimals
+          : [registerAnimals],
+        vehiculo: datosVehiculo,
+      };
 
-    ///! consumir el create order
-
-    console.log("Orden final para procesar:", order);
+      const createdOrder = await createOrderUseCase.run(order);
+      console.log(createdOrder);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const {
@@ -317,20 +332,19 @@ const Form = () => {
         <AddContainer>
           <CustomButton
             buttonText="Agregar"
-            customAddDesig
             onClick={handleSubmit(onSubmitAnimal)}
           />
         </AddContainer>
         <FormContainer onSubmit={handleSubmit(onSubmitAnimal)}>
           <CustomInput
             label="Patente o factura"
-            name="animalPatente"
+            name="patente"
             control={control}
             fullWidth
           />
           <CustomSelect
             label="Sexo"
-            name="animalGender"
+            name="sexo"
             control={control}
             data={[
               { value: "macho", label: "Macho" },
@@ -340,20 +354,15 @@ const Form = () => {
           />
           <CustomSelect
             label="Raza"
-            name="animalRaza"
+            name="id_raza"
             control={control}
             data={razas}
             fullWidth
           />
-          <CustomInput
-            label="Color"
-            name="animalColor"
-            control={control}
-            fullWidth
-          />
+          <CustomInput label="Color" name="color" control={control} fullWidth />
           <CustomInput
             label="Arete siniiga"
-            name="animalEarring"
+            name="siniiga"
             control={control}
             fullWidth
           />
@@ -362,9 +371,13 @@ const Form = () => {
             onChange={(e) => {
               const file = e.target.files[0];
               if (file) {
-                const imageUrl = URL.createObjectURL(file);
-                console.log("Imagen seleccionada:", file, imageUrl);
-                setImageUrl(imageUrl);
+                const reader = new FileReader();
+                reader.onloadend = function () {
+                  // Aquí `reader.result` contiene la representación base64 de la imagen
+                  console.log("Imagen en base64:", reader.result);
+                  setImageUrl(reader.result); // Ahora `imageUrl` almacenará la cadena base64 de la imagen
+                };
+                reader.readAsDataURL(file);
               }
             }}
           />
@@ -387,21 +400,23 @@ const Form = () => {
               {registerAnimals.map((registro, index) => (
                 <TrStyled key={index}>
                   <td>{index + 1}</td>
-                  <td>{registro.animalPatente}</td>
-                  <td>{registro.animalGender}</td>
-                  <td>{registro.animalColor}</td>
-                  <td>{registro.animalRaza}</td>
-                  <td>{registro.animalEarring}</td>
+                  <td>{registro.patente}</td>
+                  <td>{registro.sexo}</td>
+                  <td>{registro.color}</td>
+                  <td>{registro.id_raza}</td>
+                  <td>{registro.siniiga}</td>
                   <td>
-                    {registro.animalImage && (
+                    {registro.figura_herraje && (
                       <Image
-                        src={registro.animalImage}
+                        src={registro.figura_herraje}
                         alt="Animal"
-                        width={100}
+                        width={100} 
                         height={100}
+                        layout="fixed"
                       />
                     )}
                   </td>
+
                   <td>
                     <AccionButton onClick={() => handleDeleteAnimal(index)}>
                       <MarkIcon icon={faXmark} />
@@ -488,7 +503,7 @@ const Form = () => {
           </DetailsGrid>
           <ButtonsContainer>
             <CustomButton customDesign buttonText="Cancelar" />
-            <CustomButton buttonText="Continuar" type="submit" />
+            <CustomButton buttonText="Confirmar" type="submit" />
           </ButtonsContainer>
         </FormContainerDatosGenerales>
       </TabContent>
