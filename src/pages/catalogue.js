@@ -62,7 +62,6 @@ const CatalogPage = () => {
       <TableStyled>
         <TheadStyled>
           <TrStyled>
-            <th>Número de animales</th>
             <th>Patente o factura</th>
             <th>Nombre del vendedor</th>
             <th>Nombre del comprador</th>
@@ -75,7 +74,6 @@ const CatalogPage = () => {
         <tbody>
           {orders.map((item, index) => (
             <TrStyled key={index}>
-              <td>{item._id}</td>
               <td>{item.vendedor.nombre}</td>
               <td>{item.vendedor.nombre}</td>
               <td>{item.comprador.nombre}</td>

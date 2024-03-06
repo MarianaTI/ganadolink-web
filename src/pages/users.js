@@ -7,19 +7,13 @@ import { FaSearch, FaEdit, FaTrash } from 'react-icons/fa';
 import {
   Container,
   Title,
-  Form,
-  Input,
-  InputContainer,
-  SearchIcon,
   Line,
-  Table,
-  Th,
-  Td,
   EditButton,
   DeleteButton,
   TableStyled,
   TheadStyled,
   TrStyled,
+  ButtonContainer,
 } from '../styles/users.style';
 
 const AllUser = () => {
@@ -68,7 +62,7 @@ const AllUser = () => {
     <Container>
       <Title>Usuarios</Title>
       <Line />
-      <form> <CustomButton onClick={() => route.push("/src/pages/registerUser")} buttonText={'Agregar Usuario'}/></form>
+      <ButtonContainer> <CustomButton onClick={() => route.push("/src/pages/registerUser")} buttonText={'Agregar Usuario'}/></ButtonContainer>
       {/* <Form onSubmit={handleSubmit(data => handleSearch(data.search))}>
         <InputContainer>
           <Input type="text" placeholder="Buscar..." {...register('search')} />
@@ -84,7 +78,6 @@ const AllUser = () => {
             <th>Nombre</th>
             <th>Rol</th>
             <th>Email</th>
-            <th>Contraseña</th>
             <th>Acciones</th>
           </TrStyled>
         </TheadStyled>
@@ -94,7 +87,6 @@ const AllUser = () => {
               <td>{user.name}</td>
               <td>{user.rol}</td>
               <td>{user.email}</td>
-              <td>{user.password}</td>
               <td>
                 <EditButton onClick={() => handleEditUser(user.id)}>
                   <FaEdit style={{fontSize: "24px"}} />
