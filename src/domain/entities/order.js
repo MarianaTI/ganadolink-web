@@ -17,7 +17,12 @@ class Especie {
         this.name = name;
     }
 }
-
+class tipoRaza {
+    constructor(_id, name) {
+        this._id = _id;
+        this.name = name;
+    }
+}
 class Motivo {
     constructor(_id, name) {
         this._id = _id;
@@ -62,5 +67,4 @@ class Vehiculo {
         this.nombre_operador_vehiculo = nombre_operador_vehiculo;
     }
 }
-
 export default Order;

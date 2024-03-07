@@ -1,5 +1,4 @@
-import React from "react";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Container,
   Form,
@@ -13,13 +12,27 @@ import {
   TableStyled,
   TheadStyled,
   TrStyled,
+  TdStyled,
 } from "../styles/catalogue.style";
 import { FaSearch, FaDownload, FaFilePdf, FaEye } from "react-icons/fa";
 import OrderRepo from "@/infraestructure/implementation/httpRequest/axios/OrderRepo";
 import GetAllOrderUseCase from "@/application/usecases/orderUseCase/GetAllOrderUseCase";
+import Box from "@mui/material/Box";
+import Collapse from "@mui/material/Collapse";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Typography from "@mui/material/Typography";
+import Paper from "@mui/material/Paper";
+import CollapsibleTable from "@/components/CustomCollapsibleTable";
+import { Divider } from "@mui/material";
 
 const CatalogPage = () => {
   const [orders, setOrders] = useState([]);
+  const [openRow, setOpenRow] = useState(null);
 
   const fetchOrder = async () => {
     const orderRepo = new OrderRepo();
@@ -37,6 +50,10 @@ const CatalogPage = () => {
   // Función para manejar el envío del formulario (aún no implementada)
   const onSubmit = (formData) => {
     console.log(formData);
+  };
+
+  const handleRowToggle = (index) => {
+    setOpenRow(openRow === index ? null : index);
   };
 
   useEffect(() => {
@@ -74,26 +91,79 @@ const CatalogPage = () => {
         </TheadStyled>
         <tbody>
           {orders?.map((item, index) => (
-            <TrStyled key={index}>
-              <td>{item._id}</td>
-              <td>{item.vendedor.nombre}</td>
-              <td>{item.vendedor.nombre}</td>
-              <td>{item.comprador.nombre}</td>
-              <td>{item.id_especie.name}</td>
-              <td>{item.ganado[0].siniiga}</td>
-              <td>{item?.vehiculo?.marca}</td>
-              {/* <td>
-                <img src={`/img/${item.figura_herraje}.jpg`} alt={item.figura_herraje} style={{ width: '50px', height: 'auto' }} />
-              </td> */}
-              <td>
-                <IconButton>
-                  <FaDownload />
-                </IconButton>
-                <IconButton>
-                  <FaEye />
-                </IconButton>
-              </td>
-            </TrStyled>
+            <React.Fragment key={index}>
+              <TrStyled>
+                <td>{item._id}</td>
+                <td>{item.vendedor.nombre}</td>
+                <td>{item.vendedor.nombre}</td>
+                <td>{item.comprador.nombre}</td>
+                <td>{item.id_especie.name}</td>
+                <td>{item.ganado[0].siniiga}</td>
+                <td>{item?.vehiculo?.marca}</td>
+                <td>
+                  <IconButton onClick={() => handleRowToggle(index)}>
+                    <FaEye />
+                  </IconButton>
+                </td>
+              </TrStyled>
+              {openRow === index && (
+                <TdStyled>
+                  <td colSpan="10" style={{ textAlign: "center" }}>
+                    <div style={{ display: "inline-block" }}>
+                      <TableCell
+                        style={{
+                          paddingBottom: 0,
+                          paddingTop: 0,
+                        }}
+                        colSpan={1}
+                      >
+                        <Box sx={{ margin: 1, maxWidth: 800, minWidth: 800 }}>
+                          <TableContainer component={Paper}>
+                            <Typography
+                              variant="h6"
+                              gutterBottom
+                              component="div"
+                              align="center"
+                            >
+                              Datos
+                            </Typography>
+
+                            <Table aria-label="collapsible table">
+                              <TableHead>
+                                <TableRow>
+                                  <TableCell />
+                                  <TableCell align="center">Sexo</TableCell>
+                                  <TableCell align="center">Raza</TableCell>
+                                  <TableCell align="center">Color</TableCell>
+                                  <TableCell align="center">Siniiga</TableCell>
+                                </TableRow>
+                              </TableHead>
+                              <TableHead>
+                                <TableRow>
+                                  <TableCell />
+                                  <TableCell align="center">
+                                    {item.ganado[0].sexo}
+                                  </TableCell>
+                                  <TableCell align="center">
+                                    {item.ganado[0]?.id_raza?.name}
+                                  </TableCell>
+                                  <TableCell align="center">
+                                    {item.ganado[0].color}
+                                  </TableCell>
+                                  <TableCell align="center">
+                                    {item.ganado[0].siniiga}
+                                  </TableCell>
+                                </TableRow>
+                              </TableHead>
+                            </Table>
+                          </TableContainer>
+                        </Box>
+                      </TableCell>
+                    </div>
+                  </td>
+                </TdStyled>
+              )}
+            </React.Fragment>
           ))}
         </tbody>
       </TableStyled>
