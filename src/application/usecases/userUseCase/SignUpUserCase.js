@@ -12,7 +12,7 @@ class SignUpUserUseCase {
             const signedUp = await this.userRepo.signUp(user);
             return signedUp;
         } catch (error) {
-            console.log("Error signing in user:", error);
+            console.log("Error signing in user:", error.message);
             throw error;
         }
     }
