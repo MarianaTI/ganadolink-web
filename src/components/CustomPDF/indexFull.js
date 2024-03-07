@@ -1,15 +1,11 @@
-import { useState } from "react";
 import { jsPDF } from "jspdf";
 import "jspdf-autotable";
 import { DownloadPdfButton } from "@/styles/catalogue.style";
 import { FaFilePdf } from "react-icons/fa";
 
 const DownloadAllPDF = ({ orders }) => {
-  const [isLoading, setIsLoading] = useState(false);
 
   const generatePDF = () => {
-    setIsLoading(true);
-
     const doc = new jsPDF();
     const titleFontSize = 20;
     const titleLineHeight = 10;
@@ -106,13 +102,12 @@ const DownloadAllPDF = ({ orders }) => {
     });
 
     doc.save("catalogo.pdf");
-    setIsLoading(false);
   };
 
   return (
     <div>
-      <DownloadPdfButton onClick={generatePDF} disabled={isLoading}>
-        {isLoading ? "Descargando..." : "Descargar PDF"}
+      <DownloadPdfButton onClick={generatePDF}>
+        Descargar PDF
         <FaFilePdf style={{ marginLeft: "5px" }} />
       </DownloadPdfButton>
     </div>

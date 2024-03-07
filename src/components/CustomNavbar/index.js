@@ -135,7 +135,7 @@ const CustomNavbar = () => {
                 cy="37"
                 r="35.5"
                 stroke="white"
-                stroke-width="3"
+                strokeWidth="3"
                 
               ></circle>
               <path
