@@ -14,8 +14,6 @@ import {
   TrStyled,
   TdStyled,
 } from "../styles/catalogue.style";
-import { generatePDF } from "../components/CustomPDF/index";
-import DownloadAllPDF from "../components/CustomPDF/indexFull";
 import { FaSearch, FaDownload, FaFilePdf, FaEye } from "react-icons/fa";
 import OrderRepo from "@/infraestructure/implementation/httpRequest/axios/OrderRepo";
 import GetAllOrderUseCase from "@/application/usecases/orderUseCase/GetAllOrderUseCase";
@@ -62,10 +60,6 @@ const CatalogPage = () => {
     fetchOrder();
   }, []);
 
-  const handleDownloadPDF = (order) => {
-    generatePDF(order);
-  };
-
   return (
     <Container>
       <Title>Catálogo</Title>
@@ -77,11 +71,15 @@ const CatalogPage = () => {
             <FaSearch style={{ color: "#888" }} />
           </SearchIcon>
         </InputContainer>
-        <DownloadAllPDF orders={orders} />
+        <DownloadPdfButton>
+          Descargar PDF
+          <FaFilePdf style={{ marginLeft: "5px" }} />
+        </DownloadPdfButton>
       </Form>
       <TableStyled>
         <TheadStyled>
           <TrStyled>
+            <th>Número de animales</th>
             <th>Patente o factura</th>
             <th>Nombre del vendedor</th>
             <th>Nombre del comprador</th>
@@ -93,25 +91,79 @@ const CatalogPage = () => {
         </TheadStyled>
         <tbody>
           {orders?.map((item, index) => (
-            <TrStyled key={index}>
-              <td>{item.vendedor.nombre}</td>
-              <td>{item.vendedor.nombre}</td>
-              <td>{item.comprador.nombre}</td>
-              <td>{item.id_especie.name}</td>
-              <td>{item.ganado[0].siniiga}</td>
-              <td>{item?.vehiculo?.marca}</td>
-              {/* <td>
-                <img src={`/img/${item.figura_herraje}.jpg`} alt={item.figura_herraje} style={{ width: '50px', height: 'auto' }} />
-              </td> */}
-              <td>
-                <IconButton>
-                  <FaDownload onClick={() => handleDownloadPDF(item)} />
-                </IconButton>
-                <IconButton>
-                  <FaEye />
-                </IconButton>
-              </td>
-            </TrStyled>
+            <React.Fragment key={index}>
+              <TrStyled>
+                <td>{item._id}</td>
+                <td>{item.vendedor.nombre}</td>
+                <td>{item.vendedor.nombre}</td>
+                <td>{item.comprador.nombre}</td>
+                <td>{item.id_especie.name}</td>
+                <td>{item.ganado[0].siniiga}</td>
+                <td>{item?.vehiculo?.marca}</td>
+                <td>
+                  <IconButton onClick={() => handleRowToggle(index)}>
+                    <FaEye />
+                  </IconButton>
+                </td>
+              </TrStyled>
+              {openRow === index && (
+                <TdStyled>
+                  <td colSpan="10" style={{ textAlign: "center" }}>
+                    <div style={{ display: "inline-block" }}>
+                      <TableCell
+                        style={{
+                          paddingBottom: 0,
+                          paddingTop: 0,
+                        }}
+                        colSpan={1}
+                      >
+                        <Box sx={{ margin: 1, maxWidth: 800, minWidth: 800 }}>
+                          <TableContainer component={Paper}>
+                            <Typography
+                              variant="h6"
+                              gutterBottom
+                              component="div"
+                              align="center"
+                            >
+                              Datos
+                            </Typography>
+
+                            <Table aria-label="collapsible table">
+                              <TableHead>
+                                <TableRow>
+                                  <TableCell />
+                                  <TableCell align="center">Sexo</TableCell>
+                                  <TableCell align="center">Raza</TableCell>
+                                  <TableCell align="center">Color</TableCell>
+                                  <TableCell align="center">Siniiga</TableCell>
+                                </TableRow>
+                              </TableHead>
+                              <TableHead>
+                                <TableRow>
+                                  <TableCell />
+                                  <TableCell align="center">
+                                    {item.ganado[0].sexo}
+                                  </TableCell>
+                                  <TableCell align="center">
+                                    {item.ganado[0]?.id_raza?.name}
+                                  </TableCell>
+                                  <TableCell align="center">
+                                    {item.ganado[0].color}
+                                  </TableCell>
+                                  <TableCell align="center">
+                                    {item.ganado[0].siniiga}
+                                  </TableCell>
+                                </TableRow>
+                              </TableHead>
+                            </Table>
+                          </TableContainer>
+                        </Box>
+                      </TableCell>
+                    </div>
+                  </td>
+                </TdStyled>
+              )}
+            </React.Fragment>
           ))}
         </tbody>
       </TableStyled>
