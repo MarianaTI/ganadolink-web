@@ -69,6 +69,22 @@ export const TrStyled = styled.tr`
     border-bottom: 1px solid rgba(0, 0, 0, 0.25);
   }
 `;
+export const TdStyled = styled.tr`
+align-items: center;
+justify-content: left;
+& th {
+    color: #2a2a2a;
+    font-family: Poppins;
+    font-size: 16px;
+    font-weight: 500;
+    padding: 10px;
+    margin-left:50px;
+  }
+  & td {
+    padding: 10px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+  }
+`;
 
 export const IconButton = styled.button`
   background-color: transparent;

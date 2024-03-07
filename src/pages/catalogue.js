@@ -1,5 +1,4 @@
-import React from "react";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Container,
   Form,
@@ -13,15 +12,29 @@ import {
   TableStyled,
   TheadStyled,
   TrStyled,
+  TdStyled,
 } from "../styles/catalogue.style";
 import { generatePDF } from "../components/CustomPDF/index";
 import DownloadAllPDF from "../components/CustomPDF/indexFull";
 import { FaSearch, FaDownload, FaFilePdf, FaEye } from "react-icons/fa";
 import OrderRepo from "@/infraestructure/implementation/httpRequest/axios/OrderRepo";
 import GetAllOrderUseCase from "@/application/usecases/orderUseCase/GetAllOrderUseCase";
+import Box from "@mui/material/Box";
+import Collapse from "@mui/material/Collapse";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Typography from "@mui/material/Typography";
+import Paper from "@mui/material/Paper";
+import CollapsibleTable from "@/components/CustomCollapsibleTable";
+import { Divider } from "@mui/material";
 
 const CatalogPage = () => {
   const [orders, setOrders] = useState([]);
+  const [openRow, setOpenRow] = useState(null);
 
   const fetchOrder = async () => {
     const orderRepo = new OrderRepo();
@@ -39,6 +52,10 @@ const CatalogPage = () => {
   // Función para manejar el envío del formulario (aún no implementada)
   const onSubmit = (formData) => {
     console.log(formData);
+  };
+
+  const handleRowToggle = (index) => {
+    setOpenRow(openRow === index ? null : index);
   };
 
   useEffect(() => {

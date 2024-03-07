@@ -32,7 +32,9 @@ class OrderRepo extends IOrderRepo {
           ventaData.nombreComprador,
           ventaData.tipoRaza,
           ventaData.areteSINIIGA,
-          ventaData.modeloVehiculo
+          ventaData.modeloVehiculo,
+          ventaData.sexo,
+          ventaData.color,
         );
       } else {
         throw new Error("No data received from server");
