@@ -21,7 +21,7 @@ export const GridContainer = styled.div`
   }
 `;
 
-export const GridForm = styled.div`
+export const GridForm = styled.form`
   width: 500px;
   height: 100%;
   display: flex;

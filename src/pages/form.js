@@ -93,7 +93,8 @@ const Form = () => {
     const datosGenerales = {
       id_especie: selectedEspecie,
       id_motivo: selectedMotivo,
-      id_user: "65a80ea7857560689289978b",
+      // Cambiar el id_user, esto sera implementado con el local storage de redux
+      id_user: "65ac5d280c369418e04c7f9a",
       vendedor: {
         nombre: data.sellName,
         domicilio: data.sellAddress,
