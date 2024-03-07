@@ -45,6 +45,43 @@ export const Menu = styled.div`
   }
 `;
 
+export const LoginButton = styled.button`
+  cursor: pointer;
+  font-weight: 600;
+  font-family: Poppins;
+  transition: all 0.2s;
+  padding: 4px 20px;
+  border-radius: 100px;
+  background: #f27d16;
+  border: 1px solid transparent;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  font-size: 15px;
+  &:hover {
+    background: #facea8;
+    color: #f27d16;
+  }
+  & > svg {
+    width: 34px;
+    margin-left: 10px;
+    transition: transform 0.3s ease-in-out;
+  }
+
+  &:hover svg{
+    transform: translateX(5px);
+  }
+  &:hover circle{
+    stroke: #f27d16;
+  }
+  &:hover path{
+    fill: #f27d16;
+  }
+  &:active{
+    transform: scale(0.95);
+  }
+`;
+
 export const IconMenu = styled(FontAwesomeIcon)`
   cursor: pointer;
   color: #261704;

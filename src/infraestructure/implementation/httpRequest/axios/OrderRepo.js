@@ -32,13 +32,28 @@ class OrderRepo extends IOrderRepo {
           ventaData.nombreComprador,
           ventaData.tipoRaza,
           ventaData.areteSINIIGA,
-          ventaData.modeloVehiculo
+          ventaData.modeloVehiculo,
+          ventaData.sexo,
+          ventaData.color,
         );
       } else {
         throw new Error("No data received from server");
       }
     } catch (error) {
       console.error("Error fetching venta de ganado:", error.message);
+      throw error;
+    }
+  }
+
+  // Creación de una orden con manejo de errores y validaciones
+  async create(order) {
+    try {
+      const response = await axios.post(`${this.url}/create`, order, {
+        headers: { "Content-Type": "application/json" },
+      });
+      return response.data;
+    } catch (error) {
+      console.error("Error al crear la orden:", error);
       throw error;
     }
   }

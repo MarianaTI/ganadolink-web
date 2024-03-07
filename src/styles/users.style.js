@@ -1,5 +1,11 @@
 import styled from '@emotion/styled';
 
+export const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: end;
+  width: 100%;
+`;
+
 const Container = styled.div`
   display: flex;
   flex-direction: column;
