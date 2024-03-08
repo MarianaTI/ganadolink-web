@@ -77,10 +77,6 @@ const CatalogPage = () => {
           </SearchIcon>
         </InputContainer>
         <DownloadAllPDF orders={orders} />
-        {/* <DownloadPdfButton>
-          Descargar PDF
-          <FaFilePdf style={{ marginLeft: "5px" }} />
-        </DownloadPdfButton> */}
       </Form>
       <TableStyled>
         <TheadStyled>
