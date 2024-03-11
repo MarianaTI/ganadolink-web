@@ -112,61 +112,53 @@ const CatalogPage = () => {
                 </td>
               </TrStyled>
               {openRow === index && (
-                <TdStyled>
-                  <td colSpan="10" style={{ textAlign: "center" }}>
-                    <div style={{ display: "inline-block" }}>
-                      <TableCell
-                        style={{
-                          paddingBottom: 0,
-                          paddingTop: 0,
-                        }}
-                        colSpan={1}
-                      >
-                        <Box sx={{ margin: 1, maxWidth: 800, minWidth: 800 }}>
-                          <TableContainer component={Paper}>
-                            <Typography
-                              variant="h6"
-                              gutterBottom
-                              component="div"
-                              align="center"
-                            >
-                              Datos
-                            </Typography>
+              <TrStyled>
+                <td colSpan="8" style={{ textAlign: "center" }}>
+                  <div style={{ display: "inline-block" }}>
+                    <Box sx={{ margin: 1, maxWidth: 800, minWidth: 800 }}>
+                      <TableContainer component={Paper}>
+                        <Typography
+                          variant="h6"
+                          gutterBottom
+                          component="div"
+                          align="center"
+                        >
+                          Datos
+                        </Typography>
 
-                            <Table aria-label="collapsible table">
-                              <TableHead>
-                                <TableRow>
-                                  <TableCell />
-                                  <TableCell align="center">Sexo</TableCell>
-                                  <TableCell align="center">Raza</TableCell>
-                                  <TableCell align="center">Color</TableCell>
-                                  <TableCell align="center">Siniiga</TableCell>
-                                </TableRow>
-                              </TableHead>
-                              <TableHead>
-                                <TableRow>
-                                  <TableCell />
-                                  <TableCell align="center">
-                                    {item.ganado[0].sexo}
-                                  </TableCell>
-                                  <TableCell align="center">
-                                    {item.ganado[0]?.id_raza?.name}
-                                  </TableCell>
-                                  <TableCell align="center">
-                                    {item.ganado[0].color}
-                                  </TableCell>
-                                  <TableCell align="center">
-                                    {item.ganado[0].siniiga}
-                                  </TableCell>
-                                </TableRow>
-                              </TableHead>
-                            </Table>
-                          </TableContainer>
-                        </Box>
-                      </TableCell>
-                    </div>
-                  </td>
-                </TdStyled>
+                        <Table aria-label="collapsible table">
+                          <TableHead>
+                            <TableRow>
+                              <TableCell />
+                              <TableCell align="center">Sexo</TableCell>
+                              <TableCell align="center">Raza</TableCell>
+                              <TableCell align="center">Color</TableCell>
+                              <TableCell align="center">Siniiga</TableCell>
+                            </TableRow>
+                          </TableHead>
+                          <TableBody>
+                            <TableRow>
+                              <TableCell />
+                              <TableCell align="center">
+                                {item.ganado[0].sexo}
+                              </TableCell>
+                              <TableCell align="center">
+                                {item.ganado[0]?.id_raza?.name}
+                              </TableCell>
+                              <TableCell align="center">
+                                {item.ganado[0].color}
+                              </TableCell>
+                              <TableCell align="center">
+                                {item.ganado[0].siniiga}
+                              </TableCell>
+                            </TableRow>
+                          </TableBody>
+                        </Table>
+                      </TableContainer>
+                    </Box>
+                  </div>
+                </td>
+              </TrStyled>
               )}
             </React.Fragment>
           ))}
