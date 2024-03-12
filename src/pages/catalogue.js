@@ -162,6 +162,7 @@ const CatalogPage = () => {
                   </td>
                 </TrStyled>
               )}
+              
             </React.Fragment>
           ))}
         </tbody>
