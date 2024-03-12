@@ -172,6 +172,7 @@ const CatalogPage = () => {
                   </td>
                 </TdStyled>
               )}
+              
             </React.Fragment>
           ))}
         </tbody>
