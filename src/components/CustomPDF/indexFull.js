@@ -7,15 +7,17 @@ const DownloadAllPDF = ({ orders }) => {
 
   const generatePDF = () => {
     const doc = new jsPDF();
-    const titleFontSize = 18;
-    const dataFontSize = 12;
-    const titleFirstLine = "Dirección general de ganadería y acuacultura";
-    const titleSecondLine = "Guía de tránsito";
-    const titleThirdLine = "de ganados, productos y subproductos";
+    const titleFontSize = 15;
+    const dataFontSize = 11.5;
+    const columnTitleFontSize = 14; // Nuevo tamaño de fuente para los encabezados de las columnas
+    const titleFirstLine = "DIRECCIÓN GENERAL DE GANADERÍA Y ACUACULTURA";
+    const titleSecondLine = "GUÍA DE TRÁNSITO";
+    const titleThirdLine = "DE GANADOS, PRODUCTOS Y SUBPRODUCTOS";
     const cardWidth = doc.internal.pageSize.width * 0.9; // 90% del ancho de la página
     const cardHeight = 80;
     const cardMargin = 20; // Aumentado el espacio entre cards
     const cardPadding = 10; // Aumentado el padding del card
+    const cardDataYOffset = -5; // Desplazamiento vertical para los datos del card
 
     const addPageWithOrderData = (order, index) => {
       if (index > 0) {
@@ -37,7 +39,7 @@ const DownloadAllPDF = ({ orders }) => {
 
       const fecha = new Date().toLocaleDateString();
       const folio = "123456";
-      const fechaX = 150; // Ajustado para alinear con el logo
+      const fechaX = 158; // Ajustado para alinear con el logo
       const fechaY = 50; // Posición debajo del logo
       doc.text(`Fecha: ${fecha}`, fechaX, fechaY);
       doc.text(`Folio: ${folio}`, fechaX, fechaY + 10); // Ajustado debajo de la fecha
@@ -55,24 +57,37 @@ const DownloadAllPDF = ({ orders }) => {
         const sidebarWidth = 30; // Ancho del sidebar
         doc.roundedRect((doc.internal.pageSize.width - cardWidth) / 2, yPos, sidebarWidth, cardHeight, 2, 2, 'FD');
         
-        // Título del Arete siniga dentro del sidebar
-        doc.setFontSize(dataFontSize);
+        // Ajustar el tamaño de la fuente de los encabezados de las columnas
+        doc.setFontSize(columnTitleFontSize);
+
+        // Títulos del Arete siniiga dentro del sidebar
         doc.setTextColor(0);
         doc.text(`ARETE`, (doc.internal.pageSize.width - cardWidth) / 2 + cardPadding / 2, yPos + cardPadding);
         doc.text(`SINIIGA`, (doc.internal.pageSize.width - cardWidth) / 2 + cardPadding / 2, yPos + cardPadding + 8);
+
+        // Datos del Arete siniiga
         doc.text(`${order.ganado[0].siniiga}`, (doc.internal.pageSize.width - cardWidth) / 2 + cardPadding / 2, yPos + cardPadding + 20);
 
+        // Títulos y datos del ganado
+        doc.setFontSize(columnTitleFontSize); // Tamaño de fuente para los encabezados de las columnas
+        doc.text(`Ganado:`, (doc.internal.pageSize.width - cardWidth) / 2 + sidebarWidth + cardPadding - 5, yPos + cardPadding + cardDataYOffset);
+        doc.setFontSize(dataFontSize); // Restaurar el tamaño de fuente original para los datos
+        doc.text(`${order.ganado[0].siniiga}`, (doc.internal.pageSize.width - cardWidth) / 2 + sidebarWidth + cardPadding - 5, yPos + cardPadding + 10 + cardDataYOffset);
 
-        // Datos del ganado
+        // Títulos y datos del comprador
+        doc.setFontSize(columnTitleFontSize); // Tamaño de fuente para los encabezados de las columnas
+        doc.text(`Comprador:`, (doc.internal.pageSize.width - cardWidth) / 2 + sidebarWidth - 17 + cardWidth / 3 + cardPadding, yPos + cardPadding + cardDataYOffset);
+        doc.setFontSize(dataFontSize); // Restaurar el tamaño de fuente original para los datos
+        doc.text(`${order.comprador ? order.comprador.nombre : ''}`, (doc.internal.pageSize.width - cardWidth) / 2 + sidebarWidth - 17 + cardWidth / 3 + cardPadding, yPos + cardPadding + 10 + cardDataYOffset);
+
+        // Títulos y datos del vendedor
+        doc.setFontSize(columnTitleFontSize); // Tamaño de fuente para los encabezados de las columnas
+        doc.text(`Vendedor:`, (doc.internal.pageSize.width - cardWidth) / 2 + sidebarWidth - 17 + 2 * (cardWidth / 3) + cardPadding, yPos + cardPadding + cardDataYOffset);
+        doc.setFontSize(dataFontSize); // Restaurar el tamaño de fuente original para los datos
+        doc.text(`${order.vendedor ? order.vendedor.nombre : ''}`, (doc.internal.pageSize.width - cardWidth) / 2 + sidebarWidth - 17 + 2 * (cardWidth / 3) + cardPadding, yPos + cardPadding + 10 + cardDataYOffset);
+
+        // Ajustar el tamaño de la fuente de los datos
         doc.setFontSize(dataFontSize);
-        doc.setTextColor(0);
-        doc.text(`Ganado: ${order.ganado[0].siniiga}`, (doc.internal.pageSize.width - cardWidth) / 2 + sidebarWidth + cardPadding - 9, yPos + 2 * cardPadding);
-
-        // Datos del comprador
-        doc.text(`Comprador: ${order.comprador ? order.comprador.nombre : ''}`, (doc.internal.pageSize.width - cardWidth) / 2 + sidebarWidth -25 + cardWidth / 3 + cardPadding, yPos + 2 * cardPadding);
-
-        // Datos del vendedor
-        doc.text(`Vendedor: ${order.vendedor ? order.vendedor.nombre : ''}`, (doc.internal.pageSize.width - cardWidth) / 2 + sidebarWidth -25 + 2 * (cardWidth / 3) + cardPadding, yPos + 2 * cardPadding);
 
         // Datos del vehículo centrados debajo de las columnas
         const vehicleData = order.vehiculo ? `${order.vehiculo.marca} ${order.vehiculo.modelo}${order.vehiculo.placa ? ` (${order.vehiculo.placa})` : ''}` : '';
