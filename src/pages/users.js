@@ -15,10 +15,12 @@ import {
   TrStyled,
   ButtonContainer,
 } from "../styles/users.style";
+import { Skeleton } from "@mui/material";
 
 const AllUser = () => {
   const route = useRouter();
   const [users, setUsers] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const fetchUsers = async () => {
     const userRepo = new UserRepo();
@@ -56,45 +58,71 @@ const AllUser = () => {
     fetchUsers();
   }, []);
 
+  const loading = () => {
+    return (
+      <div style={{ padding: "4px 16px" }}>
+        <Skeleton variant="section" animation="wave" height={60} />
+        <div style={{ marginTop: "24px" }}>
+          <Skeleton variant="section" animation="wave" height={60} />
+        </div>
+        <div style={{ marginTop: "24px" }}>
+          <Skeleton variant="section" animation="wave" height={400} />
+        </div>
+      </div>
+    );
+  };
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+  }, []);
+
   return (
-    <Container>
-      <Title>Usuarios</Title>
-      <Line />
-      <ButtonContainer>
-        {" "}
-        <CustomButton
-          onClick={() => route.push("/registerUser")}
-          buttonText={"Agregar Usuario"}
-        />
-      </ButtonContainer>
-      <TableStyled>
-        <TheadStyled>
-          <TrStyled>
-            <th>Nombre</th>
-            <th>Rol</th>
-            <th>Email</th>
-            <th>Acciones</th>
-          </TrStyled>
-        </TheadStyled>
-        <tbody>
-          {users.map((user) => (
-            <TrStyled key={user.id}>
-              <td>{user.name}</td>
-              <td>{user.rol}</td>
-              <td>{user.email}</td>
-              <td>
-                <EditButton onClick={() => handleEditUser(user.id)}>
-                  <FaEdit style={{ fontSize: "24px" }} />
-                </EditButton>
-                <DeleteButton onClick={() => handleDeleteUser(user.id)}>
-                  <FaTrash style={{ fontSize: "22px" }} />
-                </DeleteButton>
-              </td>
-            </TrStyled>
-          ))}
-        </tbody>
-      </TableStyled>
-    </Container>
+    <>
+      {isLoading ? (
+        loading()
+      ) : (
+        <Container>
+          <Title>Usuarios</Title>
+          <Line />
+          <ButtonContainer>
+            {" "}
+            <CustomButton
+              onClick={() => route.push("/registerUser")}
+              buttonText={"Agregar Usuario"}
+            />
+          </ButtonContainer>
+          <TableStyled>
+            <TheadStyled>
+              <TrStyled>
+                <th>Nombre</th>
+                <th>Rol</th>
+                <th>Email</th>
+                <th>Acciones</th>
+              </TrStyled>
+            </TheadStyled>
+            <tbody>
+              {users.map((user) => (
+                <TrStyled key={user.id}>
+                  <td>{user.name}</td>
+                  <td>{user.rol}</td>
+                  <td>{user.email}</td>
+                  <td>
+                    <EditButton onClick={() => handleEditUser(user.id)}>
+                      <FaEdit style={{ fontSize: "24px" }} />
+                    </EditButton>
+                    <DeleteButton onClick={() => handleDeleteUser(user.id)}>
+                      <FaTrash style={{ fontSize: "22px" }} />
+                    </DeleteButton>
+                  </td>
+                </TrStyled>
+              ))}
+            </tbody>
+          </TableStyled>
+        </Container>
+      )}
+    </>
   );
 };
 
