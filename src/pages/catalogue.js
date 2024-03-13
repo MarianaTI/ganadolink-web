@@ -103,63 +103,66 @@ const CatalogPage = () => {
                 <td>{item.ganado[0].siniiga}</td>
                 <td>{item?.vehiculo?.marca}</td>
                 <td>
-                <IconButton>
-                  <FaDownload onClick={() => handleDownloadPDF(item)} />
-                </IconButton>
+                  <IconButton>
+                    <FaDownload onClick={() => handleDownloadPDF(item)} />
+                  </IconButton>
                   <IconButton onClick={() => handleRowToggle(index)}>
                     <FaEye />
                   </IconButton>
                 </td>
               </TrStyled>
               {openRow === index && (
-              <TrStyled>
-                <td colSpan="8" style={{ textAlign: "center" }}>
-                  <div style={{ display: "inline-block" }}>
-                    <Box sx={{ margin: 1, maxWidth: 800, minWidth: 800 }}>
-                      <TableContainer component={Paper}>
-                        <Typography
-                          variant="h6"
-                          gutterBottom
-                          component="div"
-                          align="center"
-                        >
-                          Datos
-                        </Typography>
+                <TrStyled>
+                  <td colSpan="8" style={{ textAlign: "center" }}>
+                    <div style={{ display: "inline-block" }}>
+                      <Box sx={{ margin: 1, maxWidth: 800, minWidth: 800 }}>
+                        <TableContainer component={Paper}>
+                          <Typography
+                            variant="h6"
+                            gutterBottom
+                            component="div"
+                            align="center"
+                          >
+                            Datos
+                          </Typography>
 
-                        <Table aria-label="collapsible table">
-                          <TableHead>
-                            <TableRow>
-                              <TableCell />
-                              <TableCell align="center">Sexo</TableCell>
-                              <TableCell align="center">Raza</TableCell>
-                              <TableCell align="center">Color</TableCell>
-                              <TableCell align="center">Siniiga</TableCell>
-                            </TableRow>
-                          </TableHead>
-                          <TableBody>
-                            <TableRow>
-                              <TableCell />
-                              <TableCell align="center">
-                                {item.ganado[0].sexo}
-                              </TableCell>
-                              <TableCell align="center">
-                                {item.ganado[0]?.id_raza?.name}
-                              </TableCell>
-                              <TableCell align="center">
-                                {item.ganado[0].color}
-                              </TableCell>
-                              <TableCell align="center">
-                                {item.ganado[0].siniiga}
-                              </TableCell>
-                            </TableRow>
-                          </TableBody>
-                        </Table>
-                      </TableContainer>
-                    </Box>
-                  </div>
-                </td>
-              </TrStyled>
+                          <Table aria-label="collapsible table">
+                            <TableHead>
+                              <TableRow>
+                                <TableCell />
+                                <TableCell align="center">Sexo</TableCell>
+                                <TableCell align="center">Raza</TableCell>
+                                <TableCell align="center">Color</TableCell>
+                                <TableCell align="center">Siniiga</TableCell>
+                              </TableRow>
+                            </TableHead>
+                            <TableBody>
+                              {item.ganado.map((ganadoItem, ganadoIndex) => (
+                                <TableRow key={ganadoIndex}>
+                                  <TableCell />
+                                  <TableCell align="center">
+                                    {ganadoItem.sexo}
+                                  </TableCell>
+                                  <TableCell align="center">
+                                    {ganadoItem.id_raza?.name}
+                                  </TableCell>
+                                  <TableCell align="center">
+                                    {ganadoItem.color}
+                                  </TableCell>
+                                  <TableCell align="center">
+                                    {ganadoItem.siniiga}
+                                  </TableCell>
+                                </TableRow>
+                              ))}
+                            </TableBody>
+                          </Table>
+                        </TableContainer>
+                      </Box>
+                    </div>
+                  </td>
+                </TrStyled>
               )}
+              
             </React.Fragment>
           ))}
         </tbody>
