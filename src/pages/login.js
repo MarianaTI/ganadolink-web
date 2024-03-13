@@ -6,7 +6,6 @@ import {
   GridContainer,
   GridForm,
   GridImage,
-  LinkStyled,
 } from "@/styles/Login.style";
 import Image from "next/image";
 import CustomInput from "@/components/CustomInput";
@@ -19,9 +18,12 @@ import SignInUserUseCase from "@/application/usecases/userUseCase/SignInUserCase
 import Cookies from "js-cookie";
 import { useRouter } from "next/router";
 import CryptoJS from "crypto-js";
+import { useDispatch } from "react-redux";
+import { setUser } from "@/actions/userActions";
 
 const Login = () => {
   const route = useRouter();
+  const dispatch = useDispatch();
   const [isShowPassword, setShowPassword] = useState(false);
   const {
     control,
@@ -37,11 +39,12 @@ const Login = () => {
   const onSubmit = async (data) => {
     try {
       const user = new User(null, null, null, data.email, data.password);
-      const userRepo = new UserRepo();
+      const userRepo = new UserRepo(dispatch);
       const signInUseCase = new SignInUserUseCase(userRepo);
       const signInResponse = await signInUseCase.run(user);
 
       if (signInResponse && signInResponse.token) {
+        dispatch(setUser(signInResponse));
         const encryptedToken = CryptoJS.AES.encrypt(signInResponse.token, 'cookie-encrypted').toString();
         Cookies.set('authToken', encryptedToken, { expires: 1 / 24 });
         route.push("/");
