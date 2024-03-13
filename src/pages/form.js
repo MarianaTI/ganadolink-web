@@ -43,6 +43,7 @@ import { useSelector } from "react-redux";
 const Form = () => {
   const router = useRouter();
   const userId = useSelector((state) => state.user._id);
+  console.log(userId);
   const [registerAnimals, setRegisterAnimals] = useState([]);
   const [registerGenerals, setRegisterGeneral] = useState([]);
   const [registerVehicule, setRegisterVehicule] = useState([]);
@@ -92,6 +93,7 @@ const Form = () => {
   const createOrderUseCase = new CreateOrderUseCase(orderRepo);
 
   const onSubmitDatosGenerales = (data, userId) => {
+    console.log(userId);
     const datosGenerales = {
       id_especie: selectedEspecie,
       id_motivo: selectedMotivo,
@@ -251,7 +253,7 @@ const Form = () => {
       {/* Tab Datos Generales */}
       <TabContent active={activeTab === 0}>
         <FormContainerDatosGenerales
-          onSubmit={handleSubmitGeneral(onSubmitDatosGenerales)}
+          onSubmit={handleSubmitGeneral((data) => onSubmitDatosGenerales(data, userId))}
         >
           <div>
             <span>ESPECIE A MOVILIZAR</span>
