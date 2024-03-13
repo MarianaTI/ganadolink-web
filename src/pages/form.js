@@ -39,11 +39,12 @@ import OrderRepo from "@/infraestructure/implementation/httpRequest/axios/OrderR
 import CreateOrderUseCase from "@/application/usecases/orderUseCase/CreateOrderUseCase";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
+import { Skeleton } from "@mui/material";
 
 const Form = () => {
   const router = useRouter();
   const userId = useSelector((state) => state.user._id);
-  console.log(userId);
+  const [isLoading, setIsLoading] = useState(true);
   const [registerAnimals, setRegisterAnimals] = useState([]);
   const [registerGenerals, setRegisterGeneral] = useState([]);
   const [registerVehicule, setRegisterVehicule] = useState([]);
@@ -93,7 +94,6 @@ const Form = () => {
   const createOrderUseCase = new CreateOrderUseCase(orderRepo);
 
   const onSubmitDatosGenerales = (data, userId) => {
-    console.log(userId);
     const datosGenerales = {
       id_especie: selectedEspecie,
       id_motivo: selectedMotivo,
@@ -237,281 +237,311 @@ const Form = () => {
     fetchRaza();
   }, []);
 
-  return (
-    <Container>
-      <TabsContainer>
-        <Tab active={activeTab === 0} onClick={() => handleTabClick(0)}>
-          Datos GENERALES
-        </Tab>
-        <Tab active={activeTab === 1} onClick={() => handleTabClick(1)}>
-          DATOS DEL GANADO
-        </Tab>
-        <Tab active={activeTab === 2} onClick={() => handleTabClick(2)}>
-          DATOS DEL VEHÍCULO
-        </Tab>
-      </TabsContainer>
-      {/* Tab Datos Generales */}
-      <TabContent active={activeTab === 0}>
-        <FormContainerDatosGenerales
-          onSubmit={handleSubmitGeneral((data) => onSubmitDatosGenerales(data, userId))}
-        >
-          <div>
-            <span>ESPECIE A MOVILIZAR</span>
-            <CheckboxContainer>
-              <CustomCheckboxInput
-                data={especies}
-                name="id_especie"
-                onSelectionChange={handleEspecieChange}
-              />
-            </CheckboxContainer>
-          </div>
-          <FormContent>
-            <div className="formSection">
-              <span>DATOS DEL REMITENTE (VENDEDOR)</span>
-              <CustomInput
-                label="Nombre"
-                name="sellName"
-                control={controlGeneral}
-                customFormDesign
-              />
-              <CustomInput
-                label="Domicilio"
-                name="sellAddress"
-                control={controlGeneral}
-                customFormDesign
-              />
-              <CustomInput
-                label="Municipio"
-                name="sellState"
-                control={controlGeneral}
-                customFormDesign
-              />
-            </div>
-            <div className="formSection">
-              <span>DATOS DEL DESTINATARIO (COMPRADOR)</span>
-              <CustomInput
-                label="Nombre"
-                name="buyerName"
-                control={controlGeneral}
-                customFormDesign
-              />
-              <CustomInput
-                label="Domicilio"
-                name="buyerAddress"
-                control={controlGeneral}
-                customFormDesign
-              />
-              <CustomInput
-                label="Municipio"
-                name="buyerState"
-                control={controlGeneral}
-                customFormDesign
-              />
-              <CustomInput
-                label="Rancho o predo"
-                name="buyerRanch"
-                control={controlGeneral}
-                customFormDesign
-              />
-            </div>
-          </FormContent>
-          <div>
-            <span>MOTIVO DE LA MOVILIZACIÓN</span>
-            <CheckboxContainer>
-              <CustomCheckboxInput
-                data={motivos}
-                name="id_motivo"
-                onSelectionChange={handleMotivoChange}
-              />
-            </CheckboxContainer>
-          </div>
-          <ButtonsContainer>
-            <CustomButton customDesign buttonText="Cancelar" />
-            <CustomButton buttonText="Continuar" type="submit" />
-          </ButtonsContainer>
-        </FormContainerDatosGenerales>
-      </TabContent>
-      {/* Tab Datos del ganado */}
-      <TabContent active={activeTab === 1}>
-        <AddContainer>
-          <CustomButton
-            buttonText="Agregar"
-            onClick={handleSubmit(onSubmitAnimal)}
-          />
-        </AddContainer>
-        <FormContainer onSubmit={handleSubmit(onSubmitAnimal)}>
-          <CustomInput
-            label="Patente o factura"
-            name="patente"
-            control={control}
-            fullWidth
-          />
-          <CustomSelect
-            label="Sexo"
-            name="sexo"
-            control={control}
-            data={[
-              { value: "macho", label: "Macho" },
-              { value: "hembra", label: "Hembra" },
-            ]}
-            fullWidth
-          />
-          <CustomSelect
-            label="Raza"
-            name="id_raza"
-            control={control}
-            data={razas}
-            fullWidth
-          />
-          <CustomInput label="Color" name="color" control={control} fullWidth />
-          <CustomInput
-            label="Arete siniiga"
-            name="siniiga"
-            control={control}
-            fullWidth
-          />
-          <CustomImage
-            name="animalImage"
-            onChange={(e) => {
-              const file = e.target.files[0];
-              if (file) {
-                const reader = new FileReader();
-                reader.onloadend = function () {
-                  // Aquí `reader.result` contiene la representación base64 de la imagen
-                  console.log("Imagen en base64:", reader.result);
-                  setImageUrl(reader.result); // Ahora `imageUrl` almacenará la cadena base64 de la imagen
-                };
-                reader.readAsDataURL(file);
-              }
-            }}
-          />
-        </FormContainer>
-        <div>
-          <TableStyled>
-            <TheadStyled>
-              <TrStyled>
-                <th>Número de animales</th>
-                <th>Patente ó factura</th>
-                <th>Sexo</th>
-                <th>Color</th>
-                <th>Raza</th>
-                <th>Arete</th>
-                <th>Figura de herraje</th>
-                <th>Acciones</th>
-              </TrStyled>
-            </TheadStyled>
-            <tbody>
-              {registerAnimals.map((registro, index) => (
-                <TrStyled key={index}>
-                  <td>{index + 1}</td>
-                  <td>{registro.patente}</td>
-                  <td>{registro.sexo}</td>
-                  <td>{registro.color}</td>
-                  <td>{registro.id_raza}</td>
-                  <td>{registro.siniiga}</td>
-                  <td>
-                    {registro.figura_herraje && (
-                      <Image
-                        src={registro.figura_herraje}
-                        alt="Animal"
-                        width={100} 
-                        height={100}
-                        layout="fixed"
-                      />
-                    )}
-                  </td>
+  const loading = () => {
+    return (
+      <Container>
+        <Skeleton height={50} variant="section" animation="wave" />
+        <div style={{ marginTop: "16px" }}>
+          <Skeleton height={500} variant="section" animation="wave" />
+        </div>
+      </Container>
+    );
+  };
 
-                  <td>
-                    <AccionButton onClick={() => handleDeleteAnimal(index)}>
-                      <MarkIcon icon={faXmark} />
-                    </AccionButton>
-                    {/* <AccionButton>
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+  }, []);
+
+  return (
+    <>
+      {isLoading ? (
+        loading()
+      ) : (
+        <Container>
+          <TabsContainer>
+            <Tab active={activeTab === 0} onClick={() => handleTabClick(0)}>
+              Datos GENERALES
+            </Tab>
+            <Tab active={activeTab === 1} onClick={() => handleTabClick(1)}>
+              DATOS DEL GANADO
+            </Tab>
+            <Tab active={activeTab === 2} onClick={() => handleTabClick(2)}>
+              DATOS DEL VEHÍCULO
+            </Tab>
+          </TabsContainer>
+          {/* Tab Datos Generales */}
+          <TabContent active={activeTab === 0}>
+            <FormContainerDatosGenerales
+              onSubmit={handleSubmitGeneral((data) =>
+                onSubmitDatosGenerales(data, userId)
+              )}
+            >
+              <div>
+                <span>ESPECIE A MOVILIZAR</span>
+                <CheckboxContainer>
+                  <CustomCheckboxInput
+                    data={especies}
+                    name="id_especie"
+                    onSelectionChange={handleEspecieChange}
+                  />
+                </CheckboxContainer>
+              </div>
+              <FormContent>
+                <div className="formSection">
+                  <span>DATOS DEL REMITENTE (VENDEDOR)</span>
+                  <CustomInput
+                    label="Nombre"
+                    name="sellName"
+                    control={controlGeneral}
+                    customFormDesign
+                  />
+                  <CustomInput
+                    label="Domicilio"
+                    name="sellAddress"
+                    control={controlGeneral}
+                    customFormDesign
+                  />
+                  <CustomInput
+                    label="Municipio"
+                    name="sellState"
+                    control={controlGeneral}
+                    customFormDesign
+                  />
+                </div>
+                <div className="formSection">
+                  <span>DATOS DEL DESTINATARIO (COMPRADOR)</span>
+                  <CustomInput
+                    label="Nombre"
+                    name="buyerName"
+                    control={controlGeneral}
+                    customFormDesign
+                  />
+                  <CustomInput
+                    label="Domicilio"
+                    name="buyerAddress"
+                    control={controlGeneral}
+                    customFormDesign
+                  />
+                  <CustomInput
+                    label="Municipio"
+                    name="buyerState"
+                    control={controlGeneral}
+                    customFormDesign
+                  />
+                  <CustomInput
+                    label="Rancho o predo"
+                    name="buyerRanch"
+                    control={controlGeneral}
+                    customFormDesign
+                  />
+                </div>
+              </FormContent>
+              <div>
+                <span>MOTIVO DE LA MOVILIZACIÓN</span>
+                <CheckboxContainer>
+                  <CustomCheckboxInput
+                    data={motivos}
+                    name="id_motivo"
+                    onSelectionChange={handleMotivoChange}
+                  />
+                </CheckboxContainer>
+              </div>
+              <ButtonsContainer>
+                <CustomButton customDesign buttonText="Cancelar" />
+                <CustomButton buttonText="Continuar" type="submit" />
+              </ButtonsContainer>
+            </FormContainerDatosGenerales>
+          </TabContent>
+          {/* Tab Datos del ganado */}
+          <TabContent active={activeTab === 1}>
+            <AddContainer>
+              <CustomButton
+                buttonText="Agregar"
+                onClick={handleSubmit(onSubmitAnimal)}
+              />
+            </AddContainer>
+            <FormContainer onSubmit={handleSubmit(onSubmitAnimal)}>
+              <CustomInput
+                label="Patente o factura"
+                name="patente"
+                control={control}
+                fullWidth
+              />
+              <CustomSelect
+                label="Sexo"
+                name="sexo"
+                control={control}
+                data={[
+                  { value: "macho", label: "Macho" },
+                  { value: "hembra", label: "Hembra" },
+                ]}
+                fullWidth
+              />
+              <CustomSelect
+                label="Raza"
+                name="id_raza"
+                control={control}
+                data={razas}
+                fullWidth
+              />
+              <CustomInput
+                label="Color"
+                name="color"
+                control={control}
+                fullWidth
+              />
+              <CustomInput
+                label="Arete siniiga"
+                name="siniiga"
+                control={control}
+                fullWidth
+              />
+              <CustomImage
+                name="animalImage"
+                onChange={(e) => {
+                  const file = e.target.files[0];
+                  if (file) {
+                    const reader = new FileReader();
+                    reader.onloadend = function () {
+                      // Aquí `reader.result` contiene la representación base64 de la imagen
+                      console.log("Imagen en base64:", reader.result);
+                      setImageUrl(reader.result); // Ahora `imageUrl` almacenará la cadena base64 de la imagen
+                    };
+                    reader.readAsDataURL(file);
+                  }
+                }}
+              />
+            </FormContainer>
+            <div>
+              <TableStyled>
+                <TheadStyled>
+                  <TrStyled>
+                    <th>Número de animales</th>
+                    <th>Patente ó factura</th>
+                    <th>Sexo</th>
+                    <th>Color</th>
+                    <th>Raza</th>
+                    <th>Arete</th>
+                    <th>Figura de herraje</th>
+                    <th>Acciones</th>
+                  </TrStyled>
+                </TheadStyled>
+                <tbody>
+                  {registerAnimals.map((registro, index) => (
+                    <TrStyled key={index}>
+                      <td>{index + 1}</td>
+                      <td>{registro.patente}</td>
+                      <td>{registro.sexo}</td>
+                      <td>{registro.color}</td>
+                      <td>{registro.id_raza}</td>
+                      <td>{registro.siniiga}</td>
+                      <td>
+                        {registro.figura_herraje && (
+                          <Image
+                            src={registro.figura_herraje}
+                            alt="Animal"
+                            width={100}
+                            height={100}
+                            layout="fixed"
+                          />
+                        )}
+                      </td>
+
+                      <td>
+                        <AccionButton onClick={() => handleDeleteAnimal(index)}>
+                          <MarkIcon icon={faXmark} />
+                        </AccionButton>
+                        {/* <AccionButton>
                       <PenIcon icon={faPen} />
                     </AccionButton> */}
-                  </td>
-                </TrStyled>
-              ))}
-            </tbody>
-          </TableStyled>
-        </div>
-        <ButtonsContainer>
-          <CustomButton customDesign buttonText="Cancelar" />
-          <CustomButton
-            buttonText="Continuar"
-            onClick={handleClickContinuar}
-            type="button"
-          />
-        </ButtonsContainer>
-      </TabContent>
-      {/* Tab Datos del vehiculo */}
-      <TabContent active={activeTab === 2}>
-        <FormContainerDatosGenerales
-          onSubmit={handleSubmitVehic(onSubmitVehicule)}
-        >
-          <span>DETALLES</span>
-          <DetailsGrid>
-            <CustomInput
-              label="Tipo"
-              name="type"
-              control={controlVehic}
-              fullWidth
-            />
-            <CustomInput
-              label="Marca"
-              name="brand"
-              control={controlVehic}
-              fullWidth
-            />
-            <CustomInput
-              label="Modelo"
-              name="model"
-              control={controlVehic}
-              fullWidth
-            />
-            <CustomInput
-              label="Placa"
-              name="plate"
-              control={controlVehic}
-              fullWidth
-            />
-            <div className="fullWidth">
-              <span>Remolque</span>
-              <CheckboxContainerBoolean>
-                <CustomCheckboxInput
-                  label="Opciones"
-                  name="remolque"
-                  data={[
-                    { value: "si", label: "Si" },
-                    { value: "no", label: "No" },
-                  ]}
+                      </td>
+                    </TrStyled>
+                  ))}
+                </tbody>
+              </TableStyled>
+            </div>
+            <ButtonsContainer>
+              <CustomButton customDesign buttonText="Cancelar" />
+              <CustomButton
+                buttonText="Continuar"
+                onClick={handleClickContinuar}
+                type="button"
+              />
+            </ButtonsContainer>
+          </TabContent>
+          {/* Tab Datos del vehiculo */}
+          <TabContent active={activeTab === 2}>
+            <FormContainerDatosGenerales
+              onSubmit={handleSubmitVehic(onSubmitVehicule)}
+            >
+              <span>DETALLES</span>
+              <DetailsGrid>
+                <CustomInput
+                  label="Tipo"
+                  name="type"
                   control={controlVehic}
-                  onSelectionChange={handleOptionsChange}
                   fullWidth
                 />
-              </CheckboxContainerBoolean>
-            </div>
-            <CustomInput
-              label="Color"
-              name="trailerColor"
-              control={controlVehic}
-              className="halfWidth"
-              fullWidth
-            />
-            <CustomInput
-              label="Nombre del operador del vehiculo"
-              name="vehicleName"
-              control={controlVehic}
-              className="halfWidth"
-              fullWidth
-            />
-          </DetailsGrid>
-          <ButtonsContainer>
-            <CustomButton customDesign buttonText="Cancelar" />
-            <CustomButton buttonText="Confirmar" type="submit" />
-          </ButtonsContainer>
-        </FormContainerDatosGenerales>
-      </TabContent>
-    </Container>
+                <CustomInput
+                  label="Marca"
+                  name="brand"
+                  control={controlVehic}
+                  fullWidth
+                />
+                <CustomInput
+                  label="Modelo"
+                  name="model"
+                  control={controlVehic}
+                  fullWidth
+                />
+                <CustomInput
+                  label="Placa"
+                  name="plate"
+                  control={controlVehic}
+                  fullWidth
+                />
+                <div className="fullWidth">
+                  <span>Remolque</span>
+                  <CheckboxContainerBoolean>
+                    <CustomCheckboxInput
+                      label="Opciones"
+                      name="remolque"
+                      data={[
+                        { value: "si", label: "Si" },
+                        { value: "no", label: "No" },
+                      ]}
+                      control={controlVehic}
+                      onSelectionChange={handleOptionsChange}
+                      fullWidth
+                    />
+                  </CheckboxContainerBoolean>
+                </div>
+                <CustomInput
+                  label="Color"
+                  name="trailerColor"
+                  control={controlVehic}
+                  className="halfWidth"
+                  fullWidth
+                />
+                <CustomInput
+                  label="Nombre del operador del vehiculo"
+                  name="vehicleName"
+                  control={controlVehic}
+                  className="halfWidth"
+                  fullWidth
+                />
+              </DetailsGrid>
+              <ButtonsContainer>
+                <CustomButton customDesign buttonText="Cancelar" />
+                <CustomButton buttonText="Confirmar" type="submit" />
+              </ButtonsContainer>
+            </FormContainerDatosGenerales>
+          </TabContent>
+        </Container>
+      )}
+    </>
   );
 };
 
