@@ -38,9 +38,11 @@ import CustomImage from "@/components/CustomImage";
 import OrderRepo from "@/infraestructure/implementation/httpRequest/axios/OrderRepo";
 import CreateOrderUseCase from "@/application/usecases/orderUseCase/CreateOrderUseCase";
 import { useRouter } from "next/router";
+import { useSelector } from "react-redux";
 
 const Form = () => {
   const router = useRouter();
+  const userId = useSelector((state) => state.user._id);
   const [registerAnimals, setRegisterAnimals] = useState([]);
   const [registerGenerals, setRegisterGeneral] = useState([]);
   const [registerVehicule, setRegisterVehicule] = useState([]);
@@ -89,12 +91,11 @@ const Form = () => {
   const orderRepo = new OrderRepo();
   const createOrderUseCase = new CreateOrderUseCase(orderRepo);
 
-  const onSubmitDatosGenerales = (data) => {
+  const onSubmitDatosGenerales = (data, userId) => {
     const datosGenerales = {
       id_especie: selectedEspecie,
       id_motivo: selectedMotivo,
-      // Cambiar el id_user, esto sera implementado con el local storage de redux
-      id_user: "65ac5d280c369418e04c7f9a",
+      id_user: userId,
       vendedor: {
         nombre: data.sellName,
         domicilio: data.sellAddress,
