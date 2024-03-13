@@ -59,3 +59,9 @@ export const Option = styled.div`
     height: 20px;
   }
 `;
+
+export const OptionDisable = styled(Option)`
+  &:hover{
+    color: #888;
+  }
+`;

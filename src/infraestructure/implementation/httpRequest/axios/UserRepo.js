@@ -2,10 +2,12 @@ import IUserRepo from "@/domain/repositories/IUserRepo";
 import axios from "axios";
 import Cookies from "js-cookie";
 import CryptoJS from "crypto-js";
+import { setUser } from "@/actions/userActions";
 
 class UserRepo extends IUserRepo {
-  constructor() {
+  constructor(dispatch) {
     super();
+    this.dispatch = dispatch;
     this.url = "http://localhost:3000/api/users";
     this.urlSignIn = "http://localhost:3000/api/signin";
     this.urlSignUp = "http://localhost:3000/api/signup";
@@ -32,23 +34,19 @@ class UserRepo extends IUserRepo {
           "Content-Type": "application/json",
         },
       });
-
-      if (response.data && response.data._id) {
-        return response.data;
-      } else {
-        throw new Error("Invalid credentials or unexpected server response");
-      }
+      this.dispatch(setUser(response.data));
+      return response.data;
     } catch (error) {
       console.error("Error signing in:", error.message);
       throw error;
     }
   }
 
-  async signUp(user){
+  async signUp(user) {
     try {
-      const response = await axios.post(this.urlSignUp, user,{
+      const response = await axios.post(this.urlSignUp, user, {
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
       });
       return response.data;
