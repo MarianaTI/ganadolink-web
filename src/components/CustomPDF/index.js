@@ -4,6 +4,7 @@ export const generatePDF = (order) => {
   const doc = new jsPDF();
   const titleFontSize = 15;
   const dataFontSize = 12;
+  const columnTitleFontSize = 14;
   const titleFirstLine = "DIRECCIÓN GENERAL DE GANADERÍA Y ACUACULTURA";
   const titleSecondLine = "GUÍA DE TRÁNSITO";
   const titleThirdLine = "DE GANADOS, PRODUCTOS Y SUBPRODUCTOS";
@@ -21,38 +22,46 @@ export const generatePDF = (order) => {
   doc.text(titleSecondLine, doc.internal.pageSize.width / 2, 27, { align: "center" });
   doc.text(titleThirdLine, doc.internal.pageSize.width / 2, 37, { align: "center" });
 
+  // Fecha y folio
   const fecha = new Date().toLocaleDateString();
   const folio = "123456";
-  const fechaX = 158; // Ajustado para alinear con el logo
+  const fechaX = 157; // Ajustado para alinear con el logo
   const fechaY = 50; // Posición debajo del logo
   doc.text(`Fecha: ${fecha}`, fechaX, fechaY);
   doc.text(`Folio: ${folio}`, fechaX, fechaY + 10); // Ajustado debajo de la fecha
 
-  let yPos = 70; // Ajustado para que los datos comiencen más abajo
-
   // Datos específicos de la fila seleccionada
   doc.setFontSize(dataFontSize);
-  doc.text(`_id: ${order._id}`, 20, yPos);
-  yPos += 10;
-  doc.text(`Especie: ${order.id_especie ? order.id_especie.name : ""}`, 20, yPos);
-  yPos += 10;
-  doc.text(`Motivo: ${order.id_motivo ? order.id_motivo.name : ""}`, 20, yPos);
-  yPos += 10;
 
-  // Mostrar los datos específicos del vendedor si están definidos
-  if (order.vendedor && order.vendedor.nombre) {
-    let vendedorText = `Vendedor: ${order.vendedor.nombre}`;
-    if (order.vendedor.direccion)
-      vendedorText += `, ${order.vendedor.direccion}`;
-    if (order.vendedor.ciudad) vendedorText += `, ${order.vendedor.ciudad}`;
-    if (order.vendedor.estado) vendedorText += `, ${order.vendedor.estado}`;
-    doc.text(vendedorText, 20, yPos);
-    yPos += 10;
+  // Tarjeta de datos
+  const cardWidth = doc.internal.pageSize.width * 0.9; // 90% del ancho de la página
+  const cardHeight = 120; // Ajustado para dar espacio para los datos
+  const cardX = (doc.internal.pageSize.width - cardWidth) / 2;
+  const cardY = 85; // Ajustado para que el card esté más abajo
+  const columnWidth = cardWidth / 3; // Ancho de cada columna
+  const borderRadius = 3;
+
+  // Dibujar bordes de la tarjeta
+  doc.setLineWidth(0.3); // Grosor del borde
+  doc.setDrawColor(0); // Color del borde (negro)
+  doc.setFillColor(255); // Color de fondo (blanco)
+  doc.roundedRect(cardX, cardY, cardWidth, cardHeight, borderRadius, borderRadius, "FD");
+
+  // Títulos de las columnas
+  doc.setFontSize(columnTitleFontSize);
+  doc.text("Ganado:", cardX + 5, cardY + 15);
+  doc.text("Comprador:", cardX + columnWidth + 5, cardY + 15);
+  doc.text("Vendedor:", cardX + 2 * columnWidth + 5, cardY + 15);
+
+  // Datos de ganado
+  if (Array.isArray(order.ganado) && order.ganado.length > 0) {
+    doc.setFontSize(dataFontSize);
+    doc.text(`${order.ganado[0].siniiga}`, cardX + 5, cardY + 30);
   }
 
-  // Mostrar los datos específicos del comprador si están definidos
+  // Datos de comprador
   if (order.comprador && order.comprador.nombre) {
-    let compradorText = `Comprador: ${order.comprador.nombre}`;
+    let compradorText = `${order.comprador.nombre}`;
     if (order.comprador.direccion)
       compradorText += `, ${order.comprador.direccion}`;
     if (order.comprador.ciudad)
@@ -60,24 +69,17 @@ export const generatePDF = (order) => {
     if (order.comprador.estado)
       compradorText += `, ${order.comprador.estado}`;
     if (order.comprador.otros) compradorText += `, ${order.comprador.otros}`;
-    doc.text(compradorText, 20, yPos);
-    yPos += 10;
+    doc.text(compradorText, cardX + columnWidth + 5, cardY + 30);
   }
 
-  // Mostrar los datos anidados del ganado
-  if (Array.isArray(order.ganado) && order.ganado.length > 0) {
-    order.ganado.forEach((ganado, index) => {
-      doc.text(`Ganado ${index + 1}: ${ganado.siniiga}`, 20, yPos);
-      yPos += 10;
-    });
-  }
-
-  // Mostrar los datos del vehículo si están definidos
-  if (order.vehiculo) {
-    let vehiculoText = `Vehículo: ${order.vehiculo.marca} ${order.vehiculo.modelo}`;
-    if (order.vehiculo.placa) vehiculoText += ` (${order.vehiculo.placa})`;
-    doc.text(vehiculoText, 20, yPos);
-    yPos += 10;
+  // Datos de vendedor
+  if (order.vendedor && order.vendedor.nombre) {
+    let vendedorText = `${order.vendedor.nombre}`;
+    if (order.vendedor.direccion)
+      vendedorText += `, ${order.vendedor.direccion}`;
+    if (order.vendedor.ciudad) vendedorText += `, ${order.vendedor.ciudad}`;
+    if (order.vendedor.estado) vendedorText += `, ${order.vendedor.estado}`;
+    doc.text(vendedorText, cardX + 2 * columnWidth + 5, cardY + 30);
   }
 
   // Guardar y descargar el PDF
