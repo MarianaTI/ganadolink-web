@@ -1,14 +1,18 @@
-import React, { useRef, useEffect } from "react";
-import { Container, DropdownContainer, Option } from "./index.style";
+import React, { useRef, useEffect, use, useState } from "react";
+import { Container, DropdownContainer, Option, OptionDisable } from "./index.style";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
 import { User } from "react-feather";
 import { UserIcon } from "../CustomNavbar/index.style";
 import { useRouter } from "next/router";
 import Cookies from "js-cookie";
+import { useSelector } from "react-redux";
 
 const CustomUser = ({ isOpen, toggleDropdown, handleOptionClick }) => {
+  const name = useSelector((state) => state.user.name);
   const route = useRouter();
+  const [isClient, setIsClient] = useState(false);
+  const [userName, setUserName] = useState("");
   const dropdownRef = useRef(null);
 
   useEffect(() => {
@@ -39,6 +43,12 @@ const CustomUser = ({ isOpen, toggleDropdown, handleOptionClick }) => {
     }
   };
 
+  useEffect(() => {
+    setIsClient(true)
+    const userLogged = JSON.parse(sessionStorage.getItem("authToken"));
+    setUserName(name);
+  })
+
   return (
     <Container>
       <UserIcon onClick={handleUserIconClick}>
@@ -46,6 +56,9 @@ const CustomUser = ({ isOpen, toggleDropdown, handleOptionClick }) => {
       </UserIcon>
       {isOpen && (
         <DropdownContainer ref={dropdownRef} isOpen={isOpen}>
+          <OptionDisable>
+            {isClient ? name : "Cargando"}
+          </OptionDisable>
           <Option className="option" onClick={handleSignOut}>
             <FontAwesomeIcon icon={faSignOutAlt} />
             Cerrar Sesión
