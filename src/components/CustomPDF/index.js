@@ -25,7 +25,7 @@ export const generatePDF = (order) => {
   // Fecha y folio
   const fecha = new Date().toLocaleDateString();
   const folio = "123456";
-  const fechaX = 157; // Ajustado para alinear con el logo
+  const fechaX = 158; // Ajustado para alinear con el logo
   const fechaY = 50; // Posición debajo del logo
   doc.text(`Fecha: ${fecha}`, fechaX, fechaY);
   doc.text(`Folio: ${folio}`, fechaX, fechaY + 10); // Ajustado debajo de la fecha
@@ -47,16 +47,39 @@ export const generatePDF = (order) => {
   doc.setFillColor(255); // Color de fondo (blanco)
   doc.roundedRect(cardX, cardY, cardWidth, cardHeight, borderRadius, borderRadius, "FD");
 
-  // Títulos de las columnas
+  // Dibujar rectángulo como sidebar
+  const sidebarWidth = 30; // Ancho del sidebar
+  const sidebarX = cardX; // Posición X del sidebar es igual a la posición X del card
+  doc.setLineWidth(0.3); // Grosor del borde del sidebar igual al del card
+  doc.setDrawColor(0); // Color del borde (negro) del sidebar igual al del card
+  doc.setFillColor(200); // Color del relleno del sidebar igual al del card
+  doc.roundedRect(sidebarX, cardY, sidebarWidth, cardHeight, borderRadius, borderRadius, "FD");
+
+  // Título dentro del sidebar (Arete Siniiga)
+  doc.setTextColor(0); // Color del texto (blanco)
   doc.setFontSize(columnTitleFontSize);
-  doc.text("Ganado:", cardX + 5, cardY + 15);
-  doc.text("Comprador:", cardX + columnWidth + 5, cardY + 15);
-  doc.text("Vendedor:", cardX + 2 * columnWidth + 5, cardY + 15);
+  const areteTitleX = sidebarX + sidebarWidth / 6; // Centrado horizontalmente
+  doc.text("ARETE", areteTitleX, cardY + 15, { align: "justify" });
+  doc.text("SINIIGA", areteTitleX, cardY + 23, { align: "justify" });
+
+  // Datos de Arete Siniiga
+  if (Array.isArray(order.ganado) && order.ganado.length > 0) {
+    doc.setFontSize(columnTitleFontSize);
+    doc.text(`${order.ganado[0].siniiga}`, areteTitleX, cardY + 35, { align: "justify" });
+  }
+
+  // Títulos de las columnas
+  doc.setTextColor(0); // Restaurar el color del texto a negro
+  doc.setFontSize(columnTitleFontSize);
+  doc.text("Ganado:", cardX + sidebarWidth + 5, cardY + 7);
+  // Mover la columna del comprador un poco a la izquierda
+  doc.text("Comprador:", cardX + sidebarWidth + columnWidth + 1.7, cardY + 7);
+  doc.text("Vendedor:", cardX + sidebarWidth + 2 * columnWidth + 5, cardY + 7);
 
   // Datos de ganado
   if (Array.isArray(order.ganado) && order.ganado.length > 0) {
     doc.setFontSize(dataFontSize);
-    doc.text(`${order.ganado[0].siniiga}`, cardX + 5, cardY + 30);
+    doc.text(`${order.ganado[0].siniiga}`, cardX + sidebarWidth + 5, cardY + 17);
   }
 
   // Datos de comprador
@@ -69,7 +92,8 @@ export const generatePDF = (order) => {
     if (order.comprador.estado)
       compradorText += `, ${order.comprador.estado}`;
     if (order.comprador.otros) compradorText += `, ${order.comprador.otros}`;
-    doc.text(compradorText, cardX + columnWidth + 5, cardY + 30);
+    // Mover los datos del comprador a la izquierda
+    doc.text(compradorText, cardX + sidebarWidth + columnWidth + 1.7, cardY + 17);
   }
 
   // Datos de vendedor
@@ -79,8 +103,12 @@ export const generatePDF = (order) => {
       vendedorText += `, ${order.vendedor.direccion}`;
     if (order.vendedor.ciudad) vendedorText += `, ${order.vendedor.ciudad}`;
     if (order.vendedor.estado) vendedorText += `, ${order.vendedor.estado}`;
-    doc.text(vendedorText, cardX + 2 * columnWidth + 5, cardY + 30);
+    doc.text(vendedorText, cardX + sidebarWidth + 2 * columnWidth + 5, cardY + 17);
   }
+
+  // Datos del vehículo centrados debajo de las columnas
+  const vehicleData = order.vehiculo ? `${order.vehiculo.marca} ${order.vehiculo.modelo}${order.vehiculo.placa ? ` (${order.vehiculo.placa})` : ''}` : '';
+  doc.text(vehicleData, (doc.internal.pageSize.width) / 1.8, cardY + cardHeight - 15, { align: "center" });
 
   // Guardar y descargar el PDF
   doc.save("fila_seleccionada.pdf");
