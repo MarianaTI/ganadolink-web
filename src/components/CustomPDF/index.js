@@ -2,74 +2,89 @@ import { jsPDF } from "jspdf";
 
 export const generatePDF = (order) => {
   const doc = new jsPDF();
-  const titleFontSize = 20;
-  const titleLineHeight = 10;
-  const titleFirstLine = "Dirección general de ganadería y acuacultura";
-  const titleSecondLine = "Guía de tránsito";
-  const titleThirdLine = "de ganados, productos y subproductos";
+  const titleFontSize = 15;
+  const dataFontSize = 12;
+  const columnTitleFontSize = 14;
+  const titleFirstLine = "DIRECCIÓN GENERAL DE GANADERÍA Y ACUACULTURA";
+  const titleSecondLine = "GUÍA DE TRÁNSITO";
+  const titleThirdLine = "DE GANADOS, PRODUCTOS Y SUBPRODUCTOS";
 
-  // Calcular la posición x para centrar los títulos
-  const titleFirstLineWidth = doc.getStringUnitWidth(titleFirstLine) * titleFontSize / doc.internal.scaleFactor;
-  const titleSecondLineWidth = doc.getStringUnitWidth(titleSecondLine) * titleFontSize / doc.internal.scaleFactor;
-  const titleThirdLineWidth = doc.getStringUnitWidth(titleThirdLine) * titleFontSize / doc.internal.scaleFactor;
-  const centerX = (doc.internal.pageSize.width - Math.max(titleFirstLineWidth, titleSecondLineWidth, titleThirdLineWidth)) / 2;
-
-  // Agregar las tres líneas de título al PDF
-  doc.setFontSize(titleFontSize);
-  doc.text(titleFirstLine, centerX, 17, { align: "justify" });
-  doc.text(titleSecondLine, centerX, 17 + titleLineHeight, { align: "justify" });
-  doc.text(titleThirdLine, centerX, 17 + titleLineHeight * 2, { align: "justify" });
-
-  // Agregar espacios entre los títulos y los siguientes elementos
-  const titleBottomMargin = 15 + titleLineHeight * 3;
-
-  // Agregar el logo de la empresa y el nombre
-  const logoWidth = 16; // Ancho del logo
-  const logoHeight = 16; // Altura del logo
-  const logoX = 20; // Posición X del logo
-  const logoY = titleBottomMargin + 10; // Posición Y del logo
-  const empresaNombre = "Ganado Link"; // Nombre de la empresa
-  const nombreX = logoX + logoWidth / 2; // Centrar el nombre debajo del logo
-  const nombreY = logoY + logoHeight + 5; // Ajustar la posición vertical
+  // Logo en la esquina superior izquierda
+  const logoWidth = 32;
+  const logoHeight = 32;
+  const logoX = 10; // Ajustado a la izquierda
+  const logoY = 10;
   doc.addImage('/img/Logo.png', 'PNG', logoX, logoY, logoWidth, logoHeight);
-  doc.text(empresaNombre, nombreX, nombreY, { align: "center" });
 
-  // Agregar la fecha y el número de folio
+  // Títulos
+  doc.setFontSize(titleFontSize);
+  doc.text(titleFirstLine, doc.internal.pageSize.width / 2, 17, { align: "center" });
+  doc.text(titleSecondLine, doc.internal.pageSize.width / 2, 27, { align: "center" });
+  doc.text(titleThirdLine, doc.internal.pageSize.width / 2, 37, { align: "center" });
+
+  // Fecha y folio
   const fecha = new Date().toLocaleDateString();
-  const folio = "123456"; // Número de folio
-  const fechaX = doc.internal.pageSize.width - 60; // Posición X de la fecha
-  const fechaY = logoY + 10; // Posición Y de la fecha
+  const folio = "123456";
+  const fechaX = 158; // Ajustado para alinear con el logo
+  const fechaY = 50; // Posición debajo del logo
   doc.text(`Fecha: ${fecha}`, fechaX, fechaY);
-  doc.text(`Folio: ${folio}`, fechaX, fechaY + 10);
+  doc.text(`Folio: ${folio}`, fechaX, fechaY + 10); // Ajustado debajo de la fecha
 
-  // Convertir las ID de especie y motivo en texto legible
-  const especie = order.id_especie ? order.id_especie.name : "";
-  const motivo = order.id_motivo ? order.id_motivo.name : "";
+  // Datos específicos de la fila seleccionada
+  doc.setFontSize(dataFontSize);
 
-  // Mostrar los datos de la fila en forma de lista en el PDF
-  let yPos = titleBottomMargin + 50; // Posición inicial después del título
-  doc.setFontSize(12);
-  doc.text(`_id: ${order._id}`, 20, yPos);
-  yPos += 10;
-  doc.text(`Especie: ${especie}`, 20, yPos);
-  yPos += 10;
-  doc.text(`Motivo: ${motivo}`, 20, yPos);
-  yPos += 10;
+  // Tarjeta de datos
+  const cardWidth = doc.internal.pageSize.width * 0.9; // 90% del ancho de la página
+  const cardHeight = 120; // Ajustado para dar espacio para los datos
+  const cardX = (doc.internal.pageSize.width - cardWidth) / 2;
+  const cardY = 85; // Ajustado para que el card esté más abajo
+  const columnWidth = cardWidth / 3; // Ancho de cada columna
+  const borderRadius = 3;
 
-  // Mostrar los datos específicos del vendedor si están definidos
-  if (order.vendedor && order.vendedor.nombre) {
-    let vendedorText = `Vendedor: ${order.vendedor.nombre}`;
-    if (order.vendedor.direccion)
-      vendedorText += `, ${order.vendedor.direccion}`;
-    if (order.vendedor.ciudad) vendedorText += `, ${order.vendedor.ciudad}`;
-    if (order.vendedor.estado) vendedorText += `, ${order.vendedor.estado}`;
-    doc.text(vendedorText, 20, yPos);
-    yPos += 10;
+  // Dibujar bordes de la tarjeta
+  doc.setLineWidth(0.3); // Grosor del borde
+  doc.setDrawColor(0); // Color del borde (negro)
+  doc.setFillColor(255); // Color de fondo (blanco)
+  doc.roundedRect(cardX, cardY, cardWidth, cardHeight, borderRadius, borderRadius, "FD");
+
+  // Dibujar rectángulo como sidebar
+  const sidebarWidth = 30; // Ancho del sidebar
+  const sidebarX = cardX; // Posición X del sidebar es igual a la posición X del card
+  doc.setLineWidth(0.3); // Grosor del borde del sidebar igual al del card
+  doc.setDrawColor(0); // Color del borde (negro) del sidebar igual al del card
+  doc.setFillColor(200); // Color del relleno del sidebar igual al del card
+  doc.roundedRect(sidebarX, cardY, sidebarWidth, cardHeight, borderRadius, borderRadius, "FD");
+
+  // Título dentro del sidebar (Arete Siniiga)
+  doc.setTextColor(0); // Color del texto (blanco)
+  doc.setFontSize(columnTitleFontSize);
+  const areteTitleX = sidebarX + sidebarWidth / 6; // Centrado horizontalmente
+  doc.text("ARETE", areteTitleX, cardY + 15, { align: "justify" });
+  doc.text("SINIIGA", areteTitleX, cardY + 23, { align: "justify" });
+
+  // Datos de Arete Siniiga
+  if (Array.isArray(order.ganado) && order.ganado.length > 0) {
+    doc.setFontSize(columnTitleFontSize);
+    doc.text(`${order.ganado[0].siniiga}`, areteTitleX, cardY + 35, { align: "justify" });
   }
 
-  // Mostrar los datos específicos del comprador si están definidos
+  // Títulos de las columnas
+  doc.setTextColor(0); // Restaurar el color del texto a negro
+  doc.setFontSize(columnTitleFontSize);
+  doc.text("Ganado:", cardX + sidebarWidth + 5, cardY + 7);
+  // Mover la columna del comprador un poco a la izquierda
+  doc.text("Comprador:", cardX + sidebarWidth + columnWidth + 1.7, cardY + 7);
+  doc.text("Vendedor:", cardX + sidebarWidth + 2 * columnWidth + 5, cardY + 7);
+
+  // Datos de ganado
+  if (Array.isArray(order.ganado) && order.ganado.length > 0) {
+    doc.setFontSize(dataFontSize);
+    doc.text(`${order.ganado[0].siniiga}`, cardX + sidebarWidth + 5, cardY + 17);
+  }
+
+  // Datos de comprador
   if (order.comprador && order.comprador.nombre) {
-    let compradorText = `Comprador: ${order.comprador.nombre}`;
+    let compradorText = `${order.comprador.nombre}`;
     if (order.comprador.direccion)
       compradorText += `, ${order.comprador.direccion}`;
     if (order.comprador.ciudad)
@@ -77,27 +92,23 @@ export const generatePDF = (order) => {
     if (order.comprador.estado)
       compradorText += `, ${order.comprador.estado}`;
     if (order.comprador.otros) compradorText += `, ${order.comprador.otros}`;
-    doc.text(compradorText, 20, yPos);
-    yPos += 10;
+    // Mover los datos del comprador a la izquierda
+    doc.text(compradorText, cardX + sidebarWidth + columnWidth + 1.7, cardY + 17);
   }
 
-  // Mostrar los datos anidados de ganado
-  if (Array.isArray(order.ganado) && order.ganado.length > 0) {
-    order.ganado.forEach((ganado, index) => {
-      doc.text(`Ganado ${index + 1}: ${ganado.siniiga}`, 20, yPos);
-      yPos += 10;
-    });
+  // Datos de vendedor
+  if (order.vendedor && order.vendedor.nombre) {
+    let vendedorText = `${order.vendedor.nombre}`;
+    if (order.vendedor.direccion)
+      vendedorText += `, ${order.vendedor.direccion}`;
+    if (order.vendedor.ciudad) vendedorText += `, ${order.vendedor.ciudad}`;
+    if (order.vendedor.estado) vendedorText += `, ${order.vendedor.estado}`;
+    doc.text(vendedorText, cardX + sidebarWidth + 2 * columnWidth + 5, cardY + 17);
   }
 
-  // Mostrar los datos del vehículo si están definidos
-  if (order.vehiculo) {
-    let vehiculoText = `Vehículo: ${order.vehiculo.marca} ${
-      order.vehiculo.modelo
-    }`;
-    if (order.vehiculo.placa) vehiculoText += ` (${order.vehiculo.placa})`;
-    doc.text(vehiculoText, 20, yPos);
-    yPos += 10;
-  }
+  // Datos del vehículo centrados debajo de las columnas
+  const vehicleData = order.vehiculo ? `${order.vehiculo.marca} ${order.vehiculo.modelo}${order.vehiculo.placa ? ` (${order.vehiculo.placa})` : ''}` : '';
+  doc.text(vehicleData, (doc.internal.pageSize.width) / 1.8, cardY + cardHeight - 15, { align: "center" });
 
   // Guardar y descargar el PDF
   doc.save("fila_seleccionada.pdf");
