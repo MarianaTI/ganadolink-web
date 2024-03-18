@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import {
   Container,
-  EyeIcon,
+  EyeIcon, // Asegúrate de importar el componente EyeIcon correctamente
   FormStyled,
   GridContainer,
   GridForm,
@@ -15,15 +15,14 @@ import CustomButton from "@/components/CustomButton";
 import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 import User from "@/domain/entities/user";
 import UserRepo from "@/infraestructure/implementation/httpRequest/axios/UserRepo";
-import SignUpUserUseCase from "@/application/usecases/userUseCase/SignUpUserCase";
-import Cookies from "js-cookie";
+import UpdateUserUseCase from "@/application/usecases/userUseCase/UpdateUserCase";
 import { useRouter } from "next/router";
 import CryptoJS from "crypto-js";
-import CustomSelect from "@/components/CustomSelect"; 
+import CustomSelect from "@/components/CustomSelect";
 import CustomAlert from "@/components/CustomAlert";
 import CustomAlertSeverity from "@/components/CustomAlertSeverity";
 
-const SignUp = () => {
+const Update = () => {
   const route = useRouter();
   const [isShowPassword, setShowPassword] = useState(false);
   const {
@@ -38,17 +37,17 @@ const SignUp = () => {
     },
   });
 
-  const onSignUpSubmit = async (data) => {
+  const updateSubmit = async (data) => {
     const user = new User(null, data.name, data.rol, data.email, data.password);
     const userRepo = new UserRepo();
-    const signUpUseCase = new SignUpUserUseCase(userRepo);
+    const updateUseCase = new UpdateUserUseCase(userRepo);
 
     try {
-      const signUpResponse = await signUpUseCase.run(user);
-      console.log(signUpResponse);
+      const updateResponse = await updateUseCase.run(user);
+      console.log(updateResponse);
       route.push("/users");
     } catch (error) {
-      console.error("Error durante el registro:", error);
+      console.error("Error durante la actualización:", error);
     }
   };
 
@@ -60,23 +59,14 @@ const SignUp = () => {
     <Container>
       <GridContainer>
         <GridForm>
+          <h3>Actualizar Datos</h3>
           {/* logo */}
           <Image src="/img/Logo.png" alt="logo" width={148} height={150} />
-          <FormStyled onSubmit={handleSubmit(onSignUpSubmit)}>
+          <FormStyled onSubmit={handleSubmit(updateSubmit)}>
             {/* campos a llenar para el registro */}
-            <CustomInput
-              label="Nombre"
-              name="name"
-              control={control}
-              fullWidth
-            />
+            <CustomInput label="Nombre" name="name" control={control} fullWidth />
 
-            <CustomInput
-              label="Email"
-              name="email"
-              control={control}
-              fullWidth
-            />
+            <CustomInput label="Email" name="email" control={control} fullWidth />
 
             <CustomInput
               type={isShowPassword ? "text" : "password"}
@@ -86,22 +76,14 @@ const SignUp = () => {
               control={control}
               icon={
                 isShowPassword ? (
-                  <EyeIcon
-                    icon={faEyeSlash}
-                    onClick={togglePasswordVisibility}
-                  />
+                  <EyeIcon icon={faEyeSlash} onClick={togglePasswordVisibility} />
                 ) : (
                   <EyeIcon icon={faEye} onClick={togglePasswordVisibility} />
                 )
               }
             />
             
-            <CustomButton
-              buttonText="Registrar"
-              fullWidth
-              type="submit"
-              onClick={handleSubmit(onSignUpSubmit)}
-            />
+            <CustomButton buttonText="Actualizar" fullWidth type="submit" />
           </FormStyled>
         </GridForm>
       </GridContainer>
@@ -109,4 +91,4 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+export default Update;
