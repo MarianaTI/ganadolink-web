@@ -54,6 +54,60 @@ class UserRepo extends IUserRepo {
       console.log("Error signUp:", error.message);
     }
   }
+
+  async delete(id) {
+    try {
+      const encryptedToken = Cookies.get("authToken");
+      const bytes = CryptoJS.AES.decrypt(encryptedToken, "cookie-encrypted");
+      const token = bytes.toString(CryptoJS.enc.Utf8);
+
+      const response = await axios.delete(`${this.url}/${id}`, {
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (
+        response.data &&
+        response.data.message === "User deleted successfully"
+      ) {
+        return true; // Usuario eliminado correctamente
+      } else {
+        throw new Error("Unexpected server response");
+      }
+    } catch (error) {
+      console.error("Error deleting user:", error.message);
+      throw error;
+    }
+  }
+
+  async update(id, userData) {
+    try {
+      const encryptedToken = Cookies.get("authToken");
+      const bytes = CryptoJS.AES.decrypt(encryptedToken, "cookie-encrypted");
+      const token = bytes.toString(CryptoJS.enc.Utf8);
+
+      const response = await axios.put(`${this.url}/${id}`, userData, {
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (
+        response.data &&
+        response.data.message === "User updated"
+      ) {
+        return true; // Usuario actualizado correctamente
+      } else {
+        throw new Error("Unexpected server response");
+      }
+    } catch (error) {
+      console.error("Error updating user:", error.message);
+      throw error;
+    }
+  }
 }
 
 export default UserRepo;
