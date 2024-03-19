@@ -1,9 +1,12 @@
+import GetAllEspecieRepo from "@/application/usecases/especieUseCase/GetAllEspecieCase";
+import { faXmark, faPen } from "@fortawesome/free-solid-svg-icons";
 import GetOneOrderUseCase from "@/application/usecases/orderUseCase/GetOneOrderUseCase";
 import CustomButton from "@/components/CustomButton";
 import CustomImage from "@/components/CustomImage";
 import CustomInput from "@/components/CustomInput";
 import CustomCheckboxInput from "@/components/CustomRadioInput";
 import CustomSelect from "@/components/CustomSelect";
+import EspecieRepo from "@/infraestructure/implementation/httpRequest/axios/EspecieRepo";
 import OrderRepo from "@/infraestructure/implementation/httpRequest/axios/OrderRepo";
 import {
   AccionButton,
@@ -17,6 +20,7 @@ import {
   FormContainerDatosGenerales,
   FormContent,
   MarkIcon,
+  PenIcon,
   Tab,
   TabContent,
   TableStyled,
@@ -28,11 +32,15 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import MotivoRepo from "@/infraestructure/implementation/httpRequest/axios/MotivoRepo";
+import GetAllMotivoRepo from "@/application/usecases/motivoUseCase/GetAllMotivoRepo";
 
 const IdForm = () => {
   const route = useRouter();
   const { idForm } = route.query;
   const [activeTab, setActiveTab] = useState(0);
+  const [especies, setEspecie] = useState([]);
+  const [motivos, setMotivo] = useState([]);
   const [selectedOrder, setSelectedOrder] = useState(null);
 
   const handleTabClick = (tabIndex) => {
@@ -43,6 +51,36 @@ const IdForm = () => {
     control,
     formState: { errors },
   } = useForm({});
+
+  const fetchEspecies = async () => {
+    const especieRepo = new EspecieRepo();
+    const getAllEspecie = new GetAllEspecieRepo(especieRepo);
+    try {
+      const response = await getAllEspecie.run();
+      setEspecie(response.especies);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const fetchMotivos = async () => {
+    const motivoRepo = new MotivoRepo();
+    const getAllMotivo = new GetAllMotivoRepo(motivoRepo);
+    try {
+      const response = await getAllMotivo.run();
+      setMotivo(response.motivos);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleEspecieChange = (id) => {
+    setSelectedEspecie(id);
+  };
+
+  const handleMotivoChange = (id) => {
+    setSelectedMotivo(id);
+  };
 
   useEffect(() => {
     const orderRepo = new OrderRepo();
@@ -61,6 +99,11 @@ const IdForm = () => {
 
     fetchOrder();
   }, [idForm]);
+
+  useEffect(() => {
+    fetchEspecies();
+    fetchMotivos();
+  }, []);
 
   if (!selectedOrder) {
     return <div>Cargando formulario...</div>;
@@ -88,13 +131,14 @@ const IdForm = () => {
           <FormContainerDatosGenerales>
             <div>
               <span>ESPECIE A MOVILIZAR</span>
-              {/* <CheckboxContainer>
+              <CheckboxContainer>
                 <CustomCheckboxInput
                 data={especies}
                 name="id_especie"
+                defaultValue={selectedOrder.id_especie}
                 onSelectionChange={handleEspecieChange}
                 />
-              </CheckboxContainer> */}
+              </CheckboxContainer>
             </div>
             <FormContent>
               <div className="formSection">
@@ -162,13 +206,14 @@ const IdForm = () => {
             </FormContent>
             <div>
               <span>MOTIVO DE LA MOVILIZACIÓN</span>
-              {/* <CheckboxContainer>
+              <CheckboxContainer>
                 <CustomCheckboxInput
                   data={motivos}
                   name="id_motivo"
+                  defaultValue={selectedOrder.id_motivo}
                   onSelectionChange={handleMotivoChange}
                 />
-              </CheckboxContainer> */}
+              </CheckboxContainer>
             </div>
             <ButtonsContainer>
               <CustomButton customDesign buttonText="Cancelar" />
@@ -237,7 +282,7 @@ const IdForm = () => {
               }}
             />
           </FormContainer>
-          {/* <div>
+          <div>
             <TableStyled>
               <TheadStyled>
                 <TrStyled>
@@ -252,18 +297,18 @@ const IdForm = () => {
                 </TrStyled>
               </TheadStyled>
               <tbody>
-                {registerAnimals.map((registro, index) => (
-                  <TrStyled key={index}>
+                {selectedOrder.ganado.map((order, index) => (
+                  <TrStyled key={order.siniiga}>
                     <td>{index + 1}</td>
-                    <td>{registro.patente}</td>
-                    <td>{registro.sexo}</td>
-                    <td>{registro.color}</td>
-                    <td>{registro.id_raza}</td>
-                    <td>{registro.siniiga}</td>
+                    <td>{order.patente}</td>
+                    <td>{order.sexo}</td>
+                    <td>{order.color}</td>
+                    <td>{order.id_raza.name}</td>
+                    <td>{order.siniiga}</td>
                     <td>
-                      {registro.figura_herraje && (
+                      {order.figura_herraje && (
                         <Image
-                          src={registro.figura_herraje}
+                          src={order.figura_herraje}
                           alt="Animal"
                           width={100}
                           height={100}
@@ -273,7 +318,8 @@ const IdForm = () => {
                     </td>
 
                     <td>
-                      <AccionButton onClick={() => handleDeleteAnimal(index)}>
+                      {/* onClick:  onClick={() => handleDeleteAnimal(index)} */}
+                      <AccionButton>
                         <MarkIcon icon={faXmark} />
                       </AccionButton>
                       <AccionButton>
@@ -284,7 +330,7 @@ const IdForm = () => {
                 ))}
               </tbody>
             </TableStyled>
-          </div> */}
+          </div>
           <ButtonsContainer>
             <CustomButton customDesign buttonText="Cancelar" />
             <CustomButton
