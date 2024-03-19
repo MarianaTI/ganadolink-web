@@ -1,8 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { CheckBoxInputStyled, LabelStyled } from "./index.style";
 
-const CustomCheckboxInput = ({ data, onSelectionChange, name }) => {
-  const [selectedId, setSelectedId] = useState(null);
+const CustomCheckboxInput = ({
+  data,
+  onSelectionChange,
+  name,
+  defaultValue,
+}) => {
+  const [selectedId, setSelectedId] = useState(defaultValue?._id || null);
 
   const normalizedData = data.map((item) => ({
     id: item._id || item.value,
@@ -14,6 +19,10 @@ const CustomCheckboxInput = ({ data, onSelectionChange, name }) => {
     setSelectedId(newSelectedId);
     onSelectionChange(newSelectedId);
   };
+
+  useEffect(() => {
+    setSelectedId(defaultValue?._id || null);
+  }, [defaultValue]);
 
   return (
     <>
