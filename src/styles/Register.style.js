@@ -67,7 +67,6 @@ export const CustomInput = styled.input`
   margin-bottom: 16px;
   height: 52px;
 `;
-
 export const EyeIconContainer = styled.div`
   position: relative;
   width: 100%;

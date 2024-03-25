@@ -7,7 +7,7 @@ import {
 } from "./index.style";
 import { Controller } from "react-hook-form";
 
-const CustomSelect = ({ control, name, label, data, fullWidth }) => {
+const CustomSelect = ({ control, name, label, data, fullWidth, defaultValue }) => {
   return (
     <Controller
       control={control}
@@ -17,7 +17,7 @@ const CustomSelect = ({ control, name, label, data, fullWidth }) => {
           <LabelStyled>{label}</LabelStyled>
           <SelectWrapper>
             <SelectStyled fullWidth={fullWidth} onChange={onChange} value={value || ""} {...fieldProps}>
-              <option value="" disabled={value !== ""}>{`Seleccionar ${label}`}</option>
+              <option defaultValue={defaultValue} value="" disabled={value !== ""}>{`Seleccionar ${label}`}</option>
               {data?.map((option) => (
                 <option key={option._id || option.value} value={option._id || option.value}>
                   {option.name || option.label}
