@@ -110,6 +110,26 @@ export const generatePDF = (order) => {
   const vehicleData = order.vehiculo ? `${order.vehiculo.marca} ${order.vehiculo.modelo}${order.vehiculo.placa ? ` (${order.vehiculo.placa})` : ''}` : '';
   doc.text(vehicleData, (doc.internal.pageSize.width) / 1.8, cardY + cardHeight - 15, { align: "center" });
 
+  // Firma digital
+  const firmaX = cardX + 10; // Ajustar posición a la izquierda del card
+  const firmaY = cardY + cardHeight + 20; // Posición debajo del card
+  doc.setFontSize(17);
+  doc.setFont("arial", "bold"); // Cambiar la fuente a negrita y cursiva
+  doc.text("Firma Digital:", firmaX, firmaY, { align: "left" }); // Ajustar alineación a la izquierda
+  doc.setFont("times", "italic"); // Cambiar la fuente a cursiva
+  doc.setFontSize(33); // Aumentar tamaño de la firma
+  doc.text("Danny", firmaX, firmaY + 15, { align: "left" }); // Ajustar alineación a la izquierda y posición vertical
+
+  // Paginación
+  const pageCount = doc.internal.getNumberOfPages();
+  // Configurar el estilo de la paginación
+  const paginationX = doc.internal.pageSize.width / 2;
+  const paginationY = doc.internal.pageSize.height - 10;
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(10);
+  doc.setTextColor(150);
+  doc.text(`Página ${doc.internal.getNumberOfPages()}`, paginationX, paginationY, { align: "center" });
+
   // Guardar y descargar el PDF
   doc.save("fila_seleccionada.pdf");
 };
