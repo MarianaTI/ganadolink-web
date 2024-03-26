@@ -16,6 +16,7 @@ import {
   ButtonContainer,
 } from "../styles/users.style";
 import { Skeleton } from "@mui/material";
+import withAuth from "@/components/Authenticated";
 
 const AllUser = () => {
   const route = useRouter();
@@ -126,4 +127,4 @@ const AllUser = () => {
   );
 };
 
-export default AllUser;
+export default withAuth(AllUser);

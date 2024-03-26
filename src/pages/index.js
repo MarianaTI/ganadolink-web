@@ -1,3 +1,4 @@
+import withAuth from "@/components/Authenticated";
 import CustomButton from "@/components/CustomButton";
 import CustomCharacteristics from "@/components/CustomCharacteristics";
 import CustomImageParallax from "@/components/CustomImageParallax";
@@ -160,4 +161,4 @@ const Home = () => {
   );
 }
 
-export default Home;
+export default withAuth(Home);
