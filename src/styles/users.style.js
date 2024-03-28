@@ -5,14 +5,12 @@ export const ButtonContainer = styled.div`
   justify-content: end;
   width: 100%;
 `;
-
 const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  padding: 20px;
-`;
+display: block; flex-direction:center ;
+ align-items: flex; 
+ justify-content: flex; 
+ padding: 20px;`;
+
 
 const Title = styled.h1`
   font-size: 24px;
@@ -32,7 +30,7 @@ const Line = styled.hr`
 `;
 
 const Form = styled.form`
-  display: flex;
+  display:flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
@@ -41,10 +39,10 @@ const Form = styled.form`
 `;
 
 const InputContainer = styled.div`
+marginRight: "120vh";
   position: relative;
-  width: 30%;
+  width: 100%;
 `;
-
 const Input = styled.input`
   padding: 10px;
   border: 1px solid #ccc;

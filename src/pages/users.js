@@ -17,6 +17,10 @@ import {
 } from "../styles/users.style";
 import { Skeleton } from "@mui/material";
 
+// Importa los casos de uso necesarios para editar y eliminar usuarios
+import DeleteUserCase from "@/application/usecases/userUseCase/DeleteUserCase";
+
+
 const AllUser = () => {
   const route = useRouter();
   const [users, setUsers] = useState([]);
@@ -34,24 +38,22 @@ const AllUser = () => {
     }
   };
 
-  // const handleSearch = (searchTerm) => {
-  //   const filtered = users.filter(user =>
-  //     user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-  //     user.rol.toLowerCase().includes(searchTerm.toLowerCase()) ||
-  //     user.email.toLowerCase().includes(searchTerm.toLowerCase())||
-  //     user.password.toLowerCase().includes(searchTerm.toLowerCase())
-  //   );
-  //   setFilteredUsers(filtered);
-  // };
-
+  // Función para editar un usuario
   const handleEditUser = (userId) => {
-    console.log("Edit user with id:", userId);
-    // Agrega aquí la lógica para editar un usuario según el ID
+    route.push(`/editUsers/${userId}`); // Redirige a la página de edición del usuario con su ID
   };
 
-  const handleDeleteUser = (userId) => {
-    console.log("Delete user with id:", userId);
-    // Agrega aquí la lógica para eliminar un usuario según el ID
+  // Función para eliminar un usuario
+  const handleDeleteUser = async (userId) => {
+    const userRepo = new UserRepo();
+    const deleteUserUseCase = new DeleteUserCase(userRepo);
+
+    try {
+      await deleteUserUseCase.run(userId); // Ejecuta el caso de uso para eliminar el usuario
+      fetchUsers(); // Vuelve a cargar la lista de usuarios después de eliminar uno
+    } catch (error) {
+      console.log("Error al eliminar el usuario:", error);
+    }
   };
 
   useEffect(() => {
@@ -87,7 +89,6 @@ const AllUser = () => {
           <Title>Usuarios</Title>
           <Line />
           <ButtonContainer>
-            {" "}
             <CustomButton
               onClick={() => route.push("/registerUser")}
               buttonText={"Agregar Usuario"}
