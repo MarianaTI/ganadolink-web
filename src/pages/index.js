@@ -2,7 +2,6 @@ import withAuth from "@/components/Authenticated";
 import CustomCategories from "@/components/CustomCategories";
 import CustomComment from "@/components/CustomComment";
 import {
-  AboutUs,
   AboutUsContainer,
   Background,
   ButtonStyled,
@@ -15,13 +14,11 @@ import {
   GridContainerAboutUs,
   GridContainerCharacteristics,
   GridImage,
-  GridImageAboutUs,
   GridWelcome,
   Icon,
+  IconStyled,
   ImgStyled,
   ImgStyledAboutUs,
-  InformationContainer,
-  TextLeft,
   TextRight,
   Title,
   Welcome,
@@ -112,7 +109,8 @@ const Home = () => {
             </p>
             <ButtonsContainer>
               <ButtonStyled>
-                Comenzar a usar <Icon icon={faChevronRight} />
+              <span>Comenzar a usar </span>
+              <Icon icon={faChevronRight} />
               </ButtonStyled>
               <ButtonText>Learn more</ButtonText>
             </ButtonsContainer>

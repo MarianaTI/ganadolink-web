@@ -44,10 +44,12 @@ export const ButtonStyled = styled.button`
   padding: 10px;
   color: #fff;
   cursor: pointer;
+  font-weight: 600;
 `;
 
 export const Icon = styled(FontAwesomeIcon)`
   font-size: 13px;
+  font-weight: 600;
   color: #fff;
   margin-left: 8px;
 `;
