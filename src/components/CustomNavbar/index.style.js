@@ -50,32 +50,28 @@ export const LoginButton = styled.button`
   font-weight: 600;
   font-family: Poppins;
   transition: all 0.2s;
-  padding: 4px 20px;
-  border-radius: 100px;
-  background: #f27d16;
-  border: 1px solid transparent;
-  color: #fff;
+  padding: 2px 10px;
+  border-radius: 15px;
+  background: transparent;
+  border: 3px solid #f27d16;
+  color: #f27d16;
   display: flex;
   align-items: center;
   font-size: 15px;
   &:hover {
-    background: #facea8;
-    color: #f27d16;
+    background: #f27d16;
+    color: #fff;
   }
   & > svg {
     width: 34px;
-    margin-left: 10px;
     transition: transform 0.3s ease-in-out;
   }
 
   &:hover svg{
     transform: translateX(5px);
   }
-  &:hover circle{
-    stroke: #f27d16;
-  }
   &:hover path{
-    fill: #f27d16;
+    fill: #fff;
   }
   &:active{
     transform: scale(0.95);
