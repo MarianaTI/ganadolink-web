@@ -2,8 +2,8 @@ const isBrowser = typeof window !== "undefined";
 
 const initialState = {
   _id: isBrowser ? JSON.parse(localStorage.getItem("user"))?._id || null : null,
-  id_rol: isBrowser
-    ? JSON.parse(localStorage.getItem("user"))?.id_rol || null
+  rol: isBrowser
+    ? JSON.parse(localStorage.getItem("user"))?.rol || null
     : null,
   name: isBrowser
     ? JSON.parse(localStorage.getItem("user"))?.name || null

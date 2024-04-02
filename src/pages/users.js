@@ -16,6 +16,7 @@ import {
   ButtonContainer,
 } from "../styles/users.style";
 import { Skeleton } from "@mui/material";
+import withAuth from "@/components/Authenticated";
 
 // Importa los casos de uso necesarios para editar y eliminar usuarios
 import DeleteUserCase from "@/application/usecases/userUseCase/DeleteUserCase";
@@ -127,4 +128,4 @@ const AllUser = () => {
   );
 };
 
-export default AllUser;
+export default withAuth(AllUser);

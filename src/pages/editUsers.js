@@ -1,12 +1,10 @@
 import React, { useState } from "react";
 import {
   Container,
-  EyeIcon, // Asegúrate de importar el componente EyeIcon correctamente
+  EyeIcon, 
   FormStyled,
   GridContainer,
   GridForm,
-  GridImage,
-  LinkStyled,
 } from "@/styles/Register.style";
 import Image from "next/image";
 import CustomInput from "@/components/CustomInput";
@@ -17,10 +15,7 @@ import User from "@/domain/entities/user";
 import UserRepo from "@/infraestructure/implementation/httpRequest/axios/UserRepo";
 import UpdateUserUseCase from "@/application/usecases/userUseCase/UpdateUserCase";
 import { useRouter } from "next/router";
-import CryptoJS from "crypto-js";
-import CustomSelect from "@/components/CustomSelect";
-import CustomAlert from "@/components/CustomAlert";
-import CustomAlertSeverity from "@/components/CustomAlertSeverity";
+import withAuth from "@/components/Authenticated";
 
 const Update = () => {
   const route = useRouter();
@@ -91,4 +86,4 @@ const Update = () => {
   );
 };
 
-export default Update;
+export default withAuth(Update);

@@ -14,7 +14,7 @@ import {
   TrStyled,
   TdStyled,
 } from "../styles/catalogue.style";
-import { FaSearch, FaDownload, FaFilePdf, FaEye } from "react-icons/fa";
+import { FaSearch, FaDownload, FaFilePdf, FaEye, FaPen } from "react-icons/fa";
 import { generatePDF } from "../components/CustomPDF/index";
 import DownloadAllPDF from "../components/CustomPDF/indexFull";
 import OrderRepo from "@/infraestructure/implementation/httpRequest/axios/OrderRepo";
@@ -31,11 +31,21 @@ import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 import CollapsibleTable from "@/components/CustomCollapsibleTable";
 import { Divider, Skeleton } from "@mui/material";
+import { useRouter } from "next/router";
+import withAuth from "@/components/Authenticated";
 
 const CatalogPage = () => {
+  const route = useRouter();
   const [orders, setOrders] = useState([]);
   const [openRow, setOpenRow] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+
+  const handleEditClick = (idForm) => {
+    return route.push({
+      pathname: "/[idForm]",
+      query: { idForm: idForm },
+    });
+  };
 
   const fetchOrder = async () => {
     const orderRepo = new OrderRepo();
@@ -134,6 +144,9 @@ const CatalogPage = () => {
                         <IconButton onClick={() => handleRowToggle(index)}>
                           <FaEye />
                         </IconButton>
+                        <IconButton onClick={() => handleEditClick(item._id)}>
+                          <FaPen />
+                        </IconButton>
                       </td>
                     </TrStyled>
                     {openRow === index && (
@@ -206,4 +219,4 @@ const CatalogPage = () => {
   );
 };
 
-export default CatalogPage;
+export default withAuth(CatalogPage);

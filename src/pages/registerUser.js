@@ -22,6 +22,7 @@ import CryptoJS from "crypto-js";
 import CustomSelect from "@/components/CustomSelect"; 
 import CustomAlert from "@/components/CustomAlert";
 import CustomAlertSeverity from "@/components/CustomAlertSeverity";
+import withAuth from "@/components/Authenticated";
 
 const SignUp = () => {
   const route = useRouter();
@@ -109,4 +110,4 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+export default withAuth(SignUp);

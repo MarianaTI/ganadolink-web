@@ -1,4 +1,5 @@
 import GetAllUserUseCase from "@/application/usecases/userUseCase/GetAllUserCase";
+import withAuth from "@/components/Authenticated";
 import UserRepo from "@/infraestructure/implementation/httpRequest/axios/UserRepo";
 import React, { useEffect, useState } from "react";
 
@@ -23,21 +24,20 @@ const AllUser = () => {
 
   return (
     <div>
-    <h1>Todos los Usuarios</h1>
-    {users.length > 0 ? (
-      users.map((user, index) => (
-        <div key={index}>
-          <p>Nombre: {user.name}</p>
-          <p>Email: {user.email}</p>
-          <p>Rol: {user.rol}</p>
-        </div>
-      ))
-    ) : (
-      <p>Cargando usuarios...</p>
-    )}
-  </div>
+      <h1>Todos los Usuarios</h1>
+      {users.length > 0 ? (
+        users.map((user, index) => (
+          <div key={index}>
+            <p>Nombre: {user.name}</p>
+            <p>Email: {user.email}</p>
+            <p>Rol: {user.rol}</p>
+          </div>
+        ))
+      ) : (
+        <p>Cargando usuarios...</p>
+      )}
+    </div>
   );
 };
 
-export default AllUser;
- 
+export default withAuth(AllUser);

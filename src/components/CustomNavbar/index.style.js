@@ -105,6 +105,7 @@ export const NavStyled = styled.nav`
   & ul {
     display: flex;
     gap: 32px;
+    margin-left: -95px;
     @media (max-width: 740px) {
       display: none;
       flex-direction: column;

@@ -20,11 +20,13 @@ import { useRouter } from "next/router";
 import CryptoJS from "crypto-js";
 import { useDispatch } from "react-redux";
 import { setUser } from "@/actions/userActions";
+import CustomAlertSeverity from "@/components/CustomAlertSeverity";
 
 const Login = () => {
   const route = useRouter();
   const dispatch = useDispatch();
   const [isShowPassword, setShowPassword] = useState(false);
+  const [isError, setError] = useState(false);
   const {
     control,
     handleSubmit,
@@ -33,7 +35,7 @@ const Login = () => {
     defaultValues: {
       email: "",
       password: "",
-    }, 
+    },
   });
 
   const onSubmit = async (data) => {
@@ -45,25 +47,27 @@ const Login = () => {
 
       if (signInResponse && signInResponse.token) {
         dispatch(setUser(signInResponse));
-        const encryptedToken = CryptoJS.AES.encrypt(signInResponse.token, 'cookie-encrypted').toString();
-        Cookies.set('authToken', encryptedToken, { expires: 1 / 24 });
+        const encryptedToken = CryptoJS.AES.encrypt(
+          signInResponse.token,
+          "cookie-encrypted"
+        ).toString();
+        Cookies.set("authToken", encryptedToken, { expires: 1 / 24 });
         route.push("/");
       }
-
     } catch (error) {
       console.error("Error durante el inicio de sesión:", error);
       if (error.response && error.response.status === 400) {
         console.log("Solicitud incorrecta o credenciales inválidas");
       }
     }
-  }
+  };
 
   const togglePasswordVisibility = () => {
     setShowPassword(!isShowPassword);
   };
 
   return (
-    <Container> 
+    <Container>
       <GridContainer>
         <GridForm>
           <Image src="/img/Logo.png" alt="logo" width={148} height={150} />
@@ -97,14 +101,12 @@ const Login = () => {
                   )
                 }
               />
-              <CustomButton buttonText="Entrar" fullWidth type="submit"/>
+              <CustomButton buttonText="Entrar" fullWidth type="submit" />
             </div>
           </FormStyled>
         </GridForm>
         <GridImage>
-          <div
-            style={{ position: "relative", width: "auto", height: "100%" }}
-          >
+          <div style={{ position: "relative", width: "auto", height: "100%" }}>
             <Image
               src="/img/pexels-mark-stebnicki-2252557.jpg"
               layout="fill"
@@ -114,6 +116,13 @@ const Login = () => {
           </div>
         </GridImage>
       </GridContainer>
+      {isError && (
+        <CustomAlertSeverity
+          imageSrc="../../public/img/mensajenohecho.png"
+          title="Error al iniciar la sesión"
+          text="El correo electronico o contraseña son incorrectos"
+        />
+      )}
     </Container>
   );
 };

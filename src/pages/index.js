@@ -1,3 +1,4 @@
+import withAuth from "@/components/Authenticated";
 import CustomButton from "@/components/CustomButton";
 import CustomCharacteristics from "@/components/CustomCharacteristics";
 import CustomImageParallax from "@/components/CustomImageParallax";
@@ -16,7 +17,7 @@ import { GridContainer } from "@/styles/Login.style";
 import { Skeleton } from "@mui/material";
 import { useEffect, useState } from "react";
 
-export default function Home() {
+const Home = () => {
   const [isLoading, setIsLoading] = useState(true);
   const loading = () => {
     return (
@@ -159,3 +160,5 @@ export default function Home() {
     </>
   );
 }
+
+export default withAuth(Home);
