@@ -12,10 +12,12 @@ import {
 } from "./index.style";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import Cookies from "js-cookie";
-import CustomButton from "../CustomButton";
+import { useSelector } from "react-redux";
 
 const CustomNavbar = () => {
   const router = useRouter();
+  const rol = useSelector((state) => state.user.rol);
+  console.log(rol);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -58,61 +60,114 @@ const CustomNavbar = () => {
   return (
     <div>
       {isLoggedIn ? (
-        <NavStyled>
-          <Link href="/" passHref>
-            <LogoStyled>
-              <img src="/img/Logo.png" width="50px" height="60px" />
-              <span>GanadoLink</span>
-            </LogoStyled>
-          </Link>
-          <Menu onClick={toggleMenu}>
-            <IconMenu icon={faBars} />
-          </Menu>
-          <ul className={menuOpen ? "open" : ""}>
-            <li>
-              <Link href="/" passHref>
-                <TabStyled className={router.pathname === "/" ? "active" : ""}>
-                  Home
-                </TabStyled>
-              </Link>
-            </li>
-            <li>
-              <Link href="/form" passHref>
-                <TabStyled
-                  className={router.pathname === "/form" ? "active" : ""}
-                >
-                  Formularios
-                </TabStyled>
-              </Link>
-            </li>
-            <li>
-              <Link href="/catalogue" passHref>
-                <TabStyled
-                  className={router.pathname === "/catalogue" ? "active" : ""}
-                >
-                  Catalogo
-                </TabStyled>
-              </Link>
-            </li>
-            <li>
-              <Link href="/users" passHref>
-                <TabStyled
-                  className={router.pathname === "/users" ? "active" : ""}
-                >
-                  Usuarios
-                </TabStyled>
-              </Link>
-            </li>
-            <li className="closeSession" onClick={handleSignOut}>
-              <Link href="/login">Cerrar sesión</Link>
-            </li>
-          </ul>
-          <CustomUser
-            isOpen={isDropdownOpen}
-            toggleDropdown={toggleDropdown}
-            handleOptionClick={handleOptionClick}
-          />
-        </NavStyled>
+        rol === "admin" || rol === "SuperAdmin" ? (
+          <NavStyled>
+            <Link href="/" passHref>
+              <LogoStyled>
+                <img src="/img/Logo.png" width="50px" height="60px" />
+                <span>GanadoLink</span>
+              </LogoStyled>
+            </Link>
+            <Menu onClick={toggleMenu}>
+              <IconMenu icon={faBars} />
+            </Menu>
+            <ul className={menuOpen ? "open" : ""}>
+              <li>
+                <Link href="/" passHref>
+                  <TabStyled
+                    className={router.pathname === "/" ? "active" : ""}
+                  >
+                    Home
+                  </TabStyled>
+                </Link>
+              </li>
+              <li>
+                <Link href="/form" passHref>
+                  <TabStyled
+                    className={router.pathname === "/form" ? "active" : ""}
+                  >
+                    Formularios
+                  </TabStyled>
+                </Link>
+              </li>
+              <li>
+                <Link href="/catalogue" passHref>
+                  <TabStyled
+                    className={router.pathname === "/catalogue" ? "active" : ""}
+                  >
+                    Catalogo
+                  </TabStyled>
+                </Link>
+              </li>
+              <li>
+                <Link href="/users" passHref>
+                  <TabStyled
+                    className={router.pathname === "/users" ? "active" : ""}
+                  >
+                    Usuarios
+                  </TabStyled>
+                </Link>
+              </li>
+              <li className="closeSession" onClick={handleSignOut}>
+                <Link href="/login">Cerrar sesión</Link>
+              </li>
+            </ul>
+            <CustomUser
+              isOpen={isDropdownOpen}
+              toggleDropdown={toggleDropdown}
+              handleOptionClick={handleOptionClick}
+            />
+          </NavStyled>
+        ) : (
+          <NavStyled>
+            <Link href="/" passHref>
+              <LogoStyled>
+                <img src="/img/Logo.png" width="50px" height="60px" />
+                <span>GanadoLink</span>
+              </LogoStyled>
+            </Link>
+            <Menu onClick={toggleMenu}>
+              <IconMenu icon={faBars} />
+            </Menu>
+            <ul className={menuOpen ? "open" : ""}>
+              <li>
+                <Link href="/" passHref>
+                  <TabStyled
+                    className={router.pathname === "/" ? "active" : ""}
+                  >
+                    Home
+                  </TabStyled>
+                </Link>
+              </li>
+              <li>
+                <Link href="/form" passHref>
+                  <TabStyled
+                    className={router.pathname === "/form" ? "active" : ""}
+                  >
+                    Formularios
+                  </TabStyled>
+                </Link>
+              </li>
+              <li>
+                <Link href="/catalogue" passHref>
+                  <TabStyled
+                    className={router.pathname === "/catalogue" ? "active" : ""}
+                  >
+                    Catalogo
+                  </TabStyled>
+                </Link>
+              </li>
+              <li className="closeSession" onClick={handleSignOut}>
+                <Link href="/login">Cerrar sesión</Link>
+              </li>
+            </ul>
+            <CustomUser
+              isOpen={isDropdownOpen}
+              toggleDropdown={toggleDropdown}
+              handleOptionClick={handleOptionClick}
+            />
+          </NavStyled>
+        )
       ) : (
         <NavStyled>
           <Link href="/" passHref>
