@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react"; // Importar el hook useEffect y useState
+import UserRepo from "@/infraestructure/implementation/httpRequest/axios/UserRepo"; // Importar el componente UserRepo
+import { useRouter } from "next/router";
 import {
   Container,
   EyeIcon, 
@@ -12,43 +14,31 @@ import { useForm } from "react-hook-form";
 import CustomButton from "@/components/CustomButton";
 import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 import User from "@/domain/entities/user";
-import UserRepo from "@/infraestructure/implementation/httpRequest/axios/UserRepo";
 import UpdateUserUseCase from "@/application/usecases/userUseCase/UpdateUserCase";
-import { useRouter } from "next/router";
 import withAuth from "@/components/Authenticated";
 
 const Update = () => {
-  const route = useRouter();
-  const [isShowPassword, setShowPassword] = useState(false);
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
-    defaultValues: {
-      name: "",
-      email: "",
-      password: "",
-    },
-  });
+  const router = useRouter();
+  const { userId } = router.query; // Obtener el ID del usuario de los parámetros de la URL
 
-  const updateSubmit = async (data) => {
-    const user = new User(null, data.name, data.rol, data.email, data.password);
-    const userRepo = new UserRepo();
-    const updateUseCase = new UpdateUserUseCase(userRepo);
+  const [userData, setUserData] = useState(null); // Estado para almacenar los datos del usuario
 
-    try {
-      const updateResponse = await updateUseCase.run(user);
-      console.log(updateResponse);
-      route.push("/users");
-    } catch (error) {
-      console.error("Error durante la actualización:", error);
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        // Hacer una solicitud para obtener los datos del usuario por su ID
+        const userRepo = new UserRepo();
+        const user = await userRepo.getUserById(userId);
+        setUserData(user);
+      } catch (error) {
+        console.error("Error al obtener los datos del usuario:", error);
+      }
+    };
+
+    if (userId) {
+      fetchUserData();
     }
-  };
-
-  const togglePasswordVisibility = () => {
-    setShowPassword(!isShowPassword);
-  };
+  }, [userId]);
 
   return (
     <Container>
