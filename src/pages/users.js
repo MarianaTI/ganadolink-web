@@ -22,6 +22,8 @@ import withAuth from "@/components/Authenticated";
 import DeleteUserCase from "@/application/usecases/userUseCase/DeleteUserCase";
 
 
+import EditUserPage from '@/pages/[idUser]';
+
 const AllUser = () => {
   const route = useRouter();
   const [users, setUsers] = useState([]);
@@ -40,8 +42,11 @@ const AllUser = () => {
   };
 
   // Función para editar un usuario
-  const handleEditUser = (userId) => {
-    route.push(`/editUsers/${userId}`); // Redirige a la página de edición del usuario con su ID
+  const handleEditClick = (idForm) => {
+    return route.push({
+      pathname: "/[idUser]",
+      query: { idUser: idForm }, // Utiliza idForm en lugar de idUser
+    });
   };
 
   // Función para eliminar un usuario
@@ -50,8 +55,10 @@ const AllUser = () => {
     const deleteUserUseCase = new DeleteUserCase(userRepo);
 
     try {
-      await deleteUserUseCase.run(userId); // Ejecuta el caso de uso para eliminar el usuario
-      fetchUsers(); // Vuelve a cargar la lista de usuarios después de eliminar uno
+      // Ejecuta el caso de uso para eliminar el usuario
+      await deleteUserUseCase.run(userId);
+      // Vuelve a cargar la lista de usuarios después de eliminar uno
+      fetchUsers();
     } catch (error) {
       console.log("Error al eliminar el usuario:", error);
     }
@@ -111,7 +118,8 @@ const AllUser = () => {
                   <td>{user.rol}</td>
                   <td>{user.email}</td>
                   <td>
-                    <EditButton onClick={() => handleEditUser(user.id)}>
+                    {/* Llama a la función de manejo de edición de usuario */}
+                    <EditButton onClick={() => handleEditClick(user.id)}>
                       <FaEdit style={{ fontSize: "24px" }} />
                     </EditButton>
                     <DeleteButton onClick={() => handleDeleteUser(user.id)}>
@@ -124,6 +132,8 @@ const AllUser = () => {
           </TableStyled>
         </Container>
       )}
+      {/* Renderiza el componente de edición de usuario */}
+      <EditUserPage />
     </>
   );
 };
