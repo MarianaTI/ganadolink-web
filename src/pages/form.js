@@ -171,8 +171,6 @@ const Form = () => {
     setRegisterVehicule((current) => [...current, dataVehicule]);
 
     await handleFinalize(dataVehicule);
-
-    router.push("/catalogue");
   };
 
   const handleFinalize = async (newVehicule) => {
@@ -190,6 +188,7 @@ const Form = () => {
       };
 
       const createdOrder = await createOrderUseCase.run(order);
+      router.push("/catalogue");
       console.log(createdOrder);
     } catch (error) {
       console.log(error);

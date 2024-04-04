@@ -30,7 +30,6 @@ class OrderRepo extends IOrderRepo {
     }
   }
 
-  // Creación de una orden con manejo de errores y validaciones
   async create(order) {
     try {
       const response = await axios.post(`${this.url}/create`, order, {
@@ -39,6 +38,18 @@ class OrderRepo extends IOrderRepo {
       return response.data;
     } catch (error) {
       console.error("Error al crear la orden:", error);
+      throw error;
+    }
+  }
+
+  async update(order){
+    try {
+      const response = await axios.update(`${this.url}/update${_id}`, order,{
+        headers: { "Content-Type": "application/json" },
+      });
+      return response.data;
+    } catch (error) {
+      console.error("Error al actualizar la orden:", error);
       throw error;
     }
   }
