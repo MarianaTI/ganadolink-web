@@ -36,6 +36,7 @@ import { faCopy } from "@fortawesome/free-regular-svg-icons";
 import { Skeleton } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import { questions } from "@/constants";
+import Customfooter from "@/components/CustomFooter";
 
 const Home = () => {
   const [openCollapsibleIndex, setOpenCollapsibleIndex] = useState(null);
@@ -383,14 +384,20 @@ const Home = () => {
               </ContactContainer>
             </FAQ>
           </Container>
-          <div style={{ background: "rgba(255, 229, 197, 0.15)", margin: 0 }}>
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
-              <path
-                fill="#FFE5C5"
-                fill-opacity="1"
-                d="M0,96L48,101.3C96,107,192,117,288,144C384,171,480,213,576,213.3C672,213,768,171,864,154.7C960,139,1056,149,1152,165.3C1248,181,1344,203,1392,213.3L1440,224L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
-              ></path>
-            </svg>
+          <div>
+            <div style={{ height: "150px", overflow: "hidden", background: "rgba(255, 229, 197, 0.15)" }}>
+              <svg
+                viewBox="0 0 500 150"
+                preserveAspectRatio="none"
+                style={{ height: "100% ", width: "100%" }}
+              >
+                <path
+                  d="M0.00,49.98 C150.00,150.00 349.20,-49.98 500.00,49.98 L500.00,150.00 L0.00,150.00 Z"
+                  style={{ stroke: "none", fill: "#FFE5C5" }}
+                ></path>
+              </svg>
+            </div>
+            <Customfooter />
           </div>
         </div>
       )}

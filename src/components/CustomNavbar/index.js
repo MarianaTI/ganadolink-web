@@ -12,7 +12,6 @@ import {
 } from "./index.style";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import Cookies from "js-cookie";
-import CustomButton from "../CustomButton";
 
 const CustomNavbar = () => {
   const router = useRouter();
