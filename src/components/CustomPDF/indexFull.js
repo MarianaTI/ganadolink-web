@@ -18,6 +18,8 @@ const DownloadAllPDF = ({ orders }) => {
     const cardMargin = 20; // Aumentado el espacio entre cards
     const cardPadding = 10; // Aumentado el padding del card
     const cardDataYOffset = -5; // Desplazamiento vertical para los datos del card
+    const signatureTitleFontSize = 16;
+    const signatureNameFontSize = 13;
 
     const addPageWithOrderData = (order, index) => {
       if (index > 0) {
@@ -108,6 +110,17 @@ const DownloadAllPDF = ({ orders }) => {
 
     addPageWithOrderData();
 
+    // Firma digital personalizado
+    const signatureXPos = cardPadding; // Posición horizontal de la firma
+    const signatureYPos = doc.internal.pageSize.height - 30; // Posición vertical del título "Firma digital"
+    doc.setFont("arial", "bold");
+    doc.setTextColor(0); // Establecer color negro
+    doc.setFontSize(signatureTitleFontSize); // Tamaño de fuente para el título "Firma digital"
+    doc.text("Firma digital:", signatureXPos, signatureYPos); // Título "Firma digital"
+    doc.setFont("times", "italic"); // Texto en cursiva
+    doc.setFontSize(signatureNameFontSize); // Tamaño de fuente para el nombre "Danny"
+    doc.text("Danny", signatureXPos, signatureYPos + 10); // Nombre "Danny"
+    
     doc.save("catalogo.pdf");
   };
 

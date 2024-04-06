@@ -3,6 +3,7 @@ import {
   GridContainer,
   GridForm,
   GridImage,
+  Image,
 } from "@/styles/Login.style";
 import React from "react";
 

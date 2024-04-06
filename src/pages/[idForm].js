@@ -34,6 +34,7 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import MotivoRepo from "@/infraestructure/implementation/httpRequest/axios/MotivoRepo";
 import GetAllMotivoRepo from "@/application/usecases/motivoUseCase/GetAllMotivoRepo";
+import withAuth from "@/components/Authenticated";
 
 const IdForm = () => {
   const route = useRouter();
@@ -133,10 +134,10 @@ const IdForm = () => {
               <span>ESPECIE A MOVILIZAR</span>
               <CheckboxContainer>
                 <CustomCheckboxInput
-                data={especies}
-                name="id_especie"
-                defaultValue={selectedOrder.id_especie}
-                onSelectionChange={handleEspecieChange}
+                  data={especies}
+                  name="id_especie"
+                  defaultValue={selectedOrder.id_especie}
+                  onSelectionChange={handleEspecieChange}
                 />
               </CheckboxContainer>
             </div>
@@ -323,8 +324,8 @@ const IdForm = () => {
                         <MarkIcon icon={faXmark} />
                       </AccionButton>
                       <AccionButton>
-                      <PenIcon icon={faPen} />
-                    </AccionButton>
+                        <PenIcon icon={faPen} />
+                      </AccionButton>
                     </td>
                   </TrStyled>
                 ))}
@@ -424,4 +425,4 @@ const IdForm = () => {
   );
 };
 
-export default IdForm;
+export default withAuth(IdForm);

@@ -32,6 +32,7 @@ import Paper from "@mui/material/Paper";
 import CollapsibleTable from "@/components/CustomCollapsibleTable";
 import { Divider, Skeleton } from "@mui/material";
 import { useRouter } from "next/router";
+import withAuth from "@/components/Authenticated";
 
 const CatalogPage = () => {
   const route = useRouter();
@@ -218,4 +219,4 @@ const CatalogPage = () => {
   );
 };
 
-export default CatalogPage;
+export default withAuth(CatalogPage);

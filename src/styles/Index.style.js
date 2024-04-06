@@ -1,154 +1,183 @@
 import styled from "@emotion/styled";
-
-export const ParallaxContent = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`;
-
-export const TextStyled = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 200px;
-  & h1 {
-    position: relative;
-    float: left;
-    color: #2a2a2a;
-    font-size: 40px;
-    font-family: "Bitter", serif;
-    font-weight: 500;
-  }
-  & h1 span {
-    position: absolute;
-    right: 0;
-    width: 0;
-    background: white;
-    border-left: 1px solid #000;
-    animation: escribir 10s steps(39) alternate infinite;
-  }
-  @keyframes escribir {
-    from {
-      width: 0;
-    }
-    to {
-      width: 100%;
-    }
-  }
-`;
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export const GridContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  height: 500px;
-  @media (max-width: 768px) {
-    grid-template-columns: 1fr;
+  height: 648px;
+`;
+
+export const GridWelcome = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  height: 100%;
+`;
+
+export const Welcome = styled.div`
+  width: 450px;
+  margin: 115px 0px 0px 80px;
+  font-family: Poppins;
+  & h1 {
+    color: #202020;
+    font-size: 40px;
+    & span {
+      color: #f27d16;
+    }
+  }
+  & p {
+    color: #404040;
+    font-size: 16px;
   }
 `;
 
-export const GridText = styled.div`
-  height: 400px;
-  margin-left: 56px;
-  background-color: #857363;
+export const ButtonsContainer = styled.div`
   display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 25px 0 0 25px;
-  & span {
-    width: 550px;
-    font-size: 18px;
-    color: #fff;
-  }
+  gap: 64px;
+`;
+
+export const ButtonStyled = styled.button`
+  border: none;
+  font-family: Poppins;
+  background-color: #f27d16;
+  border-radius: 15px;
+  padding: 10px;
+  color: #fff;
+  cursor: pointer;
+  font-weight: 600;
+`;
+
+export const Icon = styled(FontAwesomeIcon)`
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+  margin-left: 8px;
+`;
+
+export const ButtonText = styled.button`
+  border: none;
+  background: none;
+  font-family: Poppins;
+  text-decoration: underline;
+  color: #404040;
+  cursor: pointer;
 `;
 
 export const GridImage = styled.div`
-  height: 400px;
-  margin-right: 56px;
-  background-color: #857363;
   display: flex;
+  justify-content: end;
+  align-items: end;
+  position: relative;
+  height: 100%;
+`;
+
+export const Background = styled.div`
+  margin: 0px 0px 0px 32px;
+  border-radius: 200px 0 0 200px;
+  filter: drop-shadow(6px 8px 8px rgba(158, 158, 158, 0.4));
+  background: #ffe5c5;
+  height: 420px;
+  width: 90%;
+  position: absolute;
+  bottom: 56px;
+`;
+
+export const ImgStyled = styled.img`
+  z-index: 1000;
+  position: absolute;
+`;
+
+export const CharacteristicsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
   justify-content: start;
-  padding-top: 48px;
-  border-radius: 0 25px 25px 0;
-  & img {
-    position: absolute;
-  }
-  .img1{
-    width: 550px;
-    height: 300px;
-  }
-  .img2{
-    width: 400px;
-    height: 300px;
-    padding: absolute;
-    z-index: 1;
-    bottom: 0;
-    right: 0;
-    padding-right: 48px;
-    padding-bottom: 36px;
-  }
-`;
-
-export const CharacteristicsStyled = styled.div`
-  display: flex;
-  justify-content: space-around;
   align-items: center;
-  margin: 56px 64px 110px 64px;
+  background: rgba(255, 229, 197, 0.15);
+  height: 648px;
 `;
 
-export const SpanStyled = styled.span`
-  display: flex;
-  justify-content: center;
-  margin: 32px 0;
-  font-weight: 600;
-  font-size: 20px;
-  font-family: "Bitter", serif;
+export const GridContainerCharacteristics = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-row-gap: 60px;
+  grid-column-gap: 150px;
 `;
 
-export const DescriptionContainer = styled.div`
-  background-color: #F2EBDF;
-  display: flex;
-  height: 200px;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  margin: 32px 0;
-  padding: 16px;
-  color: #2a2a2a;
-  .title{
-    font-size: 20px;
-    font-weight: 600;
-    font-family: "Bitter", serif;
-    padding: 16px;
-  }
-  .children{
-    text-align: center;
-    width: 900px;
-  }
+export const GridContainerAboutUs = styled(GridContainer)`
+  height: 70%;
 `;
 
-export const VideoText = styled.div`
-  display: flex;
-  flex-direction: column;
-  padding: 42px;
-  .title{
-    font-size: 42px;
-    font-family: "Bitter", serif;
+export const Title = styled.div`
+  padding: 48px 0;
+  & span {
+    font-family: Poppins;
+    font-size: 28px;
     font-weight: 500;
-    width: 400px;
-    padding-bottom: 16px;
   }
-  .icon{
-    font-size: 56px;
-    
-  }
-  .comment{
-    font-size: 20px;
+  .color {
+    color: #f27d16;
   }
 `;
 
-export const VideoContainer = styled.div`
-  .video{
-    width: 100%;
+export const Container = styled.div`
+  height: 600px;
+`;
+
+export const WhoWeAre = styled(Title)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 72px 0 20px 0;
+`;
+
+export const AboutUsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 32px 80px;
+  height: 100%;
+  & span {
+    font-family: Poppins;
+    font-size: 16px;
+    color: #2a2a2a;
   }
+`;
+
+export const CenterContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 16px;
+`;
+
+export const ImgStyledAboutUs = styled.img`
+  width: 370px;
+  height: 240px;
+  object-fit: cover;
+  border-radius: 35px;
+  transform: rotate(-5deg);
+  border-right: 18px solid #ffe5c5;
+  border-bottom: 18px solid #ffe5c5;
+  filter: drop-shadow(6px 8px 8px rgba(158, 158, 158, 0.25));
+`;
+
+export const TextRight = styled(WhoWeAre)`
+  padding: 0px;
+  text-align: right;
+  align-items: start;
+  justify-content: end;
+  & span {
+    width: 400px;
+  }
+`;
+
+export const DotContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding-top: 8px;
 `;

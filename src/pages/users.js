@@ -16,6 +16,13 @@ import {
   ButtonContainer,
 } from "../styles/users.style";
 import { Skeleton } from "@mui/material";
+import withAuth from "@/components/Authenticated";
+
+// Importa los casos de uso necesarios para editar y eliminar usuarios
+import DeleteUserCase from "@/application/usecases/userUseCase/DeleteUserCase";
+
+
+import EditUserPage from '@/pages/[idUser]';
 
 const AllUser = () => {
   const route = useRouter();
@@ -34,24 +41,27 @@ const AllUser = () => {
     }
   };
 
-  // const handleSearch = (searchTerm) => {
-  //   const filtered = users.filter(user =>
-  //     user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-  //     user.rol.toLowerCase().includes(searchTerm.toLowerCase()) ||
-  //     user.email.toLowerCase().includes(searchTerm.toLowerCase())||
-  //     user.password.toLowerCase().includes(searchTerm.toLowerCase())
-  //   );
-  //   setFilteredUsers(filtered);
-  // };
-
-  const handleEditUser = (userId) => {
-    console.log("Edit user with id:", userId);
-    // Agrega aquí la lógica para editar un usuario según el ID
+  // Función para editar un usuario
+  const handleEditClick = (idForm) => {
+    return route.push({
+      pathname: "/[idUser]",
+      query: { idUser: idForm }, // Utiliza idForm en lugar de idUser
+    });
   };
 
-  const handleDeleteUser = (userId) => {
-    console.log("Delete user with id:", userId);
-    // Agrega aquí la lógica para eliminar un usuario según el ID
+  // Función para eliminar un usuario
+  const handleDeleteUser = async (userId) => {
+    const userRepo = new UserRepo();
+    const deleteUserUseCase = new DeleteUserCase(userRepo);
+
+    try {
+      // Ejecuta el caso de uso para eliminar el usuario
+      await deleteUserUseCase.run(userId);
+      // Vuelve a cargar la lista de usuarios después de eliminar uno
+      fetchUsers();
+    } catch (error) {
+      console.log("Error al eliminar el usuario:", error);
+    }
   };
 
   useEffect(() => {
@@ -87,7 +97,6 @@ const AllUser = () => {
           <Title>Usuarios</Title>
           <Line />
           <ButtonContainer>
-            {" "}
             <CustomButton
               onClick={() => route.push("/registerUser")}
               buttonText={"Agregar Usuario"}
@@ -109,7 +118,8 @@ const AllUser = () => {
                   <td>{user.rol}</td>
                   <td>{user.email}</td>
                   <td>
-                    <EditButton onClick={() => handleEditUser(user.id)}>
+                    {/* Llama a la función de manejo de edición de usuario */}
+                    <EditButton onClick={() => handleEditClick(user.id)}>
                       <FaEdit style={{ fontSize: "24px" }} />
                     </EditButton>
                     <DeleteButton onClick={() => handleDeleteUser(user.id)}>
@@ -122,8 +132,10 @@ const AllUser = () => {
           </TableStyled>
         </Container>
       )}
+      {/* Renderiza el componente de edición de usuario */}
+      <EditUserPage />
     </>
   );
 };
 
-export default AllUser;
+export default withAuth(AllUser);

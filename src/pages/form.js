@@ -40,6 +40,7 @@ import CreateOrderUseCase from "@/application/usecases/orderUseCase/CreateOrderU
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import { Skeleton } from "@mui/material";
+import withAuth from "@/components/Authenticated";
 
 const Form = () => {
   const router = useRouter();
@@ -544,4 +545,4 @@ const Form = () => {
   );
 };
 
-export default Form;
+export default withAuth(Form);
