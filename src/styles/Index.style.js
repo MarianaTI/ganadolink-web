@@ -173,11 +173,3 @@ export const TextRight = styled(WhoWeAre)`
     width: 400px;
   }
 `;
-
-export const DotContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-  padding-top: 8px;
-`;

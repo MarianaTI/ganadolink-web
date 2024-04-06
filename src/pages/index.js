@@ -269,7 +269,6 @@ const Home = () => {
               </CenterContainer>
             </GridContainerAboutUs>
           </Container>
-          
         </div>
       )}
     </>

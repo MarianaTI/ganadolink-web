@@ -1,16 +1,28 @@
 import React from "react";
-import { Container, Dot, Opinion, Quotes } from "./index.style";
+import { Container, Dot, DotContainer, Opinion } from "./index.style";
 import { RiDoubleQuotesL } from "react-icons/ri";
-import { CenterContainer, DotContainer } from "@/styles/Index.style";
 
 const CustomComment = ({ opinion, currentIndex, totalComments }) => {
+  const calculateDotSize = (index) => {
+    let baseSize = 4;
+    let scaleFactor = currentIndex === index ? 2 : 1;
+    return baseSize * scaleFactor;
+  };
+
   return (
     <Container>
       <RiDoubleQuotesL style={{ fontSize: "40px" }} />
       <Opinion>{opinion}</Opinion>
       <DotContainer>
-      {Array.from({ length: totalComments }, (_, index) => (
-          <Dot key={index} active={index === currentIndex} />
+        {Array.from({ length: totalComments }, (_, index) => (
+          <Dot
+            key={index}
+            style={{
+              width: calculateDotSize(index),
+              height: calculateDotSize(index)
+            }}
+            active={index === currentIndex}
+          />
         ))}
       </DotContainer>
     </Container>
