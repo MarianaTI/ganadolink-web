@@ -5,7 +5,7 @@ export const comment = [
     },
     {
       opinion:
-        "Con esta página, ya no hay margen para errores humanos en los formularios de tránsito de ganado. Todos los campos están claramente definidos y validados, lo que garantiza la precisión de los datos. ",
+        "Con esta página, ya no hay margen para errores humanos en los formularios de tránsito de ganado. Todos los campos están claramente definidos y validados. ",
     },
     {
       opinion:
