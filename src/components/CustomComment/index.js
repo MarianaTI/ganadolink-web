@@ -4,7 +4,7 @@ import { RiDoubleQuotesL } from "react-icons/ri";
 
 const CustomComment = ({ opinion, currentIndex, totalComments }) => {
   const calculateDotSize = (index) => {
-    let baseSize = 4;
+    let baseSize = 3;
     let scaleFactor = currentIndex === index ? 2 : 1;
     return baseSize * scaleFactor;
   };

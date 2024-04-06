@@ -1,22 +1,30 @@
 import CustomCategories from "@/components/CustomCategories";
 import CustomComment from "@/components/CustomComment";
+import Tooltip from "@mui/material/Tooltip";
 import {
   AboutUsContainer,
   Background,
   ButtonStyled,
-  ButtonText,
   ButtonsContainer,
   CenterContainer,
   CharacteristicsContainer,
+  CollapsibleButton,
+  ContactContainer,
   Container,
+  ContainerQuestion,
+  ContentContainer,
+  CopyEmail,
+  FAQ,
   GridContainer,
   GridContainerAboutUs,
   GridContainerCharacteristics,
   GridImage,
   GridWelcome,
   Icon,
+  IconCopy,
   ImgStyled,
   ImgStyledAboutUs,
+  Question,
   TextRight,
   Title,
   Welcome,
@@ -24,12 +32,37 @@ import {
 } from "@/styles/Index.style";
 import { comment } from "/src/constants";
 import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
+import { faCopy } from "@fortawesome/free-regular-svg-icons";
 import { Skeleton } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { questions } from "@/constants";
 
 const Home = () => {
+  const [openCollapsibleIndex, setOpenCollapsibleIndex] = useState(null);
+  const [selectedQuestionIndex, setSelectedQuestionIndex] = useState(null);
   const [currentCommentIndex, setCurrentCommentIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
+  const [tooltipOpen, setTooltipOpen] = useState(false);
+  const emailRef = useRef(null);
+
+  const toggleCollapsible = (index) => {
+    setOpenCollapsibleIndex(openCollapsibleIndex === index ? null : index);
+    setSelectedQuestionIndex(openCollapsibleIndex === index ? null : index);
+  };
+
+  const copyEmail = () => {
+    const email = emailRef.current.textContent;
+    const tempTextArea = document.createElement("textarea");
+    tempTextArea.value = email;
+    document.body.appendChild(tempTextArea);
+    tempTextArea.select();
+    document.execCommand("copy");
+    document.body.removeChild(tempTextArea);
+    setTooltipOpen(true);
+    setTimeout(() => {
+      setTooltipOpen(false);
+    }, 2000);
+  };
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -51,7 +84,13 @@ const Home = () => {
             marginBottom: "100px",
           }}
         >
-          <div style={{ display: "flex", justifyContent: "start", marginLeft: "92px" }}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "start",
+              marginLeft: "92px",
+            }}
+          >
             <Skeleton
               variant="rounded"
               animation="wave"
@@ -268,6 +307,66 @@ const Home = () => {
                 />
               </CenterContainer>
             </GridContainerAboutUs>
+          </Container>
+          <Container
+            style={{ background: "rgba(255, 229, 197, 0.15)", height: "auto" }}
+          >
+            <FAQ>
+              <span className="first-child">Preguntas más frecuentes</span>
+              <span className="last-child">
+                Aquí encontrarás respuestas a las preguntas más comunes sobre
+                nuestra plataforma y los servicios que ofrecemos.
+              </span>
+            </FAQ>
+            <CenterContainer
+              style={{ justifyContent: "start", marginTop: "8px" }}
+            >
+              {questions.map((item, index) => (
+                <ContainerQuestion
+                  key={index}
+                  isSelected={selectedQuestionIndex === index}
+                >
+                  <Question>
+                    <span style={{ fontWeight: "500" }}>{item.question}</span>
+                    <CollapsibleButton onClick={() => toggleCollapsible(index)}>
+                      {openCollapsibleIndex === index ? "-" : "+"}
+                    </CollapsibleButton>
+                  </Question>
+                  {openCollapsibleIndex === index && (
+                    <ContentContainer>
+                      <span>{item.answer}</span>
+                    </ContentContainer>
+                  )}
+                </ContainerQuestion>
+              ))}
+            </CenterContainer>
+            <FAQ>
+              <span
+                className="first-child"
+                style={{ fontSize: "18px", fontWeight: "600" }}
+              >
+                ¿Tienes alguna otra pregunta?
+              </span>
+              <span className="last-child" style={{ width: "350px" }}>
+                No dudes en eviarnos un correo electronico con tu pregunta para
+                más aclaración
+              </span>
+              <ContactContainer>
+                <Tooltip
+                  title="¡Correo copiado!"
+                  open={tooltipOpen}
+                  onClose={() => setTooltipOpen(false)}
+                  style={{ fontFamily: 'Poppins, sans-serif' }}
+                >
+                  <span className="email" ref={emailRef}>
+                    contact@ganadolink.com
+                  </span>
+                </Tooltip>
+                <CopyEmail onClick={copyEmail}>
+                  copiar <IconCopy icon={faCopy} />
+                </CopyEmail>
+              </ContactContainer>
+            </FAQ>
           </Container>
         </div>
       )}
