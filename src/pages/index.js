@@ -75,6 +75,7 @@ const Home = () => {
   const loading = () => {
     return (
       <div>
+        {" "}
         <div
           style={{
             padding: "150px 0px 50px 0",
@@ -185,6 +186,16 @@ const Home = () => {
               />
             </CenterContainer>
           </GridContainerAboutUs>
+        </Container>
+        <Container style={{ marginBottom: "150px" }}>
+          <CenterContainer>
+            <Skeleton
+              variant="rounded"
+              animation="wave"
+              height={600}
+              width={700}
+            />
+          </CenterContainer>
         </Container>
       </div>
     );
