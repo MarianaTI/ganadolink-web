@@ -120,7 +120,8 @@ export const Title = styled.div`
 `;
 
 export const Container = styled.div`
-  height: 600px;
+  height: 648px;
+  padding: 32px;
 `;
 
 export const WhoWeAre = styled(Title)`
