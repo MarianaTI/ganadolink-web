@@ -21,6 +21,12 @@ export const GridContainer = styled.div`
   }
 `;
 
+export const GridButton = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+`;
+
 export const GridForm = styled.form`
   width: 500px;
   height: 100%;

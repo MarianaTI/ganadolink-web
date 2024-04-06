@@ -1,15 +1,8 @@
-
 import styled from "@emotion/styled";
 
-export const AlertContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-
+export const ModalContent = styled.div`
   position: absolute;
-  height: 300px;
-  max-width: 350px;
+  max-height: 500px;
   overflow-y: auto;
   top: 50%;
   left: 50%;
@@ -25,7 +18,6 @@ export const AlertContainer = styled.div`
     color: #2a2a2a;
     font-size: 18px;
     font-weight: 500;
-    margin-top: 24px;
   }
   & span {
     color: #414141;
@@ -38,19 +30,10 @@ export const AlertContainer = styled.div`
   }
 `;
 
-export const Image = styled.img`
-  max-width: 90px;
-  max-height: 80px;
+export const ModalHead = styled.div`
+  display: flex;
   align-items: center;
-  justify-content: center;
 `;
-
-export const Text = styled.div`
-color: #414141;
-text-align: center;
-font-family: Poppins;
-font-size: 12px;
-font-style: normal;
-font-weight: 400;
-line-height: normal;
+export const ModalMain = styled.div`
+  padding: 16px 0 16px 0;
 `;

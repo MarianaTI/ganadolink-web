@@ -95,9 +95,9 @@ const CustomNavbar = () => {
               </Link>
             </li>
             <li>
-              <Link href="/users" passHref>
+              <Link href="/user" passHref>
                 <TabStyled
-                  className={router.pathname === "/users" ? "active" : ""}
+                  className={router.pathname === "/user" ? "active" : ""}
                 >
                   Usuarios
                 </TabStyled>

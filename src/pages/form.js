@@ -41,6 +41,7 @@ import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import { Skeleton } from "@mui/material";
 import withAuth from "@/components/Authenticated";
+import AlertComponent from "@/components/CustomAlert";
 
 const Form = () => {
   const router = useRouter();
@@ -57,6 +58,11 @@ const Form = () => {
   const [selectedEspecie, setSelectedEspecie] = useState("");
   const [selectedMotivo, setSelectedMotivo] = useState("");
   const [selectedBoolean, setSelectedBoolean] = useState("");
+  const [alertInfo, setAlertInfo] = useState({
+    show: false,
+    title: "",
+    text: "",
+  });
 
   const fetchEspecies = async () => {
     const especieRepo = new EspecieRepo();
@@ -189,10 +195,26 @@ const Form = () => {
       };
 
       const createdOrder = await createOrderUseCase.run(order);
-      router.push("/catalogue");
       console.log(createdOrder);
+
+      setAlertInfo({
+        show: true,
+        title: "Creado correctamente",
+        text: "La orden se ha creado exitosamente",
+      });
+      setTimeout(() => {
+        router.push("/catalogue");
+      }, 1500);
     } catch (error) {
-      console.log(error);
+      setTimeout(() => {
+        setAlertInfo({
+          show: true,
+          title: "Ocurrió un Error Inesperado",
+          text:
+            `${error.message} - ${error.response.data.message}` ||
+            "No se pudo completar la operación.",
+        });
+      }, 1000);
     }
   };
 
@@ -539,6 +561,19 @@ const Form = () => {
               </ButtonsContainer>
             </FormContainerDatosGenerales>
           </TabContent>
+          {alertInfo.show && (
+            <AlertComponent
+              open={alertInfo}
+              onClose={() => setAlertInfo(false)}
+              imageSrc={
+                alertInfo.title === "Creado correctamente"
+                  ? "/img/success.png"
+                  : "/img/error.png"
+              }
+              title={alertInfo.title}
+              text={alertInfo.text}
+            />
+          )}
         </Container>
       )}
     </>

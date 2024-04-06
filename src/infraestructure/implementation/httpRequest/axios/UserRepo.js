@@ -4,29 +4,56 @@ import Cookies from "js-cookie";
 import CryptoJS from "crypto-js";
 import { setUser } from "@/actions/userActions";
 
+function getDecryptedToken() {
+  const encryptedToken = Cookies.get("authToken");
+  const bytes = CryptoJS.AES.decrypt(encryptedToken, "cookie-encrypted");
+  const token = bytes.toString(CryptoJS.enc.Utf8);
+  return token;
+}
+
 class UserRepo extends IUserRepo {
-  constructor(dispatch) {
+  constructor(dispatch, id_user) {
     super();
     this.dispatch = dispatch;
+    this.id_user = id_user;
     this.url = "http://localhost:3000/api/users";
     this.urlSignIn = "http://localhost:3000/api/signin";
     this.urlSignUp = "http://localhost:3000/api/signup";
   }
 
   async getAll() {
-    const encryptedToken = Cookies.get("authToken");
-    const bytes = CryptoJS.AES.decrypt(encryptedToken, "cookie-encrypted");
-    const token = bytes.toString(CryptoJS.enc.Utf8);
-
-    const response = await axios.get(this.url, {
-      headers: {
-        "Content-Type": "application/json",
-        authorization: `Bearer ${token}`,
-      },
-    });
-    return response.data;
+    try {
+      const token = getDecryptedToken();
+      const response = await axios.get(this.url, {
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `Bearer ${token}`,
+          id_user: this.id_user,
+        },
+      });
+      return response.data;
+    } catch (error) {
+      console.error("Error:", error.message);
+      throw error;
+    }
   }
 
+  async getOne(_id) {
+    try {
+      const token = getDecryptedToken();
+
+      const response = await axios.get(`${this.url}/${_id}`, {
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `Bearer ${token}`,
+        },
+      });
+      return response.data;
+    } catch (error) {
+      console.error("Error:", error.message);
+      throw error;
+    }
+  }
   async signIn(user) {
     try {
       const response = await axios.post(this.urlSignIn, user, {
@@ -68,41 +95,25 @@ class UserRepo extends IUserRepo {
         },
       });
 
-      if (
-        response.data &&
-        response.data.message === "User deleted successfully"
-      ) {
-        return true; // Usuario eliminado correctamente
-      } else {
-        throw new Error("Unexpected server response");
-      }
+      return response.data;
     } catch (error) {
-      console.error("Error deleting user:", error.message);
+      console.error("Error:", error.message);
       throw error;
     }
   }
 
-  async update(id, userData) {
+  async update(user) {
     try {
-      const encryptedToken = Cookies.get("authToken");
-      const bytes = CryptoJS.AES.decrypt(encryptedToken, "cookie-encrypted");
-      const token = bytes.toString(CryptoJS.enc.Utf8);
+      const token = getDecryptedToken();
 
-      const response = await axios.put(`${this.url}/${id}`, userData, {
+      const response = await axios.put(`${this.url}/${user._id}`, user, {
         headers: {
           "Content-Type": "application/json",
           authorization: `Bearer ${token}`,
         },
       });
 
-      if (
-        response.data &&
-        response.data.message === "User updated"
-      ) {
-        return true; // Usuario actualizado correctamente
-      } else {
-        throw new Error("Unexpected server response");
-      }
+      return response.data;
     } catch (error) {
       console.error("Error updating user:", error.message);
       throw error;
