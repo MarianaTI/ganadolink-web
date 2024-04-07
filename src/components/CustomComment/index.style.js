@@ -1,5 +1,4 @@
 import styled from "@emotion/styled";
-import css from "styled-jsx/css";
 
 export const Container = styled.div`
   width: 500px;
@@ -8,7 +7,7 @@ export const Container = styled.div`
   background: rgba(255, 229, 197, 0.35);
   flex-direction: column;
   gap: 8px;
-  padding: 56px;
+  padding: 40px;
   border-radius: 15px;
   justify-content: center;
   filter: drop-shadow(6px 8px 8px rgba(158, 158, 158, 0.5));
@@ -31,9 +30,17 @@ export const Opinion = styled.span`
 `;
 
 export const Dot = styled.div`
-  background-color: #2a2a2a;
+  background-color: #454545;
   height: 4px;
   width: 5px;
   border-radius: 100%;
   transition: transform 0.3s ease;
+`;
+
+export const DotContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 8px;
 `;

@@ -120,7 +120,8 @@ export const Title = styled.div`
 `;
 
 export const Container = styled.div`
-  height: 600px;
+  height: 648px;
+  padding: 32px;
 `;
 
 export const WhoWeAre = styled(Title)`
@@ -174,10 +175,88 @@ export const TextRight = styled(WhoWeAre)`
   }
 `;
 
-export const DotContainer = styled.div`
+export const FAQ = styled.div`
   display: flex;
-  align-items: center;
   justify-content: center;
-  gap: 4px;
-  padding-top: 8px;
+  align-items: center;
+  flex-direction: column;
+  font-family: Poppins;
+  padding: 26px;
+  gap: 8px;
+  .first-child {
+    color: #202020;
+    font-weight: 500;
+    font-size: 28px;
+  }
+  .last-child {
+    color: #5f5f5f;
+    font-size: 14px;
+    width: 500px;
+    text-align: center;
+  }
+`;
+
+export const ContainerQuestion = styled.div`
+  width: 750px;
+  border-radius: 15px;
+  border: ${({ isSelected }) => (isSelected ? "none" : "1px solid #DFDFDF")};
+  padding: 16px 24px;
+  display: flex;
+  flex-direction: column;
+  background-color: ${({ isSelected }) =>
+    isSelected ? "rgba(255, 229, 197, 0.5)" : "transparent"};
+  filter: ${({ isSelected }) =>
+    isSelected ? "drop-shadow(6px 8px 8px rgba(158, 158, 158, 0.25))" : "none"};
+  & span {
+    font-family: Poppins;
+  }
+`;
+
+export const CollapsibleButton = styled.button`
+  border: none;
+  background: none;
+  color: #2a2a2a;
+  font-size: 20px;
+  font-weight: 600;
+  display: flex;
+  cursor: pointer;
+`;
+
+export const Question = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+export const ContentContainer = styled.div`
+  padding-top: 16px;
+`;
+
+export const ContactContainer = styled.div`
+  padding: 10px;
+  display: flex;
+  gap: 24px;
+  border-radius: 15px;
+  background-color: rgba(255, 229, 197, 0.5);
+  & span {
+    font-family: Poppins;
+    font-size: 14px;
+    font-weight: 500;
+  }
+`;
+
+export const CopyEmail = styled.button`
+  border: none;
+  border-radius: 5px;
+  background: rgba(255, 252, 248, 0.7);
+  font-family: Poppins;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+`;
+
+export const IconCopy = styled(FontAwesomeIcon)`
+  font-size: 12px;
+  font-weight: 600;
+  color: #2a2a2a;
+  margin-left: 4px;
 `;
