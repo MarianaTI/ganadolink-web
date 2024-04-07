@@ -18,6 +18,15 @@ import {
 import Link from "next/link";
 
 function Customfooter() {
+  const toFacebook = () => {
+    window.open("https://www.facebook.com", "_blank");
+  }
+
+  const toInstagram = () => {
+    window.open("https://www.instagram.com", "_blank");
+  }
+
+
   return (
     <>
       <FooterContainer>
@@ -29,10 +38,10 @@ function Customfooter() {
               contactarnos.
             </span>
             <SocialIcons>
-              <ButtonIcon>
+              <ButtonIcon onClick={toFacebook}>
                 Facebook <CustomIcon icon={faFacebookSquare} />
               </ButtonIcon>
-              <ButtonIcon>
+              <ButtonIcon onClick={toInstagram}>
                 Instagram <CustomIcon icon={faInstagram} />
               </ButtonIcon>
             </SocialIcons>
