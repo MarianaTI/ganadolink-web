@@ -5,34 +5,29 @@ import {
   Input,
   InputContainer,
   SearchIcon,
-  DownloadPdfButton,
   Title,
   Line,
   IconButton,
   TableStyled,
   TheadStyled,
   TrStyled,
-  TdStyled,
+  CustomIcon,
+  TableCollapsibleStyled,
+  TitleTable,
 } from "../styles/catalogue.style";
-import { FaSearch, FaDownload, FaFilePdf, FaEye, FaPen } from "react-icons/fa";
+import { FaSearch } from "react-icons/fa";
 import { generatePDF } from "../components/CustomPDF/index";
 import DownloadAllPDF from "../components/CustomPDF/indexFull";
 import OrderRepo from "@/infraestructure/implementation/httpRequest/axios/OrderRepo";
 import GetAllOrderUseCase from "@/application/usecases/orderUseCase/GetAllOrderUseCase";
-import Box from "@mui/material/Box";
-import Collapse from "@mui/material/Collapse";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Typography from "@mui/material/Typography";
-import Paper from "@mui/material/Paper";
-import CollapsibleTable from "@/components/CustomCollapsibleTable";
-import { Divider, Skeleton } from "@mui/material";
+import { Skeleton } from "@mui/material";
 import { useRouter } from "next/router";
 import withAuth from "@/components/Authenticated";
+import {
+  faEye,
+  faFileDownload,
+  faPenToSquare,
+} from "@fortawesome/free-solid-svg-icons";
 
 const CatalogPage = () => {
   const route = useRouter();
@@ -116,7 +111,7 @@ const CatalogPage = () => {
             <TableStyled>
               <TheadStyled>
                 <TrStyled>
-                  <th>Número de animales</th>
+                  <th>Folio</th>
                   <th>Patente o factura</th>
                   <th>Nombre del vendedor</th>
                   <th>Nombre del comprador</th>
@@ -131,82 +126,114 @@ const CatalogPage = () => {
                   <React.Fragment key={index}>
                     <TrStyled>
                       <td>{item._id}</td>
-                      <td>{item.vendedor.nombre}</td>
+                      <td>{item.ganado[0].patente}</td>
                       <td>{item.vendedor.nombre}</td>
                       <td>{item.comprador.nombre}</td>
                       <td>{item.id_especie.name}</td>
                       <td>{item.ganado[0].siniiga}</td>
                       <td>{item?.vehiculo?.marca}</td>
-                      <td>
-                        <IconButton>
-                          <FaDownload onClick={() => handleDownloadPDF(item)} />
-                        </IconButton>
-                        <IconButton onClick={() => handleRowToggle(index)}>
-                          <FaEye />
-                        </IconButton>
-                        <IconButton onClick={() => handleEditClick(item._id)}>
-                          <FaPen />
-                        </IconButton>
+                      <td style={{ display: "flex", justifyContent: "center" }}>
+                        <div style={{ display: "flex", gap: "8px" }}>
+                          <IconButton onClick={() => handleDownloadPDF(item)}>
+                            <CustomIcon icon={faFileDownload} />
+                          </IconButton>
+                          <IconButton onClick={() => handleRowToggle(index)}>
+                            <CustomIcon icon={faEye} />
+                          </IconButton>
+                          <IconButton onClick={() => handleEditClick(item._id)}>
+                            <CustomIcon icon={faPenToSquare} />
+                          </IconButton>
+                        </div>
                       </td>
                     </TrStyled>
                     {openRow === index && (
-                      <TrStyled>
-                        <td colSpan="8" style={{ textAlign: "center" }}>
-                          <div style={{ display: "inline-block" }}>
-                            <Box
-                              sx={{ margin: 1, maxWidth: 800, minWidth: 800 }}
-                            >
-                              <TableContainer component={Paper}>
-                                <Typography
-                                  variant="h6"
-                                  gutterBottom
-                                  component="div"
-                                  align="center"
-                                >
-                                  Datos
-                                </Typography>
-
-                                <Table aria-label="collapsible table">
-                                  <TableHead>
-                                    <TableRow>
-                                      <TableCell />
-                                      <TableCell align="center">Sexo</TableCell>
-                                      <TableCell align="center">Raza</TableCell>
-                                      <TableCell align="center">
-                                        Color
-                                      </TableCell>
-                                      <TableCell align="center">
-                                        Siniiga
-                                      </TableCell>
-                                    </TableRow>
-                                  </TableHead>
-                                  <TableBody>
-                                    {item.ganado.map(
-                                      (ganadoItem, ganadoIndex) => (
-                                        <TableRow key={ganadoIndex}>
-                                          <TableCell />
-                                          <TableCell align="center">
-                                            {ganadoItem.sexo}
-                                          </TableCell>
-                                          <TableCell align="center">
-                                            {ganadoItem.id_raza?.name}
-                                          </TableCell>
-                                          <TableCell align="center">
-                                            {ganadoItem.color}
-                                          </TableCell>
-                                          <TableCell align="center">
-                                            {ganadoItem.siniiga}
-                                          </TableCell>
-                                        </TableRow>
-                                      )
-                                    )}
-                                  </TableBody>
-                                </Table>
-                              </TableContainer>
-                            </Box>
+                      <tr>
+                        <td colSpan="8">
+                          <div
+                            style={{
+                              display: "flex",
+                              gap: "32px",
+                              width: "100%",
+                            }}
+                          >
+                            <div style={{ flex: 1 }}>
+                              <TitleTable>
+                                <span>Datos del vendedor</span>
+                              </TitleTable>
+                              <TableCollapsibleStyled>
+                                <TheadStyled style={{background: 'rgba(255, 229, 197, 0.5)'}}>
+                                  <TrStyled>
+                                    <th>Nombre</th>
+                                    <th>Domicilio</th>
+                                    <th>Municipio</th>
+                                  </TrStyled>
+                                </TheadStyled>
+                                <tbody>
+                                  {orders?.map((item, index) => (
+                                    <TrStyled key={index}>
+                                      <td>{item.vendedor.nombre}</td>
+                                      <td>{item.vendedor.domicilio}</td>
+                                      <td>{item.vendedor.municipio}</td>
+                                    </TrStyled>
+                                  ))}
+                                </tbody>
+                              </TableCollapsibleStyled>
+                            </div>
+                            <div style={{ flex: 1 }}>
+                              <TitleTable>
+                                <span>Datos del vendedor</span>
+                              </TitleTable>
+                              <TableCollapsibleStyled>
+                                <TheadStyled style={{background: 'rgba(255, 229, 197, 0.5)'}}>
+                                  <TrStyled>
+                                    <th>Nombre</th>
+                                    <th>Domicilio</th>
+                                    <th>Municipio</th>
+                                    <th>Predio</th>
+                                  </TrStyled>
+                                </TheadStyled>
+                                <tbody>
+                                  {orders?.map((item, index) => (
+                                    <TrStyled key={index}>
+                                      <td>{item.comprador.nombre}</td>
+                                      <td>{item.comprador.domicilio}</td>
+                                      <td>{item.comprador.municipio}</td>
+                                      <td>{item.comprador.predio}</td>
+                                    </TrStyled>
+                                  ))}
+                                </tbody>
+                              </TableCollapsibleStyled>
+                            </div>
                           </div>
+                          <TitleTable>
+                            <span>Datos del ganado</span>
+                          </TitleTable>
+                          <TableCollapsibleStyled>
+                            <TheadStyled style={{background: 'rgba(255, 229, 197, 0.5)'}}>
+                              <TrStyled>
+                                <th>Patente</th>
+                                <th>Sexo</th>
+                                <th>Raza</th>
+                                <th>Color</th>
+                                <th>Arete siniiga</th>
+                                <th>Figura de herraje</th>
+                              </TrStyled>
+                            </TheadStyled>
+                            <tbody>
+                              {item.ganado.map((ganadoItem, ganadoIndex) => (
+                                <TrStyled key={ganadoIndex}>
+                                  <td>{ganadoItem.patente}</td>
+                                  <td>{ganadoItem.sexo}</td>
+                                  <td>Raza</td>
+                                  <td>{ganadoItem.color}</td>
+                                  <td>{ganadoItem.siniiga}</td>
+                                  <td>figura</td>
+                                </TrStyled>
+                              ))}
+                            </tbody>
+                          </TableCollapsibleStyled>
                         </td>
-                      </TrStyled>
+                      </tr>
                     )}
                   </React.Fragment>
                 ))}

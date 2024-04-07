@@ -1,4 +1,5 @@
-import styled from '@emotion/styled';
+import styled from "@emotion/styled";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export const Container = styled.div`
   display: flex;
@@ -37,7 +38,6 @@ export const Input = styled.input`
   }
 `;
 
-
 export const SearchIcon = styled.div`
   position: absolute;
   top: 55%;
@@ -49,6 +49,13 @@ export const TableStyled = styled.table`
   width: 100%;
   text-align: center;
   margin: 16px 0;
+  border-collapse: collapse;
+`;
+
+export const TableCollapsibleStyled = styled.table`
+  width: 100%;
+  text-align: center;
+  margin: 4px 0;
   border-collapse: collapse;
 `;
 
@@ -70,15 +77,15 @@ export const TrStyled = styled.tr`
   }
 `;
 export const TdStyled = styled.tr`
-align-items: center;
-justify-content: left;
-& th {
+  align-items: center;
+  justify-content: left;
+  & th {
     color: #2a2a2a;
     font-family: Poppins;
     font-size: 16px;
     font-weight: 500;
     padding: 10px;
-    margin-left:50px;
+    margin-left: 50px;
   }
   & td {
     padding: 10px;
@@ -87,15 +94,25 @@ justify-content: left;
 `;
 
 export const IconButton = styled.button`
-  background-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: none;
   border: none;
   cursor: pointer;
   transition: color 0.3s;
-  color: #000;
-
+  background: rgba(255, 229, 197, 0.5);
+  border-radius: 15px;
   &:hover {
-    color: #f27d16;
+    background-color: rgba(255, 229, 197);
   }
+`;
+
+export const CustomIcon = styled(FontAwesomeIcon)`
+  font-size: 18px;
+  color: #555555;
 `;
 
 export const DownloadPdfButton = styled.button`
@@ -107,14 +124,14 @@ export const DownloadPdfButton = styled.button`
   color: #bababa;
   font-size: 18px;
   font-weight: 500;
-  border: 2px solid #bababa; 
-  padding: 10px 20px; 
+  border: 2px solid #bababa;
+  padding: 10px 20px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   transition: background-color 0.3s, color 0.3s, border-color 0.3s;
-  svg { 
+  svg {
     margin-left: 5px;
   }
   &:hover {
@@ -139,4 +156,13 @@ export const Line = styled.hr`
   width: 100%;
   margin-top: -8px;
   margin-bottom: 32px;
+`;
+
+export const TitleTable = styled.div`
+  padding: 16px;
+  & span{
+    font-size: 18px;
+    font-weight: 600;
+    color: #3f3f3f;
+  }
 `;

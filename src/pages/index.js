@@ -398,6 +398,7 @@ const Home = () => {
               </svg>
             </div>
           </div>
+          <Customfooter/>
         </div>
       )}
     </>
