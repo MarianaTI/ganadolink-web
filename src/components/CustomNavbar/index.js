@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useSelector } from "react-redux";
 import CustomUser from "@/components/CustomUser";
 import {
   IconMenu,
@@ -12,13 +13,13 @@ import {
 } from "./index.style";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import Cookies from "js-cookie";
-import CustomButton from "../CustomButton";
 
 const CustomNavbar = () => {
   const router = useRouter();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const userRole = useSelector((state) => state.user.rol);
 
   useEffect(() => {
     const authToken = Cookies.get("authToken");
@@ -94,15 +95,17 @@ const CustomNavbar = () => {
                 </TabStyled>
               </Link>
             </li>
-            <li>
-              <Link href="/user" passHref>
-                <TabStyled
-                  className={router.pathname === "/user" ? "active" : ""}
-                >
-                  Usuarios
-                </TabStyled>
-              </Link>
-            </li>
+            {userRole === "SuperAdmin" && (
+              <li>
+                <Link href="/user" passHref>
+                  <TabStyled
+                    className={router.pathname === "/user" ? "active" : ""}
+                  >
+                    Usuarios
+                  </TabStyled>
+                </Link>
+              </li>
+            )}
             <li className="closeSession" onClick={handleSignOut}>
               <Link href="/login">Cerrar sesión</Link>
             </li>

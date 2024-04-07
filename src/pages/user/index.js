@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import GetAllUserUseCase from "@/application/usecases/userUseCase/GetAllUserCase";
 import UserRepo from "@/infraestructure/implementation/httpRequest/axios/UserRepo";

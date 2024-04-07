@@ -5,14 +5,12 @@ import {
   Input,
   InputContainer,
   SearchIcon,
-  DownloadPdfButton,
   Title,
   Line,
   IconButton,
   TableStyled,
   TheadStyled,
   TrStyled,
-  TdStyled,
 } from "../styles/catalogue.style";
 import { FaSearch, FaDownload, FaFilePdf, FaEye, FaPen } from "react-icons/fa";
 import { generatePDF } from "../components/CustomPDF/index";
@@ -20,7 +18,6 @@ import DownloadAllPDF from "../components/CustomPDF/indexFull";
 import OrderRepo from "@/infraestructure/implementation/httpRequest/axios/OrderRepo";
 import GetAllOrderUseCase from "@/application/usecases/orderUseCase/GetAllOrderUseCase";
 import Box from "@mui/material/Box";
-import Collapse from "@mui/material/Collapse";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -29,9 +26,9 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
-import CollapsibleTable from "@/components/CustomCollapsibleTable";
 import { Divider, Skeleton } from "@mui/material";
 import { useRouter } from "next/router";
+import { useSelector } from "react-redux";
 import withAuth from "@/components/Authenticated";
 
 const CatalogPage = () => {
@@ -39,6 +36,7 @@ const CatalogPage = () => {
   const [orders, setOrders] = useState([]);
   const [openRow, setOpenRow] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const userRole = useSelector((state) => state.user.rol);
 
   const handleEditClick = (idForm) => {
     return route.push({
@@ -144,9 +142,12 @@ const CatalogPage = () => {
                         <IconButton onClick={() => handleRowToggle(index)}>
                           <FaEye />
                         </IconButton>
-                        <IconButton onClick={() => handleEditClick(item._id)}>
-                          <FaPen />
-                        </IconButton>
+                        {(userRole === "SuperAdmin" ||
+                          userRole === "admin") && (
+                          <IconButton onClick={() => handleEditClick(item._id)}>
+                            <FaPen />
+                          </IconButton>
+                        )}
                       </td>
                     </TrStyled>
                     {openRow === index && (
