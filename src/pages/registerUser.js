@@ -47,7 +47,7 @@ const SignUp = () => {
     try {
       const signUpResponse = await signUpUseCase.run(user);
       console.log(signUpResponse);
-      route.push("/users");
+      route.push("/user");
     } catch (error) {
       console.error("Error durante el registro:", error);
     }

@@ -1,16 +1,15 @@
-import styled from '@emotion/styled';
+import styled from "@emotion/styled";
 
 export const ButtonContainer = styled.div`
   display: flex;
   justify-content: end;
   width: 100%;
 `;
-
 const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
+  display: block;
+  flex-direction: center;
+  align-items: flex;
+  justify-content: flex;
   padding: 20px;
 `;
 
@@ -41,10 +40,10 @@ const Form = styled.form`
 `;
 
 const InputContainer = styled.div`
+  marginright: "120vh";
   position: relative;
-  width: 30%;
+  width: 100%;
 `;
-
 const Input = styled.input`
   padding: 10px;
   border: 1px solid #ccc;
@@ -92,10 +91,10 @@ const Table = styled.table`
 
 const Th = styled.th`
   padding: 10px;
-  border-top: 2px solid #F8BE8B; /* Borde superior en gris elegante fuerte */
-  border-bottom: 2px solid #F8BE8B; /* Borde inferior en gris elegante fuerte */
+  border-top: 2px solid #f8be8b; /* Borde superior en gris elegante fuerte */
+  border-bottom: 2px solid #f8be8b; /* Borde inferior en gris elegante fuerte */
   text-align: left;
-  background-color: #F8BE8B; /* Color de fondo gris */
+  background-color: #f8be8b; /* Color de fondo gris */
   color: #333; /* Color del texto */
 `;
 
@@ -110,7 +109,7 @@ const EditButton = styled.button`
   cursor: pointer;
   margin-right: 5px;
   transition: color 0.3s;
-  
+
   &:hover {
     color: #ffc107; /* Color representativo de editar */
   }
@@ -127,4 +126,29 @@ const DeleteButton = styled.button`
   }
 `;
 
-export { Container, Form, Input, InputContainer, SearchIcon, Title, Line, Table, Th, Td, EditButton, DeleteButton };
+export const RowContainer = styled.div`
+  display: flex;
+  gap: 26px;
+`;
+
+export const ImagenD = styled.div`
+    display: flex;     
+    justify-content: center;
+    align-items: center;
+    margin: 8px;
+`;
+
+export {
+  Container,
+  Form,
+  Input,
+  InputContainer,
+  SearchIcon,
+  Title,
+  Line,
+  Table,
+  Th,
+  Td,
+  EditButton,
+  DeleteButton,
+};

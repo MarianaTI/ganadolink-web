@@ -22,6 +22,7 @@ import OrderRepo from "@/infraestructure/implementation/httpRequest/axios/OrderR
 import GetAllOrderUseCase from "@/application/usecases/orderUseCase/GetAllOrderUseCase";
 import { Skeleton } from "@mui/material";
 import { useRouter } from "next/router";
+import { useSelector } from "react-redux";
 import withAuth from "@/components/Authenticated";
 import {
   faEye,
@@ -34,6 +35,7 @@ const CatalogPage = () => {
   const [orders, setOrders] = useState([]);
   const [openRow, setOpenRow] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const userRole = useSelector((state) => state.user.rol);
 
   const handleEditClick = (idForm) => {
     return route.push({
@@ -132,18 +134,19 @@ const CatalogPage = () => {
                       <td>{item.id_especie.name}</td>
                       <td>{item.ganado[0].siniiga}</td>
                       <td>{item?.vehiculo?.marca}</td>
-                      <td style={{ display: "flex", justifyContent: "center" }}>
-                        <div style={{ display: "flex", gap: "8px" }}>
-                          <IconButton onClick={() => handleDownloadPDF(item)}>
-                            <CustomIcon icon={faFileDownload} />
-                          </IconButton>
-                          <IconButton onClick={() => handleRowToggle(index)}>
-                            <CustomIcon icon={faEye} />
-                          </IconButton>
+                      <td>
+                        <IconButton>
+                          <FaDownload onClick={() => handleDownloadPDF(item)} />
+                        </IconButton>
+                        <IconButton onClick={() => handleRowToggle(index)}>
+                          <FaEye />
+                        </IconButton>
+                        {(userRole === "SuperAdmin" ||
+                          userRole === "admin") && (
                           <IconButton onClick={() => handleEditClick(item._id)}>
-                            <CustomIcon icon={faPenToSquare} />
+                            <FaPen />
                           </IconButton>
-                        </div>
+                        )}
                       </td>
                     </TrStyled>
                     {openRow === index && (
