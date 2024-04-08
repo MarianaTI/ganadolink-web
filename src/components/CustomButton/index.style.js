@@ -3,6 +3,9 @@ import styled from "@emotion/styled";
 
 export const ButtonStyled = styled.button`
   width: ${(props) => (props.fullWidth ? "100%" : "200px")};
+  position: relative;
+  box-sizing: border-box;
+  background-repeat: no-repeat;
   height: 45px;
   border-radius: 5px;
   background: #f27d16;
@@ -12,6 +15,9 @@ export const ButtonStyled = styled.button`
   font-weight: 500;
   border: none;
   margin: 24px 0px;
+  transition: all 0.3s ease-in-out;
+  z-index: 1;
+  overflow: hidden;
   cursor: pointer;
   position: relative;
   box-sizing: border-box;
