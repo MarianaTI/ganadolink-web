@@ -14,6 +14,8 @@ import {
   ImagenD,
   RowContainer,
   DataInfo,
+  TitleTable,
+  TableCollapsibleStyled,
 } from "../styles/catalogue.style";
 import {
   FaSearch,
