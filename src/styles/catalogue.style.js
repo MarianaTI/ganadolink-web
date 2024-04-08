@@ -134,6 +134,7 @@ export const CustomIcon = styled(FontAwesomeIcon)`
   color: #555555;
 `;
 
+
 export const DownloadPdfButton = styled.button`
   width: 200px;
   height: 45px;
