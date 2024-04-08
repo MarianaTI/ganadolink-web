@@ -60,7 +60,7 @@ export const TableCollapsibleStyled = styled.table`
 `;
 
 export const TheadStyled = styled.thead`
-  background: #fcdfc5;
+  background: #facea8;
 `;
 
 export const TrStyled = styled.tr`
@@ -103,7 +103,7 @@ export const IconButton = styled.button`
   border: none;
   cursor: pointer;
   transition: color 0.3s;
-  background: rgba(255, 229, 197, 0.5);
+  background: rgba(250, 206, 168, 0.7);
   border-radius: 15px;
   &:hover {
     background-color: rgba(255, 229, 197);
@@ -160,9 +160,26 @@ export const Line = styled.hr`
 
 export const TitleTable = styled.div`
   padding: 16px;
-  & span{
+  & span {
     font-size: 18px;
     font-weight: 600;
+    color: #3f3f3f;
+  }
+`;
+
+export const DataInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: start;
+  padding: 16px 32px;
+  .title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #3f3f3f;
+  }
+  .text {
+    font-size: 18px;
     color: #3f3f3f;
   }
 `;
