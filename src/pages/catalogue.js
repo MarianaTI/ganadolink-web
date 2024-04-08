@@ -129,7 +129,7 @@ const CatalogPage = () => {
                   <React.Fragment key={index}>
                     <TrStyled>
                       <td>{item._id}</td>
-                      <td>{item.vendedor.nombre}</td>
+                      <td>{item.ganado[0].patente}</td>
                       <td>{item.vendedor.nombre}</td>
                       <td>{item.comprador.nombre}</td>
                       <td>{item.id_especie.name}</td>

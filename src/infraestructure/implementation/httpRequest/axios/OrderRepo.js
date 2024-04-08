@@ -6,6 +6,7 @@ class OrderRepo extends IOrderRepo {
     super();
     this.url = "http://localhost:3000/api/orders";
     this.urlId = "http://localhost:3000/api/order/";
+    this.urlUpdate = "http://localhost:3000/api/orders/";
   }
 
   async getAll() {
@@ -42,9 +43,9 @@ class OrderRepo extends IOrderRepo {
     }
   }
 
-  async update(order){
+  async update(order) {
     try {
-      const response = await axios.update(`${this.url}/update${_id}`, order,{
+      const response = await axios.put(`${this.urlUpdate}put/${order._id}`, order, {
         headers: { "Content-Type": "application/json" },
       });
       return response.data;

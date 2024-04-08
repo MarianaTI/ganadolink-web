@@ -9,10 +9,10 @@ class UpdateOrderUseCase {
 
   async run(order){
     try {
-        const createdOrder = this.orderRepo.create(order);
-        return createdOrder;
+        const updateOrder = this.orderRepo.update(order);
+        return updateOrder;
     } catch (error) {
-        console.log('Error al crear la ordern:', error);
+        console.log('Error al actualizar la order:', error);
         throw error;
     }
   }
