@@ -1,12 +1,18 @@
 import React from "react";
 import { useController } from "react-hook-form";
-import { ErrorMessage, IconWrapper, InputStyled, InputWrapper, LabelStyled } from "./index.style";
+import {
+  ErrorMessage,
+  IconWrapper,
+  InputStyled,
+  InputWrapper,
+  LabelStyled,
+} from "./index.style";
 
 const CustomInput = ({
   label,
   icon,
   error,
-  control, 
+  control,
   name,
   fullWidth,
   type,
@@ -14,6 +20,9 @@ const CustomInput = ({
   defaultValue,
   onKeyValue,
   onKeyDown,
+  autocomplete,
+  onInput,
+  disabled,
   ...props
 }) => {
   const {
@@ -32,13 +41,16 @@ const CustomInput = ({
         <InputStyled
           {...props}
           fullWidth={fullWidth}
+          disabled={disabled}
           onChange={field.onChange}
           onBlur={field.onBlur}
           value={field.value}
           name={field.name}
           customFormDesign={customFormDesign}
           inputRef={field.ref}
-          type={type} 
+          autocomplete={autocomplete}
+          onInput={onInput}
+          type={type}
           onKeyDown={onKeyDown}
           defaultValue={defaultValue}
         />

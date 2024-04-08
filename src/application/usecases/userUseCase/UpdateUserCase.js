@@ -7,9 +7,9 @@ class UpdateUserUseCase {
     this.userRepo = userRepo;
   }
 
-  async run(userId, updates) {
+  async run(user) {
     try {
-      const updatedUser = await this.userRepo.update(userId, updates);
+      const updatedUser = this.userRepo.update(user);
       return updatedUser;
     } catch (error) {
       console.log("Error updating user:", error);

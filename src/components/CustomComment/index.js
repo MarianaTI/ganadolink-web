@@ -14,7 +14,7 @@ const CustomComment = ({ opinion, currentIndex, totalComments }) => {
       <RiDoubleQuotesL style={{ fontSize: "40px" }} />
       <Opinion>{opinion}</Opinion>
       <DotContainer>
-        {Array.from({ length: totalComments }, (_, index) => (
+        {/* {Array.from({ length: totalComments }, (_, index) => (
           <Dot
             key={index}
             style={{
@@ -23,7 +23,7 @@ const CustomComment = ({ opinion, currentIndex, totalComments }) => {
             }}
             active={index === currentIndex}
           />
-        ))}
+        ))} */}
       </DotContainer>
     </Container>
   );

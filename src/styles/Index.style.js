@@ -45,6 +45,17 @@ export const ButtonStyled = styled.button`
   color: #fff;
   cursor: pointer;
   font-weight: 600;
+  transition: background-color 0.2s cubic-bezier(0.3, 0, 0.5, 1);
+  &:active {
+    background-color: #f59e50;
+    box-shadow: rgba(232, 228, 225, 0.2) 0 1px 0 inset;
+    transition: none 0s;
+  }
+  &:hover {
+    background-color: #f48d33;
+    text-decoration: none;
+    transition-duration: 0.1s;
+  }
 `;
 
 export const Icon = styled(FontAwesomeIcon)`

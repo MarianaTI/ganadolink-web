@@ -1,4 +1,4 @@
-const { default: IOrderRepo} = require("@/domain/repositories/IOrderRepo");
+import IOrderRepo from "@/domain/repositories/IOrderRepo";
 
 class GetOneOrderUseCase{
     constructor(orderRepo){

@@ -1,3 +1,4 @@
+import Customfooter from "@/components/CustomFooter";
 import CustomNavbar from "@/components/CustomNavbar";
 import { useRouter } from "next/router";
 import React from "react";

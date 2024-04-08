@@ -1,18 +1,16 @@
-import React from 'react';
-import { AlertContainer, Image, Title, Text, Button, Overlay } from "./index.style";
+import React from "react";
+import { Modal } from "@mui/material";
+import { AlertContainer, Image, Text } from "./index.style";
 
-
-const AlertComponent = ({ imageSrc, title, text, onClose, btmstyle }) => {
+const AlertComponent = ({ imageSrc, title, text, onClose, open }) => {
   return (
-    <>
-      <Overlay />
-    <AlertContainer btmstyle={btmstyle}>
-      {imageSrc && <Image src={imageSrc} alt="alerta"/>}
-      <Title>{title}</Title>
-      <Text>{text}</Text>
-      <Button onClick={onClose}>aceptar</Button>
-    </AlertContainer>
-    </>
+    <Modal open={open} onClose={onClose}>
+      <AlertContainer>
+        {imageSrc && <Image src={imageSrc} alt="alerta" />}
+        <h1>{title}</h1>
+        <Text>{text}</Text>
+      </AlertContainer>
+    </Modal>
   );
 };
 

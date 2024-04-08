@@ -13,7 +13,7 @@ export const Content = styled.div`
   width: 300px;
   height: auto;
   display: flex;
-  margin: 25px 60px;
+  margin: 0px 60px;
   justify-content: start;
   flex-direction: column;
   & h1 {
@@ -47,6 +47,11 @@ export const ButtonIcon = styled.button`
   font-family: Poppins;
   font-size: 12px;
   font-weight: 500;
+  &:active {
+    background-color: #f2efed;
+    box-shadow: rgba(232, 228, 225, 0.2) 0 1px 0 inset;
+    transition: none 0s;
+  }
 `;
 
 export const CustomIcon = styled(FontAwesomeIcon)`
@@ -89,5 +94,5 @@ export const LineStyled = styled.hr`
 
 export const FooterContentTerms = styled(FooterContentRoute)`
   font-size: 14px;
-  padding: 30px 50px;
+  padding: 16px 50px;
 `;
