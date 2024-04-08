@@ -8,15 +8,7 @@ export const Container = styled.div`
   justify-content: flex;
   padding: 20px;
 `;
-
-export const Form = styled.form`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  margin-bottom: 20px;
-`;
+;
 
 export const InputContainer = styled.div`
   position: relative;

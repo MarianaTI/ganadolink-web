@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import {
   Container,
-  Form,
   Input,
   InputContainer,
   SearchIcon,
@@ -16,14 +15,10 @@ import {
   DataInfo,
   TitleTable,
   TableCollapsibleStyled,
+  CustomIcon,
 } from "../styles/catalogue.style";
 import {
   FaSearch,
-  FaDownload,
-  FaFilePdf,
-  FaEye,
-  FaPen,
-  FaTrash,
 } from "react-icons/fa";
 import { generatePDF } from "../components/CustomPDF/index";
 import DownloadAllPDF from "../components/CustomPDF/indexFull";
@@ -34,7 +29,6 @@ import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import withAuth from "@/components/Authenticated";
 import DeleteOrderUseCase from "@/application/usecases/orderUseCase/DeleteOrderUseCase";
-import UserRepo from "@/infraestructure/implementation/httpRequest/axios/UserRepo";
 import AlertComponent from "@/components/CustomAlert";
 import CustomModal from "@/components/CustomModal";
 import CustomButton from "@/components/CustomButton";
@@ -45,7 +39,6 @@ import {
   faPenToSquare,
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
-import { CustomIcon } from "@/components/CustomFooter/index.style";
 
 const CatalogPage = () => {
   const route = useRouter();
@@ -252,7 +245,7 @@ const CatalogPage = () => {
                       <td>{item.id_especie.name}</td>
                       <td>{item.ganado[0].siniiga}</td>
                       <td>{item?.vehiculo?.marca}</td>
-                      <td style={{ display: "flex", justifyContent: "center" }}>
+                      <td style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
                         <div style={{ display: "flex", gap: "8px" }}>
                           <IconButton onClick={() => handleDownloadPDF(item)}>
                             <CustomIcon icon={faFileDownload} />
