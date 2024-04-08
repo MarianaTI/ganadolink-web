@@ -39,7 +39,37 @@ const CatalogPage = () => {
   const [selectedOrderId, setSelectedOrderId] = useState(null);
   const [orderIndexMap, setOrderIndexMap] = useState({});
   const userRole = useSelector((state) => state.user.rol);
+  const [search, setSearch] = useState("");
+  const [filterTerm, setFilterTerm] = useState("");
 
+  const handleSearchChange = (event) => {
+    setSearch(event.target.value);
+  };
+
+  const handleEnterKey = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      setFilterTerm(search);
+    }
+  };
+
+  const filteredOrders = orders.filter((item) => {
+    const searchLower = filterTerm.toLowerCase();
+    return (
+      item._id.toString().toLowerCase().includes(searchLower) ||
+      item.ganado[0].patente.toLowerCase().includes(searchLower) ||
+      item.vendedor.nombre.toLowerCase().includes(searchLower) ||
+      item.comprador.nombre.toLowerCase().includes(searchLower) ||
+      item.id_especie.name.toLowerCase().includes(searchLower) ||
+      item.ganado[0].siniiga.toLowerCase().includes(searchLower) ||
+      item?.vehiculo?.marca?.toLowerCase().includes(searchLower)
+    );
+  });
+
+  const handleSearchClick = () => {
+    setFilterTerm(search); 
+  };
+  
   const handleEditClick = (idForm) => {
     return route.push({
       pathname: "/[idForm]",
@@ -122,15 +152,27 @@ const CatalogPage = () => {
           <Container>
             <Title>Catálogo</Title>
             <Line />
-            <Form onSubmit={onSubmit}>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                width: "100%",
+              }}
+            >
               <InputContainer>
-                <Input type="text" placeholder="Buscar..." />
-                <SearchIcon>
-                  <FaSearch style={{ color: "#888" }} />
+                <SearchIcon onClick={handleSearchClick}>
+                  <FaSearch style={{ color: "#afafaf", fontSize: "15px" }} />
                 </SearchIcon>
+                <Input
+                  type="text"
+                  placeholder="Buscar..."
+                  value={search}
+                  onChange={handleSearchChange}
+                  onKeyDown={handleEnterKey}
+                />
               </InputContainer>
               <DownloadAllPDF orders={orders} />
-            </Form>
+            </div>
             <TableStyled>
               <TheadStyled>
                 <TrStyled>
@@ -145,7 +187,7 @@ const CatalogPage = () => {
                 </TrStyled>
               </TheadStyled>
               <tbody>
-                {orders?.map((item, index) => (
+                {filteredOrders?.map((item, index) => (
                   <React.Fragment key={index}>
                     <TrStyled>
                       <td>{item._id}</td>
@@ -175,7 +217,7 @@ const CatalogPage = () => {
                       </td>
                     </TrStyled>
                     {openRow === index && (
-                      <tr style={{ background: "rgba(255, 229, 197, 0.3)" }}>
+                      <tr style={{ background: "rgba(255, 229, 197, 0.1)" }}>
                         <td colSpan="8">
                           <DataInfo>
                             <div>

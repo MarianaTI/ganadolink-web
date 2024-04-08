@@ -25,24 +25,31 @@ export const InputContainer = styled.div`
 
 export const Input = styled.input`
   padding: 10px;
+  padding-left: 40px;
   border: 1px solid #ccc;
   font-family: Poppins;
-  border-radius: 5px;
+  border-radius: 10px;
   font-size: 16px;
-  width: calc(100% - 30px);
+  width: 350px;
+  color: #6d6d6d;
+  font-weight: 500;
   &:focus {
     outline: none;
     border-color: #f7ae6d;
     background-color: #fff;
-    box-shadow: 0 0 0 4px #fdefe2;
+    caret-color: #f7ae6d;
   }
 `;
 
-export const SearchIcon = styled.div`
+export const SearchIcon = styled.button`
   position: absolute;
-  top: 55%;
-  right: 40px;
-  transform: translateY(-50%);
+  top: 50%;
+  left: 12px;
+  transform: translateY(-40%);
+  z-index: 10;
+  border: none;
+  background: none;
+  cursor: pointer;
 `;
 
 export const TableStyled = styled.table`
