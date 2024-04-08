@@ -11,8 +11,17 @@ import {
   TableStyled,
   TheadStyled,
   TrStyled,
+  ImagenD,
+  RowContainer,
 } from "../styles/catalogue.style";
-import { FaSearch, FaDownload, FaFilePdf, FaEye, FaPen } from "react-icons/fa";
+import {
+  FaSearch,
+  FaDownload,
+  FaFilePdf,
+  FaEye,
+  FaPen,
+  FaTrash,
+} from "react-icons/fa";
 import { generatePDF } from "../components/CustomPDF/index";
 import DownloadAllPDF from "../components/CustomPDF/indexFull";
 import OrderRepo from "@/infraestructure/implementation/httpRequest/axios/OrderRepo";
@@ -30,6 +39,12 @@ import { Divider, Skeleton } from "@mui/material";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import withAuth from "@/components/Authenticated";
+import DeleteOrderUseCase from "@/application/usecases/orderUseCase/DeleteOrderUseCase";
+import UserRepo from "@/infraestructure/implementation/httpRequest/axios/UserRepo";
+import AlertComponent from "@/components/CustomAlert";
+import CustomModal from "@/components/CustomModal";
+import CustomButton from "@/components/CustomButton";
+import Image from "next/image";
 
 const CatalogPage = () => {
   const route = useRouter();
@@ -37,6 +52,16 @@ const CatalogPage = () => {
   const [openRow, setOpenRow] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const userRole = useSelector((state) => state.user.rol);
+  const [orderIdToDelete, setOrderIdToDelete] = useState(null);
+  const [isOpen, setOpenDelete] = useState(false);
+  const [alertInfo, setAlertInfo] = useState({
+    show: false,
+    title: "",
+    text: "",
+  });
+
+  const orderRepo = new OrderRepo();
+  const getAllOrderUseCase = new GetAllOrderUseCase(orderRepo);
 
   const handleEditClick = (idForm) => {
     return route.push({
@@ -45,10 +70,38 @@ const CatalogPage = () => {
     });
   };
 
-  const fetchOrder = async () => {
-    const orderRepo = new OrderRepo();
-    const getAllOrderUseCase = new GetAllOrderUseCase(orderRepo);
+  const toggleDeleteModal = () => setOpenDelete((isOpen) => !isOpen);
 
+  const handleDeleteClick = (orderId) => {
+    setOrderIdToDelete(orderId);
+    toggleDeleteModal();
+  };
+
+  const handleDeleteOrder = async () => {
+    try {
+      const deleteOrderUseCase = new DeleteOrderUseCase(orderRepo);
+      const result = await deleteOrderUseCase.run(orderIdToDelete);
+      setAlertInfo({
+        show: true,
+        title: "Eliminado correctamente",
+        text: "La Orden se ha eliminado exitosamente",
+      });
+      setOrderIdToDelete(null);
+      toggleDeleteModal();
+
+      setOrders(orders.filter((order) => order._id !== orderIdToDelete));
+    } catch (error) {
+      console.log(error);
+      setAlertInfo({
+        show: true,
+        title: "Error",
+        text: `${error.message} - ${error.response.data.message}` ||
+        "No se pudo completar la operación.",
+      });
+    }
+  };
+
+  const fetchOrder = async () => {
     try {
       const orderData = await getAllOrderUseCase.run();
       setOrders(orderData.orders);
@@ -66,12 +119,13 @@ const CatalogPage = () => {
     setOpenRow(openRow === index ? null : index);
   };
 
-  useEffect(() => {
-    fetchOrder();
-  }, []);
   const handleDownloadPDF = (order) => {
     generatePDF(order);
   };
+
+  useEffect(() => {
+    fetchOrder();
+  }, []);
 
   const loading = () => {
     return (
@@ -148,6 +202,41 @@ const CatalogPage = () => {
                             <FaPen />
                           </IconButton>
                         )}
+                        <IconButton onClick={() => handleDeleteClick(item._id)}>
+                          <FaTrash />
+                        </IconButton>
+                        <CustomModal
+                          open={isOpen}
+                          onClose={toggleDeleteModal}
+                          title="Eliminar"
+                          message="¿Deseas eliminar este libro?"
+                        >
+                          <ImagenD>
+                            <Image
+                              src="/img/borrar.png"
+                              width={140}
+                              height={140}
+                              alt="logo"
+                            />
+                          </ImagenD>
+                          <RowContainer>
+                            <div style={{ width: "100%" }}>
+                              <CustomButton
+                                fullWidth
+                                buttonText="Aceptar"
+                                onClick={handleDeleteOrder}
+                              />
+                            </div>
+                            <div style={{ width: "100%" }}>
+                              <CustomButton
+                                buttonText="Cancelar"
+                                fullWidth
+                                customDesign
+                                onClick={toggleDeleteModal}
+                              />
+                            </div>
+                          </RowContainer>
+                        </CustomModal>
                       </td>
                     </TrStyled>
                     {openRow === index && (
@@ -213,6 +302,19 @@ const CatalogPage = () => {
                 ))}
               </tbody>
             </TableStyled>
+            {alertInfo.show && (
+              <AlertComponent
+                open={alertInfo}
+                onClose={() => setAlertInfo(false)}
+                imageSrc={
+                  alertInfo.title === "Eliminado correctamente"
+                    ? "/img/success.png"
+                    : "/img/error.png"
+                }
+                title={alertInfo.title}
+                text={alertInfo.text}
+              />
+            )}
           </Container>
         </div>
       )}

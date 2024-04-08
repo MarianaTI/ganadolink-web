@@ -1,5 +1,14 @@
 import axios from "axios";
+import Cookies from "js-cookie";
+import CryptoJS from "crypto-js";
 import IOrderRepo from "@/domain/repositories/IOrderRepo";
+
+function getDecryptedToken() {
+  const encryptedToken = Cookies.get("authToken");
+  const bytes = CryptoJS.AES.decrypt(encryptedToken, "cookie-encrypted");
+  const token = bytes.toString(CryptoJS.enc.Utf8);
+  return token;
+}
 
 class OrderRepo extends IOrderRepo {
   constructor() {
@@ -45,12 +54,33 @@ class OrderRepo extends IOrderRepo {
 
   async update(order) {
     try {
-      const response = await axios.put(`${this.urlUpdate}put/${order._id}`, order, {
-        headers: { "Content-Type": "application/json" },
-      });
+      const response = await axios.put(
+        `${this.urlUpdate}put/${order._id}`,
+        order,
+        {
+          headers: { "Content-Type": "application/json" },
+        }
+      );
       return response.data;
     } catch (error) {
       console.error("Error al actualizar la orden:", error);
+      throw error;
+    }
+  }
+
+  async delete(id) {
+    try {
+      const token = getDecryptedToken();
+      const response = await axios.delete(`${this.urlUpdate}delete/${id}`, {
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `Bearer ${token}`,
+        },
+      });
+
+      return response.data;
+    } catch (error) {
+      console.error("Error:", error.message);
       throw error;
     }
   }

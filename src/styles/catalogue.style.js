@@ -1,10 +1,10 @@
 import styled from '@emotion/styled';
 
 export const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
+  display: block;
+  flex-direction: center;
+  align-items: flex;
+  justify-content: flex;
   padding: 20px;
 `;
 
@@ -37,6 +37,17 @@ export const Input = styled.input`
   }
 `;
 
+export const ImagenD = styled.div`
+    display: flex;     
+    justify-content: center;
+    align-items: center;
+    margin: 8px;
+`;
+
+export const RowContainer = styled.div`
+  display: flex;
+  gap: 26px;
+`;
 
 export const SearchIcon = styled.div`
   position: absolute;
