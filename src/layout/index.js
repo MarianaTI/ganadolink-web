@@ -8,10 +8,9 @@ const Layout = ({ children }) => {
 
   const noNavbar = !router.pathname.match(/login|register/g);
   return (
-    <div style={{display: "grid", gridTemplateRows: "auto 1fr auto", minHeight: "100vh"}}>
+    <div>
       {noNavbar && <CustomNavbar />}
       <div>{children}</div>
-      <div>{noNavbar && <Customfooter />}</div>
     </div>
   );
 };

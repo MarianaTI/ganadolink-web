@@ -1,4 +1,5 @@
-import styled from '@emotion/styled';
+import styled from "@emotion/styled";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export const Container = styled.div`
   display: block;
@@ -24,16 +25,19 @@ export const InputContainer = styled.div`
 
 export const Input = styled.input`
   padding: 10px;
+  padding-left: 40px;
   border: 1px solid #ccc;
   font-family: Poppins;
-  border-radius: 5px;
+  border-radius: 10px;
   font-size: 16px;
-  width: calc(100% - 30px);
+  width: 350px;
+  color: #6d6d6d;
+  font-weight: 500;
   &:focus {
     outline: none;
     border-color: #f7ae6d;
     background-color: #fff;
-    box-shadow: 0 0 0 4px #fdefe2;
+    caret-color: #f7ae6d;
   }
 `;
 
@@ -49,11 +53,15 @@ export const RowContainer = styled.div`
   gap: 26px;
 `;
 
-export const SearchIcon = styled.div`
+export const SearchIcon = styled.button`
   position: absolute;
-  top: 55%;
-  right: 40px;
-  transform: translateY(-50%);
+  top: 50%;
+  left: 12px;
+  transform: translateY(-40%);
+  z-index: 10;
+  border: none;
+  background: none;
+  cursor: pointer;
 `;
 
 export const TableStyled = styled.table`
@@ -63,8 +71,15 @@ export const TableStyled = styled.table`
   border-collapse: collapse;
 `;
 
+export const TableCollapsibleStyled = styled.table`
+  width: 100%;
+  text-align: center;
+  margin: 4px 0;
+  border-collapse: collapse;
+`;
+
 export const TheadStyled = styled.thead`
-  background: #fcdfc5;
+  background: #facea8;
 `;
 
 export const TrStyled = styled.tr`
@@ -81,15 +96,15 @@ export const TrStyled = styled.tr`
   }
 `;
 export const TdStyled = styled.tr`
-align-items: center;
-justify-content: left;
-& th {
+  align-items: center;
+  justify-content: left;
+  & th {
     color: #2a2a2a;
     font-family: Poppins;
     font-size: 16px;
     font-weight: 500;
     padding: 10px;
-    margin-left:50px;
+    margin-left: 50px;
   }
   & td {
     padding: 10px;
@@ -98,15 +113,25 @@ justify-content: left;
 `;
 
 export const IconButton = styled.button`
-  background-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: none;
   border: none;
   cursor: pointer;
   transition: color 0.3s;
-  color: #000;
-
+  background: rgba(250, 206, 168, 0.7);
+  border-radius: 15px;
   &:hover {
-    color: #f27d16;
+    background-color: rgba(255, 229, 197);
   }
+`;
+
+export const CustomIcon = styled(FontAwesomeIcon)`
+  font-size: 18px;
+  color: #555555;
 `;
 
 export const DownloadPdfButton = styled.button`
@@ -118,14 +143,14 @@ export const DownloadPdfButton = styled.button`
   color: #bababa;
   font-size: 18px;
   font-weight: 500;
-  border: 2px solid #bababa; 
-  padding: 10px 20px; 
+  border: 2px solid #bababa;
+  padding: 10px 20px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   transition: background-color 0.3s, color 0.3s, border-color 0.3s;
-  svg { 
+  svg {
     margin-left: 5px;
   }
   &:hover {
@@ -150,4 +175,30 @@ export const Line = styled.hr`
   width: 100%;
   margin-top: -8px;
   margin-bottom: 32px;
+`;
+
+export const TitleTable = styled.div`
+  padding: 16px;
+  & span {
+    font-size: 18px;
+    font-weight: 600;
+    color: #3f3f3f;
+  }
+`;
+
+export const DataInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: start;
+  padding: 16px 32px;
+  .title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #3f3f3f;
+  }
+  .text {
+    font-size: 18px;
+    color: #3f3f3f;
+  }
 `;

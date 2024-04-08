@@ -13,6 +13,7 @@ import {
   TrStyled,
   ImagenD,
   RowContainer,
+  DataInfo,
 } from "../styles/catalogue.style";
 import {
   FaSearch,
@@ -26,16 +27,7 @@ import { generatePDF } from "../components/CustomPDF/index";
 import DownloadAllPDF from "../components/CustomPDF/indexFull";
 import OrderRepo from "@/infraestructure/implementation/httpRequest/axios/OrderRepo";
 import GetAllOrderUseCase from "@/application/usecases/orderUseCase/GetAllOrderUseCase";
-import Box from "@mui/material/Box";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Typography from "@mui/material/Typography";
-import Paper from "@mui/material/Paper";
-import { Divider, Skeleton } from "@mui/material";
+import { Skeleton } from "@mui/material";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import withAuth from "@/components/Authenticated";
@@ -45,12 +37,20 @@ import AlertComponent from "@/components/CustomAlert";
 import CustomModal from "@/components/CustomModal";
 import CustomButton from "@/components/CustomButton";
 import Image from "next/image";
+import {
+  faEye,
+  faFileDownload,
+  faPenToSquare,
+} from "@fortawesome/free-solid-svg-icons";
+import { CustomIcon } from "@/components/CustomFooter/index.style";
 
 const CatalogPage = () => {
   const route = useRouter();
   const [orders, setOrders] = useState([]);
   const [openRow, setOpenRow] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  const [selectedOrderId, setSelectedOrderId] = useState(null);
+  const [orderIndexMap, setOrderIndexMap] = useState({});
   const userRole = useSelector((state) => state.user.rol);
   const [orderIdToDelete, setOrderIdToDelete] = useState(null);
   const [isOpen, setOpenDelete] = useState(false);
@@ -62,6 +62,36 @@ const CatalogPage = () => {
 
   const orderRepo = new OrderRepo();
   const getAllOrderUseCase = new GetAllOrderUseCase(orderRepo);
+  const [search, setSearch] = useState("");
+  const [filterTerm, setFilterTerm] = useState("");
+
+  const handleSearchChange = (event) => {
+    setSearch(event.target.value);
+  };
+
+  const handleEnterKey = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      setFilterTerm(search);
+    }
+  };
+
+  const filteredOrders = orders.filter((item) => {
+    const searchLower = filterTerm.toLowerCase();
+    return (
+      item._id.toString().toLowerCase().includes(searchLower) ||
+      item.ganado[0].patente.toLowerCase().includes(searchLower) ||
+      item.vendedor.nombre.toLowerCase().includes(searchLower) ||
+      item.comprador.nombre.toLowerCase().includes(searchLower) ||
+      item.id_especie.name.toLowerCase().includes(searchLower) ||
+      item.ganado[0].siniiga.toLowerCase().includes(searchLower) ||
+      item?.vehiculo?.marca?.toLowerCase().includes(searchLower)
+    );
+  });
+
+  const handleSearchClick = () => {
+    setFilterTerm(search);
+  };
 
   const handleEditClick = (idForm) => {
     return route.push({
@@ -95,8 +125,9 @@ const CatalogPage = () => {
       setAlertInfo({
         show: true,
         title: "Error",
-        text: `${error.message} - ${error.response.data.message}` ||
-        "No se pudo completar la operación.",
+        text:
+          `${error.message} - ${error.response.data.message}` ||
+          "No se pudo completar la operación.",
       });
     }
   };
@@ -105,6 +136,7 @@ const CatalogPage = () => {
     try {
       const orderData = await getAllOrderUseCase.run();
       setOrders(orderData.orders);
+      console.log(orderData.orders);
     } catch (error) {
       console.log(error);
     }
@@ -116,7 +148,23 @@ const CatalogPage = () => {
   };
 
   const handleRowToggle = (index) => {
-    setOpenRow(openRow === index ? null : index);
+    setOpenRow((prevOpenRow) => (prevOpenRow === index ? null : index));
+  };
+
+  useEffect(() => {
+    const indexMap = {};
+    orders.forEach((order, index) => {
+      indexMap[order._id] = index;
+    });
+    setOrderIndexMap(indexMap);
+  }, [orders]);
+
+  const handleViewClick = (orderId) => {
+    setSelectedOrderId(orderId);
+    const index = orderIndexMap[orderId];
+    if (index !== undefined) {
+      handleRowToggle(index);
+    }
   };
 
   const handleDownloadPDF = (order) => {
@@ -156,19 +204,31 @@ const CatalogPage = () => {
           <Container>
             <Title>Catálogo</Title>
             <Line />
-            <Form onSubmit={onSubmit}>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                width: "100%",
+              }}
+            >
               <InputContainer>
-                <Input type="text" placeholder="Buscar..." />
-                <SearchIcon>
-                  <FaSearch style={{ color: "#888" }} />
+                <SearchIcon onClick={handleSearchClick}>
+                  <FaSearch style={{ color: "#afafaf", fontSize: "15px" }} />
                 </SearchIcon>
+                <Input
+                  type="text"
+                  placeholder="Buscar..."
+                  value={search}
+                  onChange={handleSearchChange}
+                  onKeyDown={handleEnterKey}
+                />
               </InputContainer>
               <DownloadAllPDF orders={orders} />
-            </Form>
+            </div>
             <TableStyled>
               <TheadStyled>
                 <TrStyled>
-                  <th>Número de animales</th>
+                  <th>Folio</th>
                   <th>Patente o factura</th>
                   <th>Nombre del vendedor</th>
                   <th>Nombre del comprador</th>
@@ -179,7 +239,7 @@ const CatalogPage = () => {
                 </TrStyled>
               </TheadStyled>
               <tbody>
-                {orders?.map((item, index) => (
+                {filteredOrders?.map((item, index) => (
                   <React.Fragment key={index}>
                     <TrStyled>
                       <td>{item._id}</td>
@@ -189,114 +249,171 @@ const CatalogPage = () => {
                       <td>{item.id_especie.name}</td>
                       <td>{item.ganado[0].siniiga}</td>
                       <td>{item?.vehiculo?.marca}</td>
-                      <td>
-                        <IconButton>
-                          <FaDownload onClick={() => handleDownloadPDF(item)} />
-                        </IconButton>
-                        <IconButton onClick={() => handleRowToggle(index)}>
-                          <FaEye />
-                        </IconButton>
-                        {(userRole === "SuperAdmin" ||
-                          userRole === "admin") && (
-                          <IconButton onClick={() => handleEditClick(item._id)}>
-                            <FaPen />
+                      <td style={{ display: "flex", justifyContent: "center" }}>
+                        <div style={{ display: "flex", gap: "8px" }}>
+                          <IconButton onClick={() => handleDownloadPDF(item)}>
+                            <CustomIcon icon={faFileDownload} />
                           </IconButton>
-                        )}
-                        <IconButton onClick={() => handleDeleteClick(item._id)}>
-                          <FaTrash />
-                        </IconButton>
-                        <CustomModal
-                          open={isOpen}
-                          onClose={toggleDeleteModal}
-                          title="Eliminar"
-                          message="¿Deseas eliminar este libro?"
-                        >
-                          <ImagenD>
-                            <Image
-                              src="/img/borrar.png"
-                              width={140}
-                              height={140}
-                              alt="logo"
-                            />
-                          </ImagenD>
-                          <RowContainer>
-                            <div style={{ width: "100%" }}>
-                              <CustomButton
-                                fullWidth
-                                buttonText="Aceptar"
-                                onClick={handleDeleteOrder}
-                              />
-                            </div>
-                            <div style={{ width: "100%" }}>
-                              <CustomButton
-                                buttonText="Cancelar"
-                                fullWidth
-                                customDesign
-                                onClick={toggleDeleteModal}
-                              />
-                            </div>
-                          </RowContainer>
-                        </CustomModal>
+                          <IconButton onClick={() => handleViewClick(item._id)}>
+                            <CustomIcon icon={faEye} />
+                          </IconButton>
+                          {(userRole === "SuperAdmin" ||
+                            userRole === "admin") && (
+                            <IconButton
+                              onClick={() => handleEditClick(item._id)}
+                            >
+                              <CustomIcon icon={faPenToSquare} />
+                            </IconButton>
+                          )}
+                        </div>
                       </td>
                     </TrStyled>
                     {openRow === index && (
-                      <TrStyled>
-                        <td colSpan="8" style={{ textAlign: "center" }}>
-                          <div style={{ display: "inline-block" }}>
-                            <Box
-                              sx={{ margin: 1, maxWidth: 800, minWidth: 800 }}
-                            >
-                              <TableContainer component={Paper}>
-                                <Typography
-                                  variant="h6"
-                                  gutterBottom
-                                  component="div"
-                                  align="center"
+                      <tr style={{ background: "rgba(255, 229, 197, 0.1)" }}>
+                        <td colSpan="8">
+                          <DataInfo>
+                            <div>
+                              <span className="title">Especie: </span>
+                              <span className="text">
+                                {item.id_especie.name}
+                              </span>
+                            </div>
+                            <div>
+                              <span className="title">Motivo: </span>
+                              <span className="text">
+                                {item.id_motivo.name}
+                              </span>
+                            </div>
+                          </DataInfo>
+                          <div
+                            style={{
+                              display: "flex",
+                              gap: "32px",
+                              width: "100%",
+                            }}
+                          >
+                            <div style={{ flex: 1 }}>
+                              <TitleTable>
+                                <span>Datos del vendedor</span>
+                              </TitleTable>
+                              <TableCollapsibleStyled>
+                                <TheadStyled
+                                  style={{
+                                    background: "rgba(255, 229, 197)",
+                                  }}
                                 >
-                                  Datos
-                                </Typography>
-
-                                <Table aria-label="collapsible table">
-                                  <TableHead>
-                                    <TableRow>
-                                      <TableCell />
-                                      <TableCell align="center">Sexo</TableCell>
-                                      <TableCell align="center">Raza</TableCell>
-                                      <TableCell align="center">
-                                        Color
-                                      </TableCell>
-                                      <TableCell align="center">
-                                        Siniiga
-                                      </TableCell>
-                                    </TableRow>
-                                  </TableHead>
-                                  <TableBody>
-                                    {item.ganado.map(
-                                      (ganadoItem, ganadoIndex) => (
-                                        <TableRow key={ganadoIndex}>
-                                          <TableCell />
-                                          <TableCell align="center">
-                                            {ganadoItem.sexo}
-                                          </TableCell>
-                                          <TableCell align="center">
-                                            {ganadoItem.id_raza?.name}
-                                          </TableCell>
-                                          <TableCell align="center">
-                                            {ganadoItem.color}
-                                          </TableCell>
-                                          <TableCell align="center">
-                                            {ganadoItem.siniiga}
-                                          </TableCell>
-                                        </TableRow>
-                                      )
-                                    )}
-                                  </TableBody>
-                                </Table>
-                              </TableContainer>
-                            </Box>
+                                  <TrStyled>
+                                    <th>Nombre</th>
+                                    <th>Domicilio</th>
+                                    <th>Municipio</th>
+                                  </TrStyled>
+                                </TheadStyled>
+                                <tbody>
+                                  <TrStyled key={index}>
+                                    <td>{item.vendedor.nombre}</td>
+                                    <td>{item.vendedor.domicilio}</td>
+                                    <td>{item.vendedor.municipio}</td>
+                                  </TrStyled>
+                                </tbody>
+                              </TableCollapsibleStyled>
+                            </div>
+                            <div style={{ flex: 1 }}>
+                              <TitleTable>
+                                <span>Datos del Comprador</span>
+                              </TitleTable>
+                              <TableCollapsibleStyled>
+                                <TheadStyled
+                                  style={{
+                                    background: "rgba(255, 229, 197)",
+                                  }}
+                                >
+                                  <TrStyled>
+                                    <th>Nombre</th>
+                                    <th>Domicilio</th>
+                                    <th>Municipio</th>
+                                    <th>Predio</th>
+                                  </TrStyled>
+                                </TheadStyled>
+                                <tbody>
+                                  <TrStyled>
+                                    <td>{item.comprador.nombre}</td>
+                                    <td>{item.comprador.domicilio}</td>
+                                    <td>{item.comprador.municipio}</td>
+                                    <td>{item.comprador.predio}</td>
+                                  </TrStyled>
+                                </tbody>
+                              </TableCollapsibleStyled>
+                            </div>
                           </div>
+                          <TitleTable>
+                            <span>Datos del ganado</span>
+                          </TitleTable>
+                          <TableCollapsibleStyled>
+                            <TheadStyled
+                              style={{ background: "rgba(255, 229, 197)" }}
+                            >
+                              <TrStyled>
+                                <th>Patente</th>
+                                <th>Sexo</th>
+                                <th>Raza</th>
+                                <th>Color</th>
+                                <th>Arete siniiga</th>
+                                <th>Figura de herraje</th>
+                              </TrStyled>
+                            </TheadStyled>
+                            <tbody>
+                              {item.ganado.map((ganadoItem, ganadoIndex) => (
+                                <TrStyled key={ganadoIndex}>
+                                  <td>{ganadoItem.patente}</td>
+                                  <td>{ganadoItem.sexo}</td>
+                                  <td>{ganadoItem.id_raza.name}</td>
+                                  <td>{ganadoItem.color}</td>
+                                  <td>{ganadoItem.siniiga}</td>
+                                  <td>
+                                    <img
+                                      style={{
+                                        width: "100px",
+                                        height: "100px",
+                                        objectFit: "cover",
+                                      }}
+                                      src={ganadoItem.figura_herraje}
+                                    />
+                                  </td>
+                                </TrStyled>
+                              ))}
+                            </tbody>
+                          </TableCollapsibleStyled>
+                          <TitleTable>
+                            <span>Datos del vehículo</span>
+                          </TitleTable>
+                          <TableCollapsibleStyled>
+                            <TheadStyled
+                              style={{ background: "rgba(255, 229, 197)" }}
+                            >
+                              <TrStyled>
+                                <th>Tipo</th>
+                                <th>Marca</th>
+                                <th>Modelo</th>
+                                <th>Placa</th>
+                                <th>Color</th>
+                                <th>Operador de vehículo</th>
+                              </TrStyled>
+                            </TheadStyled>
+                            <tbody>
+                              <TrStyled key={index}>
+                                <td>{item.vehiculo.tipo}</td>
+                                <td>{item.vehiculo.marca}</td>
+                                <td>{item.vehiculo.modelo}</td>
+                                <td>{item.vehiculo.placa}</td>
+                                <td>{item.vehiculo.color}</td>
+                                <td>
+                                  {item.vehiculo.nombre_operador_vehiculo}
+                                </td>
+                              </TrStyled>
+                            </tbody>
+                          </TableCollapsibleStyled>
                         </td>
-                      </TrStyled>
+                      </tr>
                     )}
                   </React.Fragment>
                 ))}
