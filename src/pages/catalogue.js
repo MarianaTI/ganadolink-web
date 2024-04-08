@@ -30,7 +30,6 @@ import {
   faFileDownload,
   faPenToSquare,
 } from "@fortawesome/free-solid-svg-icons";
-import GetOneOrderUseCase from "@/application/usecases/orderUseCase/GetOneOrderUseCase";
 
 const CatalogPage = () => {
   const route = useRouter();
@@ -89,6 +88,7 @@ const CatalogPage = () => {
   useEffect(() => {
     fetchOrder();
   }, []);
+
   const handleDownloadPDF = (order) => {
     generatePDF(order);
   };
@@ -180,11 +180,15 @@ const CatalogPage = () => {
                           <DataInfo>
                             <div>
                               <span className="title">Especie: </span>
-                              <span className="text">{item.id_especie.name}</span>
+                              <span className="text">
+                                {item.id_especie.name}
+                              </span>
                             </div>
                             <div>
                               <span className="title">Motivo: </span>
-                              <span className="text">{item.id_motivo.name}</span>
+                              <span className="text">
+                                {item.id_motivo.name}
+                              </span>
                             </div>
                           </DataInfo>
                           <div
@@ -271,7 +275,16 @@ const CatalogPage = () => {
                                   <td>{ganadoItem.id_raza.name}</td>
                                   <td>{ganadoItem.color}</td>
                                   <td>{ganadoItem.siniiga}</td>
-                                  <td>figura</td>
+                                  <td>
+                                    <img
+                                      style={{
+                                        width: "100px",
+                                        height: "100px",
+                                        objectFit: "cover",
+                                      }}
+                                      src={ganadoItem.figura_herraje}
+                                    />
+                                  </td>
                                 </TrStyled>
                               ))}
                             </tbody>
