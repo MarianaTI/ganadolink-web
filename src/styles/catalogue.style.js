@@ -2,21 +2,13 @@ import styled from "@emotion/styled";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
+  display: block;
+  flex-direction: center;
+  align-items: flex;
+  justify-content: flex;
   padding: 20px;
 `;
-
-export const Form = styled.form`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  margin-bottom: 20px;
-`;
+;
 
 export const InputContainer = styled.div`
   position: relative;
@@ -39,6 +31,18 @@ export const Input = styled.input`
     background-color: #fff;
     caret-color: #f7ae6d;
   }
+`;
+
+export const ImagenD = styled.div`
+    display: flex;     
+    justify-content: center;
+    align-items: center;
+    margin: 8px;
+`;
+
+export const RowContainer = styled.div`
+  display: flex;
+  gap: 26px;
 `;
 
 export const SearchIcon = styled.button`
@@ -121,6 +125,7 @@ export const CustomIcon = styled(FontAwesomeIcon)`
   font-size: 18px;
   color: #555555;
 `;
+
 
 export const DownloadPdfButton = styled.button`
   width: 200px;

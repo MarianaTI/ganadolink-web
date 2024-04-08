@@ -1,21 +1,21 @@
 import IOrderRepo from "@/domain/repositories/IOrderRepo";
 
-class UpdateOrderUseCase {
+class DeleteOrderUseCase {
   constructor(orderRepo) {
     if (!(orderRepo instanceof IOrderRepo))
       throw new Error("orderRepo must be instance of IOrderRepo");
     this.orderRepo = orderRepo;
   }
 
-  async run(order){
+  async run(id){
     try {
-        const updateOrder = this.orderRepo.update(order);
-        return updateOrder;
+        const deleteOrder = this.orderRepo.delete(id);
+        return deleteOrder;
     } catch (error) {
-        console.log('Error al actualizar la order:', error);
+        console.log('Error al eliminar la order:', error);
         throw error;
     }
   }
 }
 
-export default UpdateOrderUseCase;
+export default DeleteOrderUseCase;

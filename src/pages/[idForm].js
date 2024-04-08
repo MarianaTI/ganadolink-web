@@ -16,6 +16,7 @@ import {
   CheckboxContainerBoolean,
   Container,
   DetailsGrid,
+  Form,
   FormContainer,
   FormContainerDatosGenerales,
   FormContent,
@@ -35,14 +36,64 @@ import { useForm } from "react-hook-form";
 import MotivoRepo from "@/infraestructure/implementation/httpRequest/axios/MotivoRepo";
 import GetAllMotivoRepo from "@/application/usecases/motivoUseCase/GetAllMotivoRepo";
 import withAuth from "@/components/Authenticated";
+import UpdateOrderUseCase from "@/application/usecases/orderUseCase/UpdateOrderUseCase";
+import Order from "@/domain/entities/order";
+import { useSelector } from "react-redux";
+import AlertComponent from "@/components/CustomAlert";
 
 const IdForm = () => {
   const route = useRouter();
   const { idForm } = route.query;
+  const [orderData, setOrderData] = useState(null);
   const [activeTab, setActiveTab] = useState(0);
   const [especies, setEspecie] = useState([]);
   const [motivos, setMotivo] = useState([]);
-  const [selectedOrder, setSelectedOrder] = useState(null);
+  const userId = useSelector((state) => state.user._id);
+  const [alertInfo, setAlertInfo] = useState({
+    show: false,
+    title: "",
+    text: "",
+  });
+
+  // Estado para almacenar los datos modificados del primer formulario (Datos Generales)
+  const [datosGeneralesModificados, setDatosGeneralesModificados] = useState({
+    _id: idForm,
+    id_user: userId,
+    id_especie: null,
+    id_motivo: null,
+    vendedor: {
+      nombre: "",
+      domicilio: "",
+      municipio: "",
+    },
+    comprador: {
+      nombre: "",
+      domicilio: "",
+      municipio: "",
+      predio: "",
+    },
+    ganado: [
+      {
+        patente: "",
+        sexo: "",
+        id_raza: {
+          _id: "",
+          name: "",
+        },
+        color: "",
+        siniiga: "",
+        figura_herraje: "",
+      },
+    ],
+    vehiculo: {
+      tipo: "",
+      marca: "",
+      modelo: "",
+      placa: "",
+      color: "",
+      nombre_operador_vehiculo: "",
+    },
+  });
 
   const handleTabClick = (tabIndex) => {
     setActiveTab(tabIndex);
@@ -50,8 +101,28 @@ const IdForm = () => {
 
   const {
     control,
+    reset,
+    handleSubmit,
     formState: { errors },
   } = useForm({});
+
+  useEffect(() => {
+    const orderRepo = new OrderRepo();
+    const getOneOrderUseCase = new GetOneOrderUseCase(orderRepo);
+
+    const fetchOrder = async () => {
+      if (idForm) {
+        try {
+          const response = await getOneOrderUseCase.run(idForm);
+          setOrderData(response.order);
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    };
+
+    fetchOrder();
+  }, [idForm]);
 
   const fetchEspecies = async () => {
     const especieRepo = new EspecieRepo();
@@ -76,37 +147,134 @@ const IdForm = () => {
   };
 
   const handleEspecieChange = (id) => {
-    setSelectedEspecie(id);
+    setDatosGeneralesModificados((prevState) => ({
+      ...prevState,
+      id_especie: id,
+    }));
   };
 
   const handleMotivoChange = (id) => {
-    setSelectedMotivo(id);
+    setDatosGeneralesModificados((prevState) => ({
+      ...prevState,
+      id_motivo: id,
+    }));
   };
 
+  const handleVendedorChange = (field, value) => {
+    setDatosGeneralesModificados((prevState) => ({
+      ...prevState,
+      vendedor: {
+        ...prevState.vendedor,
+        [field]: value,
+      },
+    }));
+  };
+
+  const handleCompradorChange = (field, value) => {
+    setDatosGeneralesModificados((prevState) => ({
+      ...prevState,
+      comprador: {
+        ...prevState.comprador,
+        [field]: value,
+      },
+    }));
+  };
+
+  const handleVehiculoChange = (field, value) => {
+    setDatosGeneralesModificados((prevState) => ({
+      ...prevState,
+      vehiculo: {
+        ...prevState.vehiculo,
+        [field]: value,
+      },
+    }));
+  };
+
+  const handleContinue = () => {
+    if (activeTab < 2) {
+      setActiveTab(activeTab + 1);
+    }
+  };
+
+  const onSubmitDatosGenerales = async () => {
+    console.log("Enviando datos del formulario:", datosGeneralesModificados);
+    await onSubmit(datosGeneralesModificados);
+  };
+
+  const onSubmit = async (datosGeneralesModificados) => {
+    const orderRepo = new OrderRepo(idForm);
+    const updateOrderUseCase = new UpdateOrderUseCase(orderRepo);
+    
+    try {
+      const response = await updateOrderUseCase.run(datosGeneralesModificados);
+      console.log(response);
+
+      setAlertInfo({
+        show: true,
+        title: "Actualizado correctamente",
+        text: "La orden se ha creado actualizado",
+      });
+      setTimeout(() => {
+        route.push("/catalogue");
+      }, 1500);
+    } catch (error) {
+      setTimeout(() => {
+        setAlertInfo({
+          show: true,
+          title: "Ocurrió un Error Inesperado",
+          text:
+            `${error.message} - ${error.response.data.message}` ||
+            "No se pudo completar la operación.",
+        });
+      }, 1000);
+    }
+};
+
+
   useEffect(() => {
-    const orderRepo = new OrderRepo();
-    const getOneOrderUseCase = new GetOneOrderUseCase(orderRepo);
-
-    const fetchOrder = async () => {
-      if (idForm) {
-        try {
-          const response = await getOneOrderUseCase.run(idForm);
-          setSelectedOrder(response.order);
-        } catch (error) {
-          console.log(error);
-        }
-      }
-    };
-
-    fetchOrder();
-  }, [idForm]);
+    console.log("Datos Generales Modificados:", datosGeneralesModificados);
+  }, [datosGeneralesModificados]);
 
   useEffect(() => {
     fetchEspecies();
     fetchMotivos();
-  }, []);
+    if (orderData) {
+      setDatosGeneralesModificados({
+        _id: orderData._id,
+        id_especie: orderData.id_especie || null,
+        id_motivo: orderData.id_motivo || null,
+        vendedor: {
+          nombre: orderData.vendedor.nombre || "",
+          domicilio: orderData.vendedor.domicilio || "",
+          municipio: orderData.vendedor.municipio || "",
+        },
+        comprador: {
+          nombre: orderData.comprador.nombre || "",
+          domicilio: orderData.comprador.domicilio || "",
+          municipio: orderData.comprador.municipio || "",
+          predio: orderData.comprador.predio || "",
+        },
+        vehiculo: {
+          tipo: orderData.vehiculo.tipo || "",
+          marca: orderData.vehiculo.marca || "",
+          modelo: orderData.vehiculo.modelo || "",
+          placa: orderData.vehiculo.placa || "",
+          color: orderData.vehiculo.color || "",
+          nombre_operador_vehiculo: orderData.nombre_operador_vehiculo || "",
+        },
+        ganado: orderData.ganado.map((animal) => ({
+          patente: animal.patente || "",
+          sexo: animal.sexo || "",
+          id_raza: animal.id_raza?._id || null,
+          color: animal.color || "",
+          siniiga: animal.siniiga || "",
+          figura_herraje: animal.figura_herraje || "",
+        })),
+      });
+    }
+  }, [orderData, reset]);
 
-  if (!selectedOrder) {
+  if (!orderData) {
     return <div>Cargando formulario...</div>;
   }
 
@@ -125,18 +293,17 @@ const IdForm = () => {
           </Tab>
         </TabsContainer>
         {/* Tab Datos Generales */}
-        <TabContent active={activeTab === 0}>
-          {/* onSubmit:  onSubmit={handleSubmitGeneral((data) =>
-              onSubmitDatosGenerales(data, userId)
-            )} */}
-          <FormContainerDatosGenerales>
+        <FormContainerDatosGenerales
+          onSubmit={handleSubmit(onSubmitDatosGenerales)}
+        >
+          <TabContent active={activeTab === 0}>
             <div>
               <span>ESPECIE A MOVILIZAR</span>
               <CheckboxContainer>
                 <CustomCheckboxInput
                   data={especies}
                   name="id_especie"
-                  defaultValue={selectedOrder.id_especie}
+                  defaultValue={orderData.id_especie}
                   onSelectionChange={handleEspecieChange}
                 />
               </CheckboxContainer>
@@ -147,25 +314,31 @@ const IdForm = () => {
                 <CustomInput
                   label="Nombre"
                   name="sellName"
-                  defaultValue={selectedOrder.vendedor.nombre}
+                  defaultValue={orderData.vendedor.nombre}
                   control={control}
-                  // control={controlGeneral}
+                  onChange={(e) =>
+                    handleVendedorChange("nombre", e.target.value)
+                  }
                   customFormDesign
                 />
                 <CustomInput
                   label="Domicilio"
                   name="sellAddress"
-                  defaultValue={selectedOrder.vendedor.domicilio}
+                  defaultValue={orderData.vendedor.domicilio}
                   control={control}
-                  // control={controlGeneral}
+                  onChange={(e) =>
+                    handleVendedorChange("domicilio", e.target.value)
+                  }
                   customFormDesign
                 />
                 <CustomInput
                   label="Municipio"
                   name="sellState"
-                  defaultValue={selectedOrder.vendedor.municipio}
+                  defaultValue={orderData.vendedor.municipio}
                   control={control}
-                  // control={controlGeneral}
+                  onChange={(e) =>
+                    handleVendedorChange("municipio", e.target.value)
+                  }
                   customFormDesign
                 />
               </div>
@@ -174,33 +347,41 @@ const IdForm = () => {
                 <CustomInput
                   label="Nombre"
                   name="buyerName"
-                  defaultValue={selectedOrder.comprador.nombre}
+                  defaultValue={orderData.comprador.nombre}
                   control={control}
-                  // control={controlGeneral}
+                  onChange={(e) =>
+                    handleCompradorChange("nombre", e.target.value)
+                  }
                   customFormDesign
                 />
                 <CustomInput
                   label="Domicilio"
                   name="buyerAddress"
-                  defaultValue={selectedOrder.comprador.domicilio}
+                  defaultValue={orderData.comprador.domicilio}
                   control={control}
-                  // control={controlGeneral}
+                  onChange={(e) =>
+                    handleCompradorChange("domicilio", e.target.value)
+                  }
                   customFormDesign
                 />
                 <CustomInput
                   label="Municipio"
                   name="buyerState"
-                  defaultValue={selectedOrder.comprador.municipio}
+                  defaultValue={orderData.comprador.municipio}
                   control={control}
-                  // control={controlGeneral}
+                  onChange={(e) =>
+                    handleCompradorChange("municipio", e.target.value)
+                  }
                   customFormDesign
                 />
                 <CustomInput
                   label="Rancho o predo"
                   name="buyerRanch"
-                  defaultValue={selectedOrder.comprador.predio}
+                  defaultValue={orderData.comprador.predio}
                   control={control}
-                  // control={controlGeneral}
+                  onChange={(e) =>
+                    handleCompradorChange("predio", e.target.value)
+                  }
                   customFormDesign
                 />
               </div>
@@ -211,215 +392,225 @@ const IdForm = () => {
                 <CustomCheckboxInput
                   data={motivos}
                   name="id_motivo"
-                  defaultValue={selectedOrder.id_motivo}
+                  defaultValue={orderData.id_motivo}
                   onSelectionChange={handleMotivoChange}
                 />
               </CheckboxContainer>
             </div>
             <ButtonsContainer>
               <CustomButton customDesign buttonText="Cancelar" />
-              <CustomButton buttonText="Continuar" type="submit" />
+              <CustomButton
+                buttonText="Continuar"
+                type="button"
+                onClick={handleContinue}
+              />
             </ButtonsContainer>
-          </FormContainerDatosGenerales>
-        </TabContent>
-        {/* Tab Datos del ganado */}
-        <TabContent active={activeTab === 1}>
-          <AddContainer>
-            <CustomButton
-              buttonText="Agregar"
-              // onClick={handleSubmit(onSubmitAnimal)}
-            />
-          </AddContainer>
-          {/* onSubmit:  onSubmit={handleSubmit(onSubmitAnimal)} */}
-          <FormContainer>
-            <CustomInput
-              label="Patente o factura"
-              name="patente"
-              control={control}
-              fullWidth
-            />
-            <CustomSelect
-              label="Sexo"
-              name="sexo"
-              control={control}
-              data={[
-                { value: "macho", label: "Macho" },
-                { value: "hembra", label: "Hembra" },
-              ]}
-              fullWidth
-            />
-            <CustomSelect
-              label="Raza"
-              name="id_raza"
-              control={control}
-              // data={razas}
-              fullWidth
-            />
-            <CustomInput
-              label="Color"
-              name="color"
-              control={control}
-              fullWidth
-            />
-            <CustomInput
-              label="Arete siniiga"
-              name="siniiga"
-              control={control}
-              fullWidth
-            />
-            <CustomImage
-              name="animalImage"
-              onChange={(e) => {
-                const file = e.target.files[0];
-                if (file) {
-                  const reader = new FileReader();
-                  reader.onloadend = function () {
-                    // Aquí `reader.result` contiene la representación base64 de la imagen
-                    console.log("Imagen en base64:", reader.result);
-                    setImageUrl(reader.result); // Ahora `imageUrl` almacenará la cadena base64 de la imagen
-                  };
-                  reader.readAsDataURL(file);
-                }
-              }}
-            />
-          </FormContainer>
-          <div>
-            <TableStyled>
-              <TheadStyled>
-                <TrStyled>
-                  <th>Número de animales</th>
-                  <th>Patente ó factura</th>
-                  <th>Sexo</th>
-                  <th>Color</th>
-                  <th>Raza</th>
-                  <th>Arete</th>
-                  <th>Figura de herraje</th>
-                  <th>Acciones</th>
-                </TrStyled>
-              </TheadStyled>
-              <tbody>
-                {selectedOrder.ganado.map((order, index) => (
-                  <TrStyled key={order.siniiga}>
-                    <td>{index + 1}</td>
-                    <td>{order.patente}</td>
-                    <td>{order.sexo}</td>
-                    <td>{order.color}</td>
-                    <td>{order.id_raza.name}</td>
-                    <td>{order.siniiga}</td>
-                    <td>
-                      {order.figura_herraje && (
-                        <Image
-                          src={order.figura_herraje}
-                          alt="Animal"
-                          width={100}
-                          height={100}
-                          layout="fixed"
-                        />
-                      )}
-                    </td>
-
-                    <td>
-                      {/* onClick:  onClick={() => handleDeleteAnimal(index)} */}
-                      <AccionButton>
-                        <MarkIcon icon={faXmark} />
-                      </AccionButton>
-                      <AccionButton>
-                        <PenIcon icon={faPen} />
-                      </AccionButton>
-                    </td>
-                  </TrStyled>
-                ))}
-              </tbody>
-            </TableStyled>
-          </div>
-          <ButtonsContainer>
-            <CustomButton customDesign buttonText="Cancelar" />
-            <CustomButton
-              buttonText="Continuar"
-              // onClick={handleClickContinuar}
-              type="button"
-            />
-          </ButtonsContainer>
-        </TabContent>
-        {/* Tab Datos del vehiculo */}
-        <TabContent active={activeTab === 2}>
-          {/* onSubmit: onSubmit={handleSubmitVehic(onSubmitVehicule)} */}
-          <FormContainerDatosGenerales>
-            <span>DETALLES</span>
-            <DetailsGrid>
+          </TabContent>
+          {/* Tab Datos del ganado */}
+          <TabContent active={activeTab === 1}>
+            <AddContainer>
+              <CustomButton buttonText="Agregar" />
+            </AddContainer>
+            <FormContent>
               <CustomInput
-                label="Tipo"
-                name="type"
-                defaultValue={selectedOrder.vehiculo.tipo}
+                label="Patente o factura"
+                name="patente"
                 control={control}
-                // control={controlVehic}
                 fullWidth
               />
-              <CustomInput
-                label="Marca"
-                name="brand"
-                defaultValue={selectedOrder.vehiculo.marca}
+              <CustomSelect
+                label="Sexo"
+                name="sexo"
                 control={control}
-                // control={controlVehic}
+                data={[
+                  { value: "macho", label: "Macho" },
+                  { value: "hembra", label: "Hembra" },
+                ]}
                 fullWidth
               />
-              <CustomInput
-                label="Modelo"
-                name="model"
-                defaultValue={selectedOrder.vehiculo.modelo}
+              <CustomSelect
+                label="Raza"
+                name="id_raza"
                 control={control}
-                // control={controlVehic}
+                // data={razas}
                 fullWidth
               />
-              <CustomInput
-                label="Placa"
-                name="plate"
-                defaultValue={selectedOrder.vehiculo.placa}
-                control={control}
-                // control={controlVehic}
-                fullWidth
-              />
-              <div className="fullWidth">
-                <span>Remolque</span>
-                <CheckboxContainerBoolean>
-                  <CustomCheckboxInput
-                    label="Opciones"
-                    name="remolque"
-                    data={[
-                      { value: "si", label: "Si" },
-                      { value: "no", label: "No" },
-                    ]}
-                    // control={controlVehic}
-                    // onSelectionChange={handleOptionsChange}
-                    fullWidth
-                  />
-                </CheckboxContainerBoolean>
-              </div>
               <CustomInput
                 label="Color"
-                name="trailerColor"
-                defaultValue={selectedOrder.vehiculo.color}
+                name="color"
                 control={control}
-                // control={controlVehic}
-                className="halfWidth"
                 fullWidth
               />
               <CustomInput
-                label="Nombre del operador del vehiculo"
-                name="vehicleName"
-                defaultValue={selectedOrder.vehiculo.nombre_operador_vehiculo}
+                label="Arete siniiga"
+                name="siniiga"
                 control={control}
-                // control={controlVehic}
-                className="halfWidth"
                 fullWidth
               />
-            </DetailsGrid>
+              <CustomImage
+                name="animalImage"
+                onChange={(e) => {
+                  const file = e.target.files[0];
+                  if (file) {
+                    const reader = new FileReader();
+                    reader.onloadend = function () {
+                      // Aquí `reader.result` contiene la representación base64 de la imagen
+                      console.log("Imagen en base64:", reader.result);
+                      setImageUrl(reader.result); // Ahora `imageUrl` almacenará la cadena base64 de la imagen
+                    };
+                    reader.readAsDataURL(file);
+                  }
+                }}
+              />
+            </FormContent>
+            <div>
+              <TableStyled>
+                <TheadStyled>
+                  <TrStyled>
+                    <th>Número de animales</th>
+                    <th>Patente ó factura</th>
+                    <th>Sexo</th>
+                    <th>Color</th>
+                    <th>Raza</th>
+                    <th>Arete</th>
+                    <th>Figura de herraje</th>
+                    <th>Acciones</th>
+                  </TrStyled>
+                </TheadStyled>
+                <tbody>
+                  {orderData.ganado.map((order, index) => (
+                    <TrStyled key={order.siniiga}>
+                      <td>{index + 1}</td>
+                      <td>{order.patente}</td>
+                      <td>{order.sexo}</td>
+                      <td>{order.color}</td>
+                      <td>{order.id_raza.name}</td>
+                      <td>{order.siniiga}</td>
+                      <td>
+                        {order.figura_herraje && (
+                          <Image
+                            src={order.figura_herraje}
+                            alt="Animal"
+                            width={100}
+                            height={100}
+                            layout="fixed"
+                          />
+                        )}
+                      </td>
+
+                      <td>
+                        <AccionButton>
+                          <MarkIcon icon={faXmark} />
+                        </AccionButton>
+                        <AccionButton>
+                          <PenIcon icon={faPen} />
+                        </AccionButton>
+                      </td>
+                    </TrStyled>
+                  ))}
+                </tbody>
+              </TableStyled>
+            </div>
             <ButtonsContainer>
               <CustomButton customDesign buttonText="Cancelar" />
-              <CustomButton buttonText="Confirmar" type="submit" />
+              <CustomButton
+                buttonText="Continuar"
+                type="button"
+                onClick={handleContinue}
+              />
             </ButtonsContainer>
-          </FormContainerDatosGenerales>
-        </TabContent>
+          </TabContent>
+          <TabContent active={activeTab === 2}>
+            <FormContainerDatosGenerales>
+              <span>DETALLES</span>
+              <DetailsGrid>
+                <CustomInput
+                  label="Tipo"
+                  name="type"
+                  defaultValue={orderData.vehiculo.tipo}
+                  control={control}
+                  onChange={(e) => handleVehiculoChange("tipo", e.target.value)}
+                  fullWidth
+                />
+                <CustomInput
+                  label="Marca"
+                  name="brand"
+                  defaultValue={orderData.vehiculo.marca}
+                  control={control}
+                  // control={controlVehic}
+                  fullWidth
+                />
+                <CustomInput
+                  label="Modelo"
+                  name="model"
+                  defaultValue={orderData.vehiculo.modelo}
+                  control={control}
+                  // control={controlVehic}
+                  fullWidth
+                />
+                <CustomInput
+                  label="Placa"
+                  name="plate"
+                  defaultValue={orderData.vehiculo.placa}
+                  control={control}
+                  // control={controlVehic}
+                  fullWidth
+                />
+                <div className="fullWidth">
+                  <span>Remolque</span>
+                  <CheckboxContainerBoolean>
+                    <CustomCheckboxInput
+                      label="Opciones"
+                      name="remolque"
+                      data={[
+                        { value: "si", label: "Si" },
+                        { value: "no", label: "No" },
+                      ]}
+                      fullWidth
+                    />
+                  </CheckboxContainerBoolean>
+                </div>
+                <CustomInput
+                  label="Color"
+                  name="trailerColor"
+                  defaultValue={orderData.vehiculo.color}
+                  control={control}
+                  className="halfWidth"
+                  fullWidth
+                />
+                <CustomInput
+                  label="Nombre del operador del vehiculo"
+                  name="vehicleName"
+                  defaultValue={orderData.vehiculo.nombre_operador_vehiculo}
+                  control={control}
+                  className="halfWidth"
+                  fullWidth
+                />
+              </DetailsGrid>
+              <ButtonsContainer>
+                <CustomButton customDesign buttonText="Cancelar" />
+                <CustomButton
+                  buttonText="Confirmar"
+                  type="submit"
+                  onClick={onSubmitDatosGenerales}
+                />
+              </ButtonsContainer>
+            </FormContainerDatosGenerales>
+          </TabContent>
+        </FormContainerDatosGenerales>
+        {alertInfo.show && (
+            <AlertComponent
+              open={alertInfo}
+              onClose={() => setAlertInfo(false)}
+              imageSrc={
+                alertInfo.title === "Actualizado correctamente"
+                  ? "/img/success.png"
+                  : "/img/error.png"
+              }
+              title={alertInfo.title}
+              text={alertInfo.text}
+            />
+          )}
       </Container>
     </div>
   );

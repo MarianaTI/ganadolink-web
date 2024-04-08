@@ -42,7 +42,12 @@ const CustomInput = ({
           {...props}
           fullWidth={fullWidth}
           disabled={disabled}
-          onChange={field.onChange}
+          onChange={(e) => {
+            field.onChange(e);
+            if (props.onChange) {
+              props.onChange(e);
+            }
+          }}
           onBlur={field.onBlur}
           value={field.value}
           name={field.name}

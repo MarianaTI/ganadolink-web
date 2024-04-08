@@ -84,7 +84,11 @@ const AllUser = () => {
       ///! -----------------------------------------------------------------------
       setUsers(users.filter((user) => user.id !== userIdToDelete));
     } catch (error) {
-      console.log("Error al eliminar el usuario:", error);
+      setAlertInfo({
+        show: true,
+        title: "Error",
+        text: "Ocurrio un problema al eliminar el Usuario",
+      });
     }
   };
 
