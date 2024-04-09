@@ -11,6 +11,8 @@ export const Container = styled.div`
 export const InputContainer = styled.div`
   position: relative;
   width: 30%;
+  display: flex;
+  align-items: center;
 `;
 
 export const Input = styled.input`
@@ -82,7 +84,7 @@ export const TrStyled = styled.tr`
     padding: 8px;
     border: 1px solid rgba(242, 125, 22, 0.3);
   }
-  .title{
+  .title {
     color: #2a2a2a;
     font-family: Poppins;
     font-size: 16px;

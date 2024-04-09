@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import GetAllUserUseCase from "@/application/usecases/userUseCase/GetAllUserCase";
 import UserRepo from "@/infraestructure/implementation/httpRequest/axios/UserRepo";
@@ -10,22 +9,32 @@ import {
   Container,
   Title,
   Line,
-  EditButton,
-  DeleteButton,
-  TableStyled,
-  TheadStyled,
-  TrStyled,
-  ButtonContainer,
   ImagenD,
   RowContainer,
 } from "../../styles/users.style";
 import { Skeleton } from "@mui/material";
 import withAuth from "@/components/Authenticated";
-import DeleteUserCase from "@/application/usecases/userUseCase/DeleteUserCase";
 import { useSelector } from "react-redux";
 import CustomModal from "@/components/CustomModal";
 import DeleteUserUseCase from "@/application/usecases/userUseCase/DeleteUserCase";
 import AlertComponent from "@/components/CustomAlert";
+import {
+  BottonContainer,
+  CustomIcon,
+  HeaderContainer,
+  IconButton,
+  Input,
+  InputContainer,
+  SearchIcon,
+  TableStyled,
+  TrStyled,
+} from "@/styles/catalogue.style";
+import { ButtonStyled, Icon } from "@/styles/Index.style";
+import {
+  faPenToSquare,
+  faTrash,
+  faUserPlus,
+} from "@fortawesome/free-solid-svg-icons";
 
 const AllUser = () => {
   const router = useRouter();
@@ -124,21 +133,39 @@ const AllUser = () => {
         <Container>
           <Title>Usuarios</Title>
           <Line />
-          <ButtonContainer>
-            <CustomButton
-              onClick={() => router.push("/registerUser")}
-              buttonText={"Agregar Usuario"}
-            />
-          </ButtonContainer>
+          <HeaderContainer>
+            <InputContainer>
+              <SearchIcon>
+                <FaSearch style={{ color: "#afafaf", fontSize: "15px" }} />
+              </SearchIcon>
+              <Input
+                type="text"
+                placeholder="Buscar..."
+                // value={search}
+                // onChange={handleSearchChange}
+                // onKeyDown={handleEnterKey}
+              />
+            </InputContainer>
+            <div>
+              <ButtonStyled
+                style={{ borderRadius: "10px" }}
+                type="button"
+                onClick={() => router.push("/registerUser")}
+              >
+                <span>Agregar Usuario</span>
+                <Icon icon={faUserPlus} />
+              </ButtonStyled>
+            </div>
+          </HeaderContainer>
           <TableStyled>
-            <TheadStyled>
+            <thead>
               <TrStyled>
-                <th>Nombre</th>
-                <th>Rol</th>
-                <th>Email</th>
-                <th>Acciones</th>
+                <th className="title">Nombre</th>
+                <th className="title">Rol</th>
+                <th className="title">Email</th>
+                <th className="title">Acciones</th>
               </TrStyled>
-            </TheadStyled>
+            </thead>
             <tbody>
               {users.map((user) => (
                 <TrStyled key={user.id}>
@@ -146,44 +173,46 @@ const AllUser = () => {
                   <td>{user.rol}</td>
                   <td>{user.email}</td>
                   <td>
-                    <EditButton onClick={() => handleEditClick(user.id)}>
-                      <FaEdit style={{ fontSize: "24px" }} />
-                    </EditButton>
-                    <DeleteButton onClick={() => handleDeleteClick(user.id)}>
-                      <FaTrash style={{ fontSize: "22px" }} />
-                    </DeleteButton>
-                    <CustomModal
-                      open={isOpen}
-                      onClose={toggleDeleteModal}
-                      title="Eliminar"
-                      message="¿Deseas eliminar este libro?"
-                    >
-                      <ImagenD>
-                        <Image
-                          src="/img/borrar.png"
-                          width={140}
-                          height={140}
-                          alt="logo"
-                        />
-                      </ImagenD>
-                      <RowContainer>
-                        <div style={{ width: "100%" }}>
-                          <CustomButton
-                            fullWidth
-                            buttonText="Aceptar"
-                            onClick={handleDeleteUser}
+                    <BottonContainer>
+                      <IconButton onClick={() => handleEditClick(user.id)}>
+                        <CustomIcon icon={faPenToSquare} />
+                      </IconButton>
+                      <IconButton onClick={() => handleDeleteClick(user.id)}>
+                        <CustomIcon icon={faTrash} />
+                      </IconButton>
+                      <CustomModal
+                        open={isOpen}
+                        onClose={toggleDeleteModal}
+                        title="Eliminar"
+                        message="¿Deseas eliminar este libro?"
+                      >
+                        <ImagenD>
+                          <Image
+                            src="/img/borrar.png"
+                            width={140}
+                            height={140}
+                            alt="logo"
                           />
-                        </div>
-                        <div style={{ width: "100%" }}>
-                          <CustomButton
-                            buttonText="Cancelar"
-                            fullWidth
-                            customDesign
-                            onClick={toggleDeleteModal}
-                          />
-                        </div>
-                      </RowContainer>
-                    </CustomModal>
+                        </ImagenD>
+                        <RowContainer>
+                          <div style={{ width: "100%" }}>
+                            <CustomButton
+                              fullWidth
+                              buttonText="Aceptar"
+                              onClick={handleDeleteUser}
+                            />
+                          </div>
+                          <div style={{ width: "100%" }}>
+                            <CustomButton
+                              buttonText="Cancelar"
+                              fullWidth
+                              customDesign
+                              onClick={toggleDeleteModal}
+                            />
+                          </div>
+                        </RowContainer>
+                      </CustomModal>
+                    </BottonContainer>
                   </td>
                 </TrStyled>
               ))}
