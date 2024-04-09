@@ -8,8 +8,6 @@ export const Container = styled.div`
   justify-content: flex;
   padding: 20px;
 `;
-;
-
 export const InputContainer = styled.div`
   position: relative;
   width: 30%;
@@ -34,10 +32,10 @@ export const Input = styled.input`
 `;
 
 export const ImagenD = styled.div`
-    display: flex;     
-    justify-content: center;
-    align-items: center;
-    margin: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 8px;
 `;
 
 export const RowContainer = styled.div`
@@ -70,10 +68,6 @@ export const TableCollapsibleStyled = styled.table`
   border-collapse: collapse;
 `;
 
-export const TheadStyled = styled.thead`
-  background: #facea8;
-`;
-
 export const TrStyled = styled.tr`
   & th {
     color: #2a2a2a;
@@ -81,12 +75,24 @@ export const TrStyled = styled.tr`
     font-size: 16px;
     font-weight: 500;
     padding: 8px;
+    border: 1px solid rgba(242, 125, 22, 0.4);
+    background: #ffe5c5;
   }
   & td {
     padding: 8px;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(242, 125, 22, 0.3);
+  }
+  .title{
+    color: #2a2a2a;
+    font-family: Poppins;
+    font-size: 16px;
+    font-weight: 500;
+    padding: 8px;
+    border: 1px solid rgba(242, 125, 22, 0.7);
+    background: #facea8;
   }
 `;
+
 export const TdStyled = styled.tr`
   align-items: center;
   justify-content: left;
@@ -125,7 +131,6 @@ export const CustomIcon = styled(FontAwesomeIcon)`
   font-size: 18px;
   color: #555555;
 `;
-
 
 export const DownloadPdfButton = styled.button`
   width: 200px;
@@ -194,4 +199,38 @@ export const DataInfo = styled.div`
     font-size: 18px;
     color: #3f3f3f;
   }
+`;
+
+export const HeaderContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+`;
+
+export const BottonContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+`;
+
+export const TableCollapsible = styled.div`
+  display: flex;
+  gap: 32px;
+  width: 100%;
+`;
+
+export const ImageStyled = styled.img`
+  height: 100px;
+  width: 100px;
+  object-fit: cover;
+`;
+
+export const TrCollapsibleStyled = styled.tr`
+  background: rgba(255, 229, 197, 0.1);
+`;
+
+export const TdCollapsibleStyled = styled.td`
+  border: 1px solid rgba(242, 125, 22, 0.3);
+  padding: 16px 32px;
 `;

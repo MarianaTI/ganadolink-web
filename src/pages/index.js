@@ -37,6 +37,7 @@ import { Skeleton } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import { questions } from "@/constants";
 import Customfooter from "@/components/CustomFooter";
+import { useRouter } from "next/router";
 
 const Home = () => {
   const [openCollapsibleIndex, setOpenCollapsibleIndex] = useState(null);
@@ -45,6 +46,7 @@ const Home = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [tooltipOpen, setTooltipOpen] = useState(false);
   const emailRef = useRef(null);
+  const router = useRouter();
 
   const toggleCollapsible = (index) => {
     setOpenCollapsibleIndex(openCollapsibleIndex === index ? null : index);
@@ -225,7 +227,7 @@ const Home = () => {
                   ganaderos y compradores en un solo lugar.
                 </p>
                 <ButtonsContainer>
-                  <ButtonStyled>
+                  <ButtonStyled onClick={() => router.push("/form")}>
                     <span>Comenzar a usar </span>
                     <Icon icon={faChevronRight} />
                   </ButtonStyled>
