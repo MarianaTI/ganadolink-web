@@ -258,45 +258,47 @@ const CatalogPage = () => {
                               <CustomIcon icon={faPenToSquare} />
                             </IconButton>
                           )}
-                          <div>
-                            <IconButton
-                              onClick={() => handleDeleteClick(item._id)}
-                            >
-                              <CustomIcon icon={faTrash} />
-                            </IconButton>
-                            <CustomModal
-                              open={isOpen}
-                              onClose={toggleDeleteModal}
-                              title="Eliminar"
-                              message="¿Deseas eliminar este libro?"
-                            >
-                              <ImagenD>
-                                <Image
-                                  src="/img/borrar.png"
-                                  width={140}
-                                  height={140}
-                                  alt="logo"
-                                />
-                              </ImagenD>
-                              <RowContainer>
-                                <div style={{ width: "100%" }}>
-                                  <CustomButton
-                                    fullWidth
-                                    buttonText="Aceptar"
-                                    onClick={handleDeleteOrder}
+                          {userRole === "SuperAdmin" && (
+                            <div>
+                              <IconButton
+                                onClick={() => handleDeleteClick(item._id)}
+                              >
+                                <CustomIcon icon={faTrash} />
+                              </IconButton>
+                              <CustomModal
+                                open={isOpen}
+                                onClose={toggleDeleteModal}
+                                title="Eliminar"
+                                message="¿Deseas eliminar este libro?"
+                              >
+                                <ImagenD>
+                                  <Image
+                                    src="/img/borrar.png"
+                                    width={140}
+                                    height={140}
+                                    alt="logo"
                                   />
-                                </div>
-                                <div style={{ width: "100%" }}>
-                                  <CustomButton
-                                    buttonText="Cancelar"
-                                    fullWidth
-                                    customDesign
-                                    onClick={toggleDeleteModal}
-                                  />
-                                </div>
-                              </RowContainer>
-                            </CustomModal>
-                          </div>
+                                </ImagenD>
+                                <RowContainer>
+                                  <div style={{ width: "100%" }}>
+                                    <CustomButton
+                                      fullWidth
+                                      buttonText="Aceptar"
+                                      onClick={handleDeleteOrder}
+                                    />
+                                  </div>
+                                  <div style={{ width: "100%" }}>
+                                    <CustomButton
+                                      buttonText="Cancelar"
+                                      fullWidth
+                                      customDesign
+                                      onClick={toggleDeleteModal}
+                                    />
+                                  </div>
+                                </RowContainer>
+                              </CustomModal>
+                            </div>
+                          )}
                         </BottonContainer>
                       </td>
                     </TrStyled>

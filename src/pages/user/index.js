@@ -204,9 +204,11 @@ const AllUser = () => {
                       <IconButton onClick={() => handleEditClick(user.id)}>
                         <CustomIcon icon={faPenToSquare} />
                       </IconButton>
-                      <IconButton onClick={() => handleDeleteClick(user.id)}>
-                        <CustomIcon icon={faTrash} />
-                      </IconButton>
+                      {user.rol !== "SuperAdmin" && (
+                        <IconButton onClick={() => handleDeleteClick(user.id)}>
+                          <CustomIcon icon={faTrash} />
+                        </IconButton>
+                      )}
                       <CustomModal
                         open={isOpen}
                         onClose={toggleDeleteModal}
