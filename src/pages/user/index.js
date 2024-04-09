@@ -53,6 +53,33 @@ const AllUser = () => {
   const deleteUserUseCase = new DeleteUserUseCase(userRepo);
   const getAllUserUseCase = new GetAllUserUseCase(userRepo);
 
+  const [search, setSearch] = useState("");
+  const [filterTerm, setFilterTerm] = useState("");
+
+  const handleSearchChange = (event) => {
+    setSearch(event.target.value);
+  };
+
+  const handleEnterKey = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      setFilterTerm(search);
+    }
+  };
+
+  const filteredUsers = users.filter((item) => {
+    const searchLower = filterTerm.toLowerCase();
+    return (
+      item.name.toLowerCase().includes(searchLower) ||
+      item.rol.toLowerCase().includes(searchLower) ||
+      item.email.toLowerCase().includes(searchLower)
+    );
+  });
+
+  const handleSearchClick = () => {
+    setFilterTerm(search);
+  };
+
   const fetchUsers = async () => {
     try {
       const userData = await getAllUserUseCase.run();
@@ -135,15 +162,15 @@ const AllUser = () => {
           <Line />
           <HeaderContainer>
             <InputContainer>
-              <SearchIcon>
+              <SearchIcon onClick={handleSearchClick}>
                 <FaSearch style={{ color: "#afafaf", fontSize: "15px" }} />
               </SearchIcon>
               <Input
                 type="text"
                 placeholder="Buscar..."
-                // value={search}
-                // onChange={handleSearchChange}
-                // onKeyDown={handleEnterKey}
+                value={search}
+                onChange={handleSearchChange}
+                onKeyDown={handleEnterKey}
               />
             </InputContainer>
             <div>
@@ -167,7 +194,7 @@ const AllUser = () => {
               </TrStyled>
             </thead>
             <tbody>
-              {users.map((user) => (
+              {filteredUsers.map((user) => (
                 <TrStyled key={user.id}>
                   <td>{user.name}</td>
                   <td>{user.rol}</td>
