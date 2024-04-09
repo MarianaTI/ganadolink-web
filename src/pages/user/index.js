@@ -204,9 +204,13 @@ const AllUser = () => {
                       <IconButton onClick={() => handleEditClick(user.id)}>
                         <CustomIcon icon={faPenToSquare} />
                       </IconButton>
-                      {user.rol !== "SuperAdmin" && (
+                      {user.rol !== "SuperAdmin" ? (
                         <IconButton onClick={() => handleDeleteClick(user.id)}>
                           <CustomIcon icon={faTrash} />
+                        </IconButton>
+                      ) : (
+                        <IconButton disabled style={{background: "rgba(219, 180, 147)", cursor: "auto"}}>
+                          <CustomIcon icon={faTrash} style={{color: "#404040"}}/>
                         </IconButton>
                       )}
                       <CustomModal
