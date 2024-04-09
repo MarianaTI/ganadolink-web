@@ -40,7 +40,7 @@ const Form = styled.form`
 `;
 
 const InputContainer = styled.div`
-  marginright: "120vh";
+  margin-right: "120vh";
   position: relative;
   width: 100%;
 `;
@@ -132,10 +132,10 @@ export const RowContainer = styled.div`
 `;
 
 export const ImagenD = styled.div`
-    display: flex;     
-    justify-content: center;
-    align-items: center;
-    margin: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 8px;
 `;
 
 export {

@@ -8,7 +8,6 @@ import {
   Line,
   IconButton,
   TableStyled,
-  TheadStyled,
   TrStyled,
   ImagenD,
   RowContainer,
@@ -16,10 +15,14 @@ import {
   TitleTable,
   TableCollapsibleStyled,
   CustomIcon,
+  HeaderContainer,
+  BottonContainer,
+  TableCollapsible,
+  ImageStyled,
+  TrCollapsibleStyled,
+  TdCollapsibleStyled,
 } from "../styles/catalogue.style";
-import {
-  FaSearch,
-} from "react-icons/fa";
+import { FaSearch } from "react-icons/fa";
 import { generatePDF } from "../components/CustomPDF/index";
 import DownloadAllPDF from "../components/CustomPDF/indexFull";
 import OrderRepo from "@/infraestructure/implementation/httpRequest/axios/OrderRepo";
@@ -200,13 +203,7 @@ const CatalogPage = () => {
           <Container>
             <Title>Catálogo</Title>
             <Line />
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                width: "100%",
-              }}
-            >
+            <HeaderContainer>
               <InputContainer>
                 <SearchIcon onClick={handleSearchClick}>
                   <FaSearch style={{ color: "#afafaf", fontSize: "15px" }} />
@@ -220,20 +217,20 @@ const CatalogPage = () => {
                 />
               </InputContainer>
               <DownloadAllPDF orders={orders} />
-            </div>
+            </HeaderContainer>
             <TableStyled>
-              <TheadStyled>
+              <thead>
                 <TrStyled>
-                  <th>Folio</th>
-                  <th>Patente o factura</th>
-                  <th>Nombre del vendedor</th>
-                  <th>Nombre del comprador</th>
-                  <th>Tipo de Raza</th>
-                  <th>Arete siniiga</th>
-                  <th>Modelo del vehiculo</th>
-                  <th>Acciones</th>
+                  <th className="title">Folio</th>
+                  <th className="title">Patente o factura</th>
+                  <th className="title">Nombre del vendedor</th>
+                  <th className="title">Nombre del comprador</th>
+                  <th className="title">Tipo de Raza</th>
+                  <th className="title">Arete siniiga</th>
+                  <th className="title">Modelo del vehiculo</th>
+                  <th className="title">Acciones</th>
                 </TrStyled>
-              </TheadStyled>
+              </thead>
               <tbody>
                 {filteredOrders?.map((item, index) => (
                   <React.Fragment key={index}>
@@ -245,8 +242,8 @@ const CatalogPage = () => {
                       <td>{item.id_especie.name}</td>
                       <td>{item.ganado[0].siniiga}</td>
                       <td>{item?.vehiculo?.marca}</td>
-                      <td style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-                        <div style={{ display: "flex", gap: "8px" }}>
+                      <td>
+                        <BottonContainer>
                           <IconButton onClick={() => handleDownloadPDF(item)}>
                             <CustomIcon icon={faFileDownload} />
                           </IconButton>
@@ -261,51 +258,53 @@ const CatalogPage = () => {
                               <CustomIcon icon={faPenToSquare} />
                             </IconButton>
                           )}
-                          <div>
-                            <IconButton
-                              onClick={() => handleDeleteClick(item._id)}
-                            >
-                              <CustomIcon icon={faTrash} />
-                            </IconButton>
-                            <CustomModal
-                              open={isOpen}
-                              onClose={toggleDeleteModal}
-                              title="Eliminar"
-                              message="¿Deseas eliminar este libro?"
-                            >
-                              <ImagenD>
-                                <Image
-                                  src="/img/borrar.png"
-                                  width={140}
-                                  height={140}
-                                  alt="logo"
-                                />
-                              </ImagenD>
-                              <RowContainer>
-                                <div style={{ width: "100%" }}>
-                                  <CustomButton
-                                    fullWidth
-                                    buttonText="Aceptar"
-                                    onClick={handleDeleteOrder}
+                          {userRole === "SuperAdmin" && (
+                            <div>
+                              <IconButton
+                                onClick={() => handleDeleteClick(item._id)}
+                              >
+                                <CustomIcon icon={faTrash} />
+                              </IconButton>
+                              <CustomModal
+                                open={isOpen}
+                                onClose={toggleDeleteModal}
+                                title="Eliminar"
+                                message="¿Deseas eliminar este libro?"
+                              >
+                                <ImagenD>
+                                  <Image
+                                    src="/img/borrar.png"
+                                    width={140}
+                                    height={140}
+                                    alt="logo"
                                   />
-                                </div>
-                                <div style={{ width: "100%" }}>
-                                  <CustomButton
-                                    buttonText="Cancelar"
-                                    fullWidth
-                                    customDesign
-                                    onClick={toggleDeleteModal}
-                                  />
-                                </div>
-                              </RowContainer>
-                            </CustomModal>
-                          </div>
-                        </div>
+                                </ImagenD>
+                                <RowContainer>
+                                  <div style={{ width: "100%" }}>
+                                    <CustomButton
+                                      fullWidth
+                                      buttonText="Aceptar"
+                                      onClick={handleDeleteOrder}
+                                    />
+                                  </div>
+                                  <div style={{ width: "100%" }}>
+                                    <CustomButton
+                                      buttonText="Cancelar"
+                                      fullWidth
+                                      customDesign
+                                      onClick={toggleDeleteModal}
+                                    />
+                                  </div>
+                                </RowContainer>
+                              </CustomModal>
+                            </div>
+                          )}
+                        </BottonContainer>
                       </td>
                     </TrStyled>
                     {openRow === index && (
-                      <tr style={{ background: "rgba(255, 229, 197, 0.1)" }}>
-                        <td colSpan="8">
+                      <TrCollapsibleStyled>
+                        <TdCollapsibleStyled colSpan="8">
                           <DataInfo>
                             <div>
                               <span className="title">Especie: </span>
@@ -320,29 +319,19 @@ const CatalogPage = () => {
                               </span>
                             </div>
                           </DataInfo>
-                          <div
-                            style={{
-                              display: "flex",
-                              gap: "32px",
-                              width: "100%",
-                            }}
-                          >
+                          <TableCollapsible>
                             <div style={{ flex: 1 }}>
                               <TitleTable>
                                 <span>Datos del vendedor</span>
                               </TitleTable>
                               <TableCollapsibleStyled>
-                                <TheadStyled
-                                  style={{
-                                    background: "rgba(255, 229, 197)",
-                                  }}
-                                >
+                                <thead>
                                   <TrStyled>
                                     <th>Nombre</th>
                                     <th>Domicilio</th>
                                     <th>Municipio</th>
                                   </TrStyled>
-                                </TheadStyled>
+                                </thead>
                                 <tbody>
                                   <TrStyled key={index}>
                                     <td>{item.vendedor.nombre}</td>
@@ -357,18 +346,14 @@ const CatalogPage = () => {
                                 <span>Datos del Comprador</span>
                               </TitleTable>
                               <TableCollapsibleStyled>
-                                <TheadStyled
-                                  style={{
-                                    background: "rgba(255, 229, 197)",
-                                  }}
-                                >
+                                <thead>
                                   <TrStyled>
                                     <th>Nombre</th>
                                     <th>Domicilio</th>
                                     <th>Municipio</th>
                                     <th>Predio</th>
                                   </TrStyled>
-                                </TheadStyled>
+                                </thead>
                                 <tbody>
                                   <TrStyled>
                                     <td>{item.comprador.nombre}</td>
@@ -379,14 +364,12 @@ const CatalogPage = () => {
                                 </tbody>
                               </TableCollapsibleStyled>
                             </div>
-                          </div>
+                          </TableCollapsible>
                           <TitleTable>
                             <span>Datos del ganado</span>
                           </TitleTable>
                           <TableCollapsibleStyled>
-                            <TheadStyled
-                              style={{ background: "rgba(255, 229, 197)" }}
-                            >
+                            <thead>
                               <TrStyled>
                                 <th>Patente</th>
                                 <th>Sexo</th>
@@ -395,7 +378,7 @@ const CatalogPage = () => {
                                 <th>Arete siniiga</th>
                                 <th>Figura de herraje</th>
                               </TrStyled>
-                            </TheadStyled>
+                            </thead>
                             <tbody>
                               {item.ganado.map((ganadoItem, ganadoIndex) => (
                                 <TrStyled key={ganadoIndex}>
@@ -405,12 +388,7 @@ const CatalogPage = () => {
                                   <td>{ganadoItem.color}</td>
                                   <td>{ganadoItem.siniiga}</td>
                                   <td>
-                                    <img
-                                      style={{
-                                        width: "100px",
-                                        height: "100px",
-                                        objectFit: "cover",
-                                      }}
+                                    <ImageStyled
                                       src={ganadoItem.figura_herraje}
                                     />
                                   </td>
@@ -422,9 +400,7 @@ const CatalogPage = () => {
                             <span>Datos del vehículo</span>
                           </TitleTable>
                           <TableCollapsibleStyled>
-                            <TheadStyled
-                              style={{ background: "rgba(255, 229, 197)" }}
-                            >
+                            <thead>
                               <TrStyled>
                                 <th>Tipo</th>
                                 <th>Marca</th>
@@ -433,7 +409,7 @@ const CatalogPage = () => {
                                 <th>Color</th>
                                 <th>Operador de vehículo</th>
                               </TrStyled>
-                            </TheadStyled>
+                            </thead>
                             <tbody>
                               <TrStyled key={index}>
                                 <td>{item.vehiculo.tipo}</td>
@@ -447,8 +423,8 @@ const CatalogPage = () => {
                               </TrStyled>
                             </tbody>
                           </TableCollapsibleStyled>
-                        </td>
-                      </tr>
+                        </TdCollapsibleStyled>
+                      </TrCollapsibleStyled>
                     )}
                   </React.Fragment>
                 ))}

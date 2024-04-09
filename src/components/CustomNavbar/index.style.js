@@ -53,7 +53,7 @@ export const LoginButton = styled.button`
   padding: 2px 10px;
   border-radius: 15px;
   background: transparent;
-  border: 3px solid #f27d16;
+  border: 2px solid #f27d16;
   color: #f27d16;
   display: flex;
   align-items: center;

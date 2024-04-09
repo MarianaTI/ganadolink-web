@@ -124,7 +124,7 @@ const CustomNavbar = () => {
               <span>GanadoLink</span>
             </LogoStyled>
           </Link>
-          <LoginButton onClick={handleSignIn} customLogin>
+          <LoginButton onClick={handleSignIn}>
             <span>Iniciar sesión</span>
             <svg
               width="34"
