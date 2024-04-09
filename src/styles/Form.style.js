@@ -36,14 +36,13 @@ export const FormContainer = styled.form`
   gap: 24px;
 `;
 
-export const Form = styled.div`
-  display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+export const FormContainerDatosGenerales = styled.div`
+  display: flex;
+  flex-direction: column;
   gap: 24px;
 `;
 
-
-export const FormContainerDatosGenerales = styled.div`
+export const ContainerForm = styled.form`
   display: flex;
   flex-direction: column;
   gap: 24px;

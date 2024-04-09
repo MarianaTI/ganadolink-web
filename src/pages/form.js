@@ -7,6 +7,7 @@ import {
   CheckboxContainer,
   CheckboxContainerBoolean,
   Container,
+  ContainerForm,
   DetailsGrid,
   FormContainer,
   FormContainerDatosGenerales,
@@ -253,6 +254,22 @@ const Form = () => {
     setActiveTab(tabIndex);
   };
 
+  const handleCancelClick = () => {
+    switch (activeTab) {
+      case 0:
+        router.push("/catalogue");
+        break;
+      case 1:
+        setActiveTab(0);
+        break;
+      case 2:
+        setActiveTab(1);
+        break;
+      default:
+        console.log("Tab no reconocido");
+    }
+  };
+
   useEffect(() => {
     fetchEspecies();
     fetchMotivos();
@@ -284,7 +301,7 @@ const Form = () => {
         <Container>
           <TabsContainer>
             <Tab active={activeTab === 0} onClick={() => handleTabClick(0)}>
-              Datos GENERALES
+              DATOS GENERALES
             </Tab>
             <Tab active={activeTab === 1} onClick={() => handleTabClick(1)}>
               DATOS DEL GANADO
@@ -295,7 +312,7 @@ const Form = () => {
           </TabsContainer>
           {/* Tab Datos Generales */}
           <TabContent active={activeTab === 0}>
-            <FormContainerDatosGenerales
+            <ContainerForm
               onSubmit={handleSubmitGeneral((data) =>
                 onSubmitDatosGenerales(data, userId)
               )}
@@ -371,10 +388,10 @@ const Form = () => {
                 </CheckboxContainer>
               </div>
               <ButtonsContainer>
-                <CustomButton customDesign buttonText="Cancelar" />
+                <CustomButton customDesign buttonText="Cancelar" onClick={handleCancelClick}/>
                 <CustomButton buttonText="Continuar" type="submit" />
               </ButtonsContainer>
-            </FormContainerDatosGenerales>
+            </ContainerForm>
           </TabContent>
           {/* Tab Datos del ganado */}
           <TabContent active={activeTab === 1}>
@@ -485,7 +502,7 @@ const Form = () => {
               </TableStyled>
             </div>
             <ButtonsContainer>
-              <CustomButton customDesign buttonText="Cancelar" />
+              <CustomButton customDesign buttonText="Cancelar" onClick={handleCancelClick}/>
               <CustomButton
                 buttonText="Continuar"
                 onClick={handleClickContinuar}
@@ -495,9 +512,7 @@ const Form = () => {
           </TabContent>
           {/* Tab Datos del vehiculo */}
           <TabContent active={activeTab === 2}>
-            <FormContainerDatosGenerales
-              onSubmit={handleSubmitVehic(onSubmitVehicule)}
-            >
+            <ContainerForm onSubmit={handleSubmitVehic(onSubmitVehicule)}>
               <span>DETALLES</span>
               <DetailsGrid>
                 <CustomInput
@@ -556,10 +571,10 @@ const Form = () => {
                 />
               </DetailsGrid>
               <ButtonsContainer>
-                <CustomButton customDesign buttonText="Cancelar" />
+                <CustomButton customDesign buttonText="Cancelar" onClick={handleCancelClick}/>
                 <CustomButton buttonText="Confirmar" type="submit" />
               </ButtonsContainer>
-            </FormContainerDatosGenerales>
+            </ContainerForm>
           </TabContent>
           {alertInfo.show && (
             <AlertComponent
