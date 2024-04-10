@@ -51,7 +51,7 @@ export const GridImage = styled.div`
 
 export const EyeIcon = styled(FontAwesomeIcon)`
   font-size: 20px;
-  color: #414141;
+  color: #888888;
   :active {
     color: #f27d16;
   }

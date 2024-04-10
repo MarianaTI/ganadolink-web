@@ -3,7 +3,6 @@ import {
   Container,
   FormStyled,
   GridForm,
-  GridButton,
   ButtonStyled,
   HeaderSection,
   Company,
@@ -19,7 +18,6 @@ import User from "@/domain/entities/user";
 import GetOneUserCase from "@/application/usecases/userUseCase/GetOneUserCase";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import Image from "next/image";
 import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 import { EyeIcon } from "@/styles/Login.style";
 import RoleRepo from "@/infraestructure/implementation/httpRequest/axios/RoleRepo";
@@ -58,19 +56,36 @@ const EditUserPage = () => {
   const {
     control,
     handleSubmit,
-    setValue,
     reset,
     formState: { errors, isDirty },
   } = useForm({
     resolver: yupResolver(loginSchema),
   });
 
+  
+  const getRoleLabel = (roleId) => {
+    switch (roleId) {
+      case "SuperAdmin":
+        return "Administrador general";
+      case "admin":
+        return "Administrador";
+      case "user":
+        return "Usuario";
+      default:
+        return roleId;
+    }
+  };
+
   const fetchRoles = async () => {
     const roleRepo = new RoleRepo();
     const getAllRol = new GetAllRoleRepo(roleRepo);
     try {
       const response = await getAllRol.run();
-      setRoles(response.roles);
+      const rolesWithUpdatedNames = response.roles.map(role => ({
+      ...role,
+      name: getRoleLabel(role.name)
+    }));
+    setRoles(rolesWithUpdatedNames);
     } catch (error) {
       console.log(error);
     }
@@ -169,7 +184,7 @@ const EditUserPage = () => {
               borderLight
             />
             <div>
-              <LabelStyled>Rol</LabelStyled>
+              <LabelStyled>Rol del usuario</LabelStyled>
               <CheckboxContainer>
                 <CustomCheckboxInput
                   data={roles}

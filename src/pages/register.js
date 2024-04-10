@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   ButtonStyled,
   Company,
@@ -19,9 +19,15 @@ import { useRouter } from "next/router";
 import withAuth from "@/components/Authenticated";
 import { Icon } from "@/styles/Index.style";
 import { faAngleLeft } from "@fortawesome/free-solid-svg-icons";
+import RoleRepo from "@/infraestructure/implementation/httpRequest/axios/RoleRepo";
+import GetAllRoleRepo from "@/application/usecases/roleUseCase/GetAllRoleUseCase";
+import { LabelStyled } from "@/components/CustomInput/index.style";
+import { CheckboxContainer } from "@/styles/Form.style";
+import CustomCheckboxInput from "@/components/CustomRadioInput";
 
 const SignUp = () => {
   const route = useRouter();
+  const [roles, setRoles] = useState([]);
   const [isShowPassword, setShowPassword] = useState(false);
   const {
     control,
@@ -34,6 +40,37 @@ const SignUp = () => {
       password: "",
     },
   });
+
+  const getRoleLabel = (roleId) => {
+    switch (roleId) {
+      case "SuperAdmin":
+        return "Administrador general";
+      case "admin":
+        return "Administrador";
+      case "user":
+        return "Usuario";
+      default:
+        return roleId;
+    }
+  };
+
+  const fetchRoles = async () => {
+    const roleRepo = new RoleRepo();
+    const getAllRol = new GetAllRoleRepo(roleRepo);
+    try {
+      const response = await getAllRol.run();
+      const rolesWithUpdatedNames = response.roles.map(role => ({
+      ...role,
+      name: getRoleLabel(role.name)
+    }));
+    setRoles(rolesWithUpdatedNames);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    fetchRoles();
+  }, []);
 
   const onSignUpSubmit = async (data) => {
     const user = new User(null, data.name, data.rol, data.email, data.password);
@@ -73,6 +110,15 @@ const SignUp = () => {
             fullWidth
             borderLight
           />
+          <div>
+              <LabelStyled>Rol del usuario</LabelStyled>
+              <CheckboxContainer>
+                <CustomCheckboxInput
+                  data={roles}
+                  name="id_rol"
+                />
+              </CheckboxContainer>
+            </div>
           <CustomInput
             label="Email"
             name="email"
