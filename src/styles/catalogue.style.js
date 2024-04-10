@@ -188,9 +188,8 @@ export const TitleTable = styled.div`
 
 export const DataInfo = styled.div`
   display: flex;
-  flex-direction: column;
-  justify-content: start;
-  align-items: start;
+  justify-content: space-between;
+  align-items: center;
   padding: 16px 32px;
   .title {
     font-size: 18px;
@@ -228,11 +227,11 @@ export const ImageStyled = styled.img`
   object-fit: cover;
 `;
 
-export const TrCollapsibleStyled = styled.tr`
-  background: rgba(255, 229, 197, 0.1);
-`;
-
 export const TdCollapsibleStyled = styled.td`
   border: 1px solid rgba(242, 125, 22, 0.3);
   padding: 16px 32px;
+`;
+
+export const TrEmptyState = styled.tr`
+  
 `;

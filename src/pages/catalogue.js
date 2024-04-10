@@ -19,7 +19,6 @@ import {
   BottonContainer,
   TableCollapsible,
   ImageStyled,
-  TrCollapsibleStyled,
   TdCollapsibleStyled,
 } from "../styles/catalogue.style";
 import { FaSearch } from "react-icons/fa";
@@ -174,6 +173,34 @@ const CatalogPage = () => {
     fetchOrder();
   }, []);
 
+  const formatCreatedAt = (createdAt) => {
+    const meses = [
+      "enero",
+      "febrero",
+      "marzo",
+      "abril",
+      "mayo",
+      "junio",
+      "julio",
+      "agosto",
+      "septiembre",
+      "octubre",
+      "noviembre",
+      "diciembre",
+    ];
+
+    const fecha = new Date(createdAt);
+    const dia = fecha.getDate();
+    const mesNombre = meses[fecha.getMonth()];
+    const anio = fecha.getFullYear();
+
+    const fechaFormateada = `${
+      dia < 10 ? "0" + dia : dia
+    } de ${mesNombre} del ${anio}`;
+
+    return fechaFormateada;
+  };
+
   const loading = () => {
     return (
       <div style={{ padding: "4px 16px" }}>
@@ -232,202 +259,220 @@ const CatalogPage = () => {
                 </TrStyled>
               </thead>
               <tbody>
-                {filteredOrders?.map((item, index) => (
-                  <React.Fragment key={index}>
-                    <TrStyled>
-                      <td>{item._id}</td>
-                      <td>{item.ganado[0].patente}</td>
-                      <td>{item.vendedor.nombre}</td>
-                      <td>{item.comprador.nombre}</td>
-                      <td>{item.id_especie.name}</td>
-                      <td>{item.ganado[0].siniiga}</td>
-                      <td>{item?.vehiculo?.marca}</td>
-                      <td>
-                        <BottonContainer>
-                          <IconButton onClick={() => handleDownloadPDF(item)}>
-                            <CustomIcon icon={faFileDownload} />
-                          </IconButton>
-                          <IconButton onClick={() => handleViewClick(item._id)}>
-                            <CustomIcon icon={faEye} />
-                          </IconButton>
-                          {(userRole === "SuperAdmin" ||
-                            userRole === "admin") && (
-                            <IconButton
-                              onClick={() => handleEditClick(item._id)}
-                            >
-                              <CustomIcon icon={faPenToSquare} />
+                {filteredOrders && filteredOrders.length > 0 ? (
+                  filteredOrders.map((item, index) => (
+                    <React.Fragment key={index}>
+                      <TrStyled>
+                        <td>{item._id}</td>
+                        <td>{item.ganado[0].patente}</td>
+                        <td>{item.vendedor.nombre}</td>
+                        <td>{item.comprador.nombre}</td>
+                        <td>{item.id_especie.name}</td>
+                        <td>{item.ganado[0].siniiga}</td>
+                        <td>{item?.vehiculo?.marca}</td>
+                        <td>
+                          <BottonContainer>
+                            <IconButton onClick={() => handleDownloadPDF(item)}>
+                              <CustomIcon icon={faFileDownload} />
                             </IconButton>
-                          )}
-                          {userRole === "SuperAdmin" && (
-                            <div>
+                            <IconButton
+                              onClick={() => handleViewClick(item._id)}
+                            >
+                              <CustomIcon icon={faEye} />
+                            </IconButton>
+                            {(userRole === "SuperAdmin" ||
+                              userRole === "admin") && (
                               <IconButton
-                                onClick={() => handleDeleteClick(item._id)}
+                                onClick={() => handleEditClick(item._id)}
                               >
-                                <CustomIcon icon={faTrash} />
+                                <CustomIcon icon={faPenToSquare} />
                               </IconButton>
-                              <CustomModal
-                                open={isOpen}
-                                onClose={toggleDeleteModal}
-                                title="Eliminar"
-                                message="¿Deseas eliminar este libro?"
-                              >
-                                <ImagenD>
-                                  <Image
-                                    src="/img/borrar.png"
-                                    width={140}
-                                    height={140}
-                                    alt="logo"
-                                  />
-                                </ImagenD>
-                                <RowContainer>
-                                  <div style={{ width: "100%" }}>
-                                    <CustomButton
-                                      fullWidth
-                                      buttonText="Aceptar"
-                                      onClick={handleDeleteOrder}
+                            )}
+                            {userRole === "SuperAdmin" && (
+                              <div>
+                                <IconButton
+                                  onClick={() => handleDeleteClick(item._id)}
+                                >
+                                  <CustomIcon icon={faTrash} />
+                                </IconButton>
+                                <CustomModal
+                                  open={isOpen}
+                                  onClose={toggleDeleteModal}
+                                  title="Eliminar"
+                                  message="¿Deseas eliminar este libro?"
+                                >
+                                  <ImagenD>
+                                    <Image
+                                      src="/img/borrar.png"
+                                      width={140}
+                                      height={140}
+                                      alt="logo"
                                     />
-                                  </div>
-                                  <div style={{ width: "100%" }}>
-                                    <CustomButton
-                                      buttonText="Cancelar"
-                                      fullWidth
-                                      customDesign
-                                      onClick={toggleDeleteModal}
-                                    />
-                                  </div>
-                                </RowContainer>
-                              </CustomModal>
-                            </div>
-                          )}
-                        </BottonContainer>
-                      </td>
-                    </TrStyled>
-                    {openRow === index && (
-                      <TrCollapsibleStyled>
-                        <TdCollapsibleStyled colSpan="8">
-                          <DataInfo>
-                            <div>
-                              <span className="title">Especie: </span>
-                              <span className="text">
-                                {item.id_especie.name}
-                              </span>
-                            </div>
-                            <div>
-                              <span className="title">Motivo: </span>
-                              <span className="text">
-                                {item.id_motivo.name}
-                              </span>
-                            </div>
-                          </DataInfo>
-                          <TableCollapsible>
-                            <div style={{ flex: 1 }}>
-                              <TitleTable>
-                                <span>Datos del vendedor</span>
-                              </TitleTable>
-                              <TableCollapsibleStyled>
-                                <thead>
-                                  <TrStyled>
-                                    <th>Nombre</th>
-                                    <th>Domicilio</th>
-                                    <th>Municipio</th>
+                                  </ImagenD>
+                                  <RowContainer>
+                                    <div style={{ width: "100%" }}>
+                                      <CustomButton
+                                        fullWidth
+                                        buttonText="Aceptar"
+                                        onClick={handleDeleteOrder}
+                                      />
+                                    </div>
+                                    <div style={{ width: "100%" }}>
+                                      <CustomButton
+                                        buttonText="Cancelar"
+                                        fullWidth
+                                        customDesign
+                                        onClick={toggleDeleteModal}
+                                      />
+                                    </div>
+                                  </RowContainer>
+                                </CustomModal>
+                              </div>
+                            )}
+                          </BottonContainer>
+                        </td>
+                      </TrStyled>
+                      {openRow === index && (
+                        <tr>
+                          <TdCollapsibleStyled colSpan="8">
+                            <DataInfo>
+                              <div style={{ textAlign: "left" }}>
+                                <div>
+                                  <span className="title">Especie: </span>
+                                  <span className="text">
+                                    {item.id_especie.name}
+                                  </span>
+                                </div>
+                                <div>
+                                  <span className="title">Motivo: </span>
+                                  <span className="text">
+                                    {item.id_motivo.name}
+                                  </span>
+                                </div>
+                              </div>
+                              <div>
+                                <span className="title">Fecha: </span>
+                                <span className="text">
+                                  {item.createdAt
+                                    ? formatCreatedAt(item.createdAt)
+                                    : "-"}
+                                </span>
+                              </div>
+                            </DataInfo>
+                            <TableCollapsible>
+                              <div style={{ flex: 1 }}>
+                                <TitleTable>
+                                  <span>Datos del vendedor</span>
+                                </TitleTable>
+                                <TableCollapsibleStyled>
+                                  <thead>
+                                    <TrStyled>
+                                      <th>Nombre</th>
+                                      <th>Domicilio</th>
+                                      <th>Municipio</th>
+                                    </TrStyled>
+                                  </thead>
+                                  <tbody>
+                                    <TrStyled key={index}>
+                                      <td>{item.vendedor.nombre}</td>
+                                      <td>{item.vendedor.domicilio}</td>
+                                      <td>{item.vendedor.municipio}</td>
+                                    </TrStyled>
+                                  </tbody>
+                                </TableCollapsibleStyled>
+                              </div>
+                              <div style={{ flex: 1 }}>
+                                <TitleTable>
+                                  <span>Datos del Comprador</span>
+                                </TitleTable>
+                                <TableCollapsibleStyled>
+                                  <thead>
+                                    <TrStyled>
+                                      <th>Nombre</th>
+                                      <th>Domicilio</th>
+                                      <th>Municipio</th>
+                                      <th>Predio</th>
+                                    </TrStyled>
+                                  </thead>
+                                  <tbody>
+                                    <TrStyled>
+                                      <td>{item.comprador.nombre}</td>
+                                      <td>{item.comprador.domicilio}</td>
+                                      <td>{item.comprador.municipio}</td>
+                                      <td>{item.comprador.predio}</td>
+                                    </TrStyled>
+                                  </tbody>
+                                </TableCollapsibleStyled>
+                              </div>
+                            </TableCollapsible>
+                            <TitleTable>
+                              <span>Datos del ganado</span>
+                            </TitleTable>
+                            <TableCollapsibleStyled>
+                              <thead>
+                                <TrStyled>
+                                  <th>Patente</th>
+                                  <th>Sexo</th>
+                                  <th>Raza</th>
+                                  <th>Color</th>
+                                  <th>Arete siniiga</th>
+                                  <th>Figura de herraje</th>
+                                </TrStyled>
+                              </thead>
+                              <tbody>
+                                {item.ganado.map((ganadoItem, ganadoIndex) => (
+                                  <TrStyled key={ganadoIndex}>
+                                    <td>{ganadoItem.patente}</td>
+                                    <td>{ganadoItem.sexo}</td>
+                                    <td>{ganadoItem.id_raza.name}</td>
+                                    <td>{ganadoItem.color}</td>
+                                    <td>{ganadoItem.siniiga}</td>
+                                    <td>
+                                      <ImageStyled
+                                        src={ganadoItem.figura_herraje}
+                                      />
+                                    </td>
                                   </TrStyled>
-                                </thead>
-                                <tbody>
-                                  <TrStyled key={index}>
-                                    <td>{item.vendedor.nombre}</td>
-                                    <td>{item.vendedor.domicilio}</td>
-                                    <td>{item.vendedor.municipio}</td>
-                                  </TrStyled>
-                                </tbody>
-                              </TableCollapsibleStyled>
-                            </div>
-                            <div style={{ flex: 1 }}>
-                              <TitleTable>
-                                <span>Datos del Comprador</span>
-                              </TitleTable>
-                              <TableCollapsibleStyled>
-                                <thead>
-                                  <TrStyled>
-                                    <th>Nombre</th>
-                                    <th>Domicilio</th>
-                                    <th>Municipio</th>
-                                    <th>Predio</th>
-                                  </TrStyled>
-                                </thead>
-                                <tbody>
-                                  <TrStyled>
-                                    <td>{item.comprador.nombre}</td>
-                                    <td>{item.comprador.domicilio}</td>
-                                    <td>{item.comprador.municipio}</td>
-                                    <td>{item.comprador.predio}</td>
-                                  </TrStyled>
-                                </tbody>
-                              </TableCollapsibleStyled>
-                            </div>
-                          </TableCollapsible>
-                          <TitleTable>
-                            <span>Datos del ganado</span>
-                          </TitleTable>
-                          <TableCollapsibleStyled>
-                            <thead>
-                              <TrStyled>
-                                <th>Patente</th>
-                                <th>Sexo</th>
-                                <th>Raza</th>
-                                <th>Color</th>
-                                <th>Arete siniiga</th>
-                                <th>Figura de herraje</th>
-                              </TrStyled>
-                            </thead>
-                            <tbody>
-                              {item.ganado.map((ganadoItem, ganadoIndex) => (
-                                <TrStyled key={ganadoIndex}>
-                                  <td>{ganadoItem.patente}</td>
-                                  <td>{ganadoItem.sexo}</td>
-                                  <td>{ganadoItem.id_raza.name}</td>
-                                  <td>{ganadoItem.color}</td>
-                                  <td>{ganadoItem.siniiga}</td>
+                                ))}
+                              </tbody>
+                            </TableCollapsibleStyled>
+                            <TitleTable>
+                              <span>Datos del vehículo</span>
+                            </TitleTable>
+                            <TableCollapsibleStyled>
+                              <thead>
+                                <TrStyled>
+                                  <th>Tipo</th>
+                                  <th>Marca</th>
+                                  <th>Modelo</th>
+                                  <th>Placa</th>
+                                  <th>Color</th>
+                                  <th>Operador de vehículo</th>
+                                </TrStyled>
+                              </thead>
+                              <tbody>
+                                <TrStyled key={index}>
+                                  <td>{item.vehiculo.tipo}</td>
+                                  <td>{item.vehiculo.marca}</td>
+                                  <td>{item.vehiculo.modelo}</td>
+                                  <td>{item.vehiculo.placa}</td>
+                                  <td>{item.vehiculo.color}</td>
                                   <td>
-                                    <ImageStyled
-                                      src={ganadoItem.figura_herraje}
-                                    />
+                                    {item.vehiculo.nombre_operador_vehiculo}
                                   </td>
                                 </TrStyled>
-                              ))}
-                            </tbody>
-                          </TableCollapsibleStyled>
-                          <TitleTable>
-                            <span>Datos del vehículo</span>
-                          </TitleTable>
-                          <TableCollapsibleStyled>
-                            <thead>
-                              <TrStyled>
-                                <th>Tipo</th>
-                                <th>Marca</th>
-                                <th>Modelo</th>
-                                <th>Placa</th>
-                                <th>Color</th>
-                                <th>Operador de vehículo</th>
-                              </TrStyled>
-                            </thead>
-                            <tbody>
-                              <TrStyled key={index}>
-                                <td>{item.vehiculo.tipo}</td>
-                                <td>{item.vehiculo.marca}</td>
-                                <td>{item.vehiculo.modelo}</td>
-                                <td>{item.vehiculo.placa}</td>
-                                <td>{item.vehiculo.color}</td>
-                                <td>
-                                  {item.vehiculo.nombre_operador_vehiculo}
-                                </td>
-                              </TrStyled>
-                            </tbody>
-                          </TableCollapsibleStyled>
-                        </TdCollapsibleStyled>
-                      </TrCollapsibleStyled>
-                    )}
-                  </React.Fragment>
-                ))}
+                              </tbody>
+                            </TableCollapsibleStyled>
+                          </TdCollapsibleStyled>
+                        </tr>
+                      )}
+                    </React.Fragment>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="8">Nada</td>
+                  </tr>
+                )}
               </tbody>
             </TableStyled>
             {alertInfo.show && (
