@@ -13,7 +13,7 @@ export const generatePDF = (order) => {
   const logoWidth = 32;
   const logoHeight = 32;
   const logoX = 10; // Ajustado a la izquierda
-  const logoY = 10;
+  const logoY = 56;
   doc.addImage('/img/Logo.png', 'PNG', logoX, logoY, logoWidth, logoHeight);
 
   // Títulos
@@ -26,7 +26,7 @@ export const generatePDF = (order) => {
   const fecha = new Date().toLocaleDateString();
   const folio = "123456";
   const fechaX = 158; // Ajustado para alinear con el logo
-  const fechaY = 50; // Posición debajo del logo
+  const fechaY = 67; // Posición debajo del logo
   doc.text(`Fecha: ${fecha}`, fechaX, fechaY);
   doc.text(`Folio: ${folio}`, fechaX, fechaY + 10); // Ajustado debajo de la fecha
 
@@ -71,40 +71,34 @@ export const generatePDF = (order) => {
   // Títulos de las columnas
   doc.setTextColor(0); // Restaurar el color del texto a negro
   doc.setFontSize(columnTitleFontSize);
-  doc.text("Ganado:", cardX + sidebarWidth + 5, cardY + 7);
+  doc.text("Ganado", cardX + sidebarWidth + 5, cardY + 7);
   // Mover la columna del comprador un poco a la izquierda
-  doc.text("Comprador:", cardX + sidebarWidth + columnWidth + 1.7, cardY + 7);
-  doc.text("Vendedor:", cardX + sidebarWidth + 2 * columnWidth + 5, cardY + 7);
+  doc.text("Comprador", cardX + sidebarWidth + columnWidth + -6, cardY + 7);
+  doc.text("Vendedor", cardX + sidebarWidth + 1.8 * columnWidth + 5, cardY + 7);
 
   // Datos de ganado
-  if (Array.isArray(order.ganado) && order.ganado.length > 0) {
-    doc.setFontSize(dataFontSize);
-    doc.text(`${order.ganado[0].siniiga}`, cardX + sidebarWidth + 5, cardY + 17);
-  }
+  doc.setFontSize(dataFontSize);
+  doc.text(`${order.ganado[0].sexo || ''}`, cardX + sidebarWidth + 5, cardY + 17);
+  doc.text(`${order.ganado[0].id_raza.name || ''}`, cardX + sidebarWidth + 5, cardY + 31.5);
+  doc.text(`${order.ganado[0].color || ''}`, cardX + sidebarWidth + 5, cardY + 45.5);
+  doc.text(`${order.ganado[0].siniiga || ''}`, cardX + sidebarWidth + 5, cardY + 60.6);
 
   // Datos de comprador
-  if (order.comprador && order.comprador.nombre) {
-    let compradorText = `${order.comprador.nombre}`;
-    if (order.comprador.direccion)
-      compradorText += `, ${order.comprador.direccion}`;
-    if (order.comprador.ciudad)
-      compradorText += `, ${order.comprador.ciudad}`;
-    if (order.comprador.estado)
-      compradorText += `, ${order.comprador.estado}`;
-    if (order.comprador.otros) compradorText += `, ${order.comprador.otros}`;
-    // Mover los datos del comprador a la izquierda
-    doc.text(compradorText, cardX + sidebarWidth + columnWidth + 1.7, cardY + 17);
-  }
+  const compradorText = [
+    `${order.comprador ? order.comprador.nombre : ''}`,
+    `${order.comprador ? order.comprador.domicilio : ''}`,
+    `${order.comprador ? order.comprador.municipio : ''}`,
+    `${order.comprador ? order.comprador.predio : ''}`
+  ].join('\n\n\n'); // Agregar dos espacios adicionales entre líneas
+  doc.text(compradorText, cardX + sidebarWidth + columnWidth + -6, cardY + 17);
 
   // Datos de vendedor
-  if (order.vendedor && order.vendedor.nombre) {
-    let vendedorText = `${order.vendedor.nombre}`;
-    if (order.vendedor.direccion)
-      vendedorText += `, ${order.vendedor.direccion}`;
-    if (order.vendedor.ciudad) vendedorText += `, ${order.vendedor.ciudad}`;
-    if (order.vendedor.estado) vendedorText += `, ${order.vendedor.estado}`;
-    doc.text(vendedorText, cardX + sidebarWidth + 2 * columnWidth + 5, cardY + 17);
-  }
+  const vendedorText = [
+    `${order.vendedor ? order.vendedor.nombre : ''}`,
+    `${order.vendedor ? order.vendedor.domicilio : ''}`,
+    `${order.vendedor ? order.vendedor.municipio : ''}`,
+  ].join('\n\n\n'); // Agregar dos espacios adicionales entre líneas
+  doc.text(vendedorText, cardX + sidebarWidth + 1.8 * columnWidth + 5, cardY + 17);
 
   // Datos del vehículo centrados debajo de las columnas
   const vehicleData = order.vehiculo ? `${order.vehiculo.marca} ${order.vehiculo.modelo}${order.vehiculo.placa ? ` (${order.vehiculo.placa})` : ''}` : '';
