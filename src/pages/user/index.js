@@ -177,7 +177,7 @@ const AllUser = () => {
               <ButtonStyled
                 style={{ borderRadius: "10px" }}
                 type="button"
-                onClick={() => router.push("/registerUser")}
+                onClick={() => router.push("/register")}
               >
                 <span>Agregar Usuario</span>
                 <Icon icon={faUserPlus} />
