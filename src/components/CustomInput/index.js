@@ -17,6 +17,7 @@ const CustomInput = ({
   fullWidth,
   type,
   customFormDesign,
+  borderLight,
   defaultValue,
   onKeyValue,
   onKeyDown,
@@ -58,6 +59,7 @@ const CustomInput = ({
           type={type}
           onKeyDown={onKeyDown}
           defaultValue={defaultValue}
+          borderLight={borderLight}
         />
         {icon && <IconWrapper>{icon}</IconWrapper>}
       </InputWrapper>

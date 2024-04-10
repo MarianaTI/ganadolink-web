@@ -9,15 +9,21 @@ export const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #f5f5f5;
+  background-color: #f6f6f6;
 `;
 
-export const GridContainer = styled.div`
-  padding-bottom: 48px;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  @media (max-width: 768px) {
-    grid-template-columns: 1fr;
+export const ButtonStyled = styled.button`
+  background: none;
+  border: none;
+  color: #f27d16;
+  font-family: Poppins;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0px 0px 12px 0px;
+  transition: transform 0.3s ease;
+  &:hover {
+    transform: translateY(-2px);
   }
 `;
 
@@ -27,20 +33,33 @@ export const GridButton = styled.div`
   gap: 30px;
 `;
 
-export const GridForm = styled.form`
-  width: 500px;
-  height: 100%;
+export const GridForm = styled.div`
+  width: 60%;
+  height: auto;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  align-items: start;
   flex-direction: column;
-  margin: 0 auto;
   background-color: #ffffff;
-  border-radius: 16px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 32px;
+  border-radius: 35px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+  padding: 35px 110px;
   @media (max-width: 400px) {
     width: 300px;
+  }
+`;
+
+export const HeaderSection = styled.div`
+  & h1 {
+    font-family: Poppins;
+    font-size: 36px;
+    font-weight: 600;
+    margin: 0;
+    padding-bottom: 10px;
+  }
+  & span {
+    color: #555;
+    font-family: Poppins;
+    font-size: 14px;
   }
 `;
 
@@ -48,13 +67,14 @@ export const FormStyled = styled.form`
   display: flex;
   flex-direction: column;
   width: 100%;
+  margin: 16px 0px;
   & h1 {
     color: #261704;
     font-size: 24px;
     font-weight: 700;
     margin-bottom: 16px;
   }
-  & span {
+  .text {
     color: #3c3c3c;
     font-size: 14px;
     font-weight: 400;
@@ -62,17 +82,6 @@ export const FormStyled = styled.form`
   }
 `;
 
-export const CustomInput = styled.input`
-  width: 150%;
-  padding: 12px 16px;
-  border: 1px solid #e0e0e0;
-  border-radius: 4px;
-  font-size: 14px;
-  line-height: 24px;
-  color: #333;
-  margin-bottom: 16px;
-  height: 52px;
-`;
 export const EyeIconContainer = styled.div`
   position: relative;
   width: 100%;
@@ -108,4 +117,11 @@ export const LinkStyled = styled(Link)`
   &:hover {
     text-decoration: underline;
   }
+`;
+
+export const Company = styled.span`
+  font-size: 14px;
+  font-weight: 600;
+  margin-right: 24px;
+  color: rgba(159, 159, 159, 0.3);
 `;

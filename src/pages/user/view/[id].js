@@ -2,12 +2,13 @@
 import {
   Container,
   FormStyled,
-  GridContainer,
   GridForm,
   GridButton,
+  ButtonStyled,
+  HeaderSection,
+  Company,
 } from "@/styles/Register.style";
 import { useRouter } from "next/router";
-import { Skeleton } from "@mui/material";
 import { useState, useEffect } from "react";
 import UserRepo from "@/infraestructure/implementation/httpRequest/axios/UserRepo";
 import UpdateUserUseCase from "@/application/usecases/userUseCase/UpdateUserCase";
@@ -25,8 +26,9 @@ import RoleRepo from "@/infraestructure/implementation/httpRequest/axios/RoleRep
 import GetAllRoleRepo from "@/application/usecases/roleUseCase/GetAllRoleUseCase";
 import { CheckboxContainer } from "@/styles/Form.style";
 import CustomCheckboxInput from "@/components/CustomRadioInput";
-import CustomSelect from "@/components/CustomSelect";
 import { LabelStyled } from "@/components/CustomInput/index.style";
+import { Icon } from "@/styles/Index.style";
+import { faAngleLeft } from "@fortawesome/free-solid-svg-icons";
 
 const loginSchema = yup.object().shape({
   name: yup.string().required("Ingresa el nombre completo"),
@@ -52,7 +54,7 @@ const EditUserPage = () => {
   const [isShowPassword, setShowPassword] = useState(false);
   const [isShowPasswordNew, setShowPasswordNew] = useState(false);
   const [selectedRoles, setSelectedRoles] = useState([]);
-  
+
   const {
     control,
     handleSubmit,
@@ -114,7 +116,7 @@ const EditUserPage = () => {
     const updatedUser = new User(
       id,
       data.name,
-      data.id_rol = selectedRoles,
+      (data.id_rol = selectedRoles),
       data.email,
       data.password
     );
@@ -140,117 +142,126 @@ const EditUserPage = () => {
     console.log(selectedRoles);
   };
 
-  const handleGoBack = () => {
-    router.push("/user");
-  };
-
   return (
-    <>
+    <Container>
       {userData ? (
-        <GridContainer>
-          <GridForm>
-            <Image src="/img/Logo.png" alt="logo" width={148} height={150} />
-
-            <FormStyled onSubmit={handleSubmit(onSubmit)}>
-              <CustomInput
-                label="Nombre"
-                name="name"
-                control={control}
-                error={errors.name?.message || ""}
-                defaultValue={userData?.name}
-                fullWidth
-              />
-              <div>
-                <LabelStyled>Rol</LabelStyled>
-                <CheckboxContainer>
-                  <CustomCheckboxInput
-                    data={roles}
-                    name="id_rol"
-                    onSelectionChange={handleRoleChange}
-                    defaultValue={roles.find(role => role._id === userData.id_rol[0])}
+        <GridForm>
+          <ButtonStyled onClick={() => router.push("/user")}>
+            <Icon style={{ color: "#F27D16" }} icon={faAngleLeft} /> Regresar
+          </ButtonStyled>
+          <HeaderSection>
+            <h1>Actualización de usuario</h1>
+            <span className="text">
+              Utilice este formulario para actualizar la información de los
+              usuarios en nuestro portal. Nos complace brindarles una
+              experiencia personalizada y seguir siendo parte activa de nuestra
+              comunidad.
+            </span>
+          </HeaderSection>
+          <FormStyled onSubmit={handleSubmit(onSubmit)}>
+            <CustomInput
+              label="Nombre"
+              name="name"
+              control={control}
+              error={errors.name?.message || ""}
+              defaultValue={userData?.name}
+              fullWidth
+              borderLight
+            />
+            <div>
+              <LabelStyled>Rol</LabelStyled>
+              <CheckboxContainer>
+                <CustomCheckboxInput
+                  data={roles}
+                  name="id_rol"
+                  onSelectionChange={handleRoleChange}
+                  defaultValue={roles.find(
+                    (role) => role._id === userData.id_rol[0]
+                  )}
+                />
+              </CheckboxContainer>
+            </div>
+            <CustomInput
+              label="Email"
+              name="email"
+              control={control}
+              error={errors.email?.message || ""}
+              defaultValue={userData?.email}
+              fullWidth
+              borderLight
+            />
+            <input
+              type="text"
+              style={{ display: "none" }}
+              value="username"
+              readOnly
+            />
+            <input
+              type="password"
+              style={{ display: "none" }}
+              value="password"
+              readOnly
+            />
+            <CustomInput
+              label="Nueva Contraseña"
+              type={isShowPassword ? "text" : "password"}
+              name="password"
+              autocomplete="new-password"
+              error={errors.newPassword?.message || ""}
+              control={control}
+              icon={
+                isShowPassword ? (
+                  <EyeIcon
+                    icon={faEyeSlash}
+                    onClick={togglePasswordVisibility}
                   />
-                </CheckboxContainer>
-              </div>
-              <CustomInput
-                label="Email"
-                name="email"
-                control={control}
-                error={errors.email?.message || ""}
-                defaultValue={userData?.email}
-                fullWidth
+                ) : (
+                  <EyeIcon icon={faEye} onClick={togglePasswordVisibility} />
+                )
+              }
+              fullWidth
+              borderLight
+            />
+            <CustomInput
+              label="Confirmar Contraseña"
+              type={isShowPasswordNew ? "text" : "password"}
+              name="newPassword"
+              autocomplete="new-password"
+              error={errors.password?.message || ""}
+              control={control}
+              icon={
+                isShowPasswordNew ? (
+                  <EyeIcon
+                    icon={faEyeSlash}
+                    onClick={togglePasswordVisibilityNew}
+                  />
+                ) : (
+                  <EyeIcon icon={faEye} onClick={togglePasswordVisibilityNew} />
+                )
+              }
+              fullWidth
+              borderLight
+            />
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <CustomButton
+                type="submit"
+                buttonText="Actualizar"
+                onClick={handleSubmit(onSubmit)}
               />
-              <input
-                type="text"
-                style={{ display: "none" }}
-                value="username"
-                readOnly
-              />
-              <input
-                type="password"
-                style={{ display: "none" }}
-                value="password"
-                readOnly
-              />
-              <CustomInput
-                label="Nueva Contraseña"
-                type={isShowPassword ? "text" : "password"}
-                name="password"
-                autocomplete="new-password"
-                error={errors.newPassword?.message || ""}
-                control={control}
-                icon={
-                  isShowPassword ? (
-                    <EyeIcon
-                      icon={faEyeSlash}
-                      onClick={togglePasswordVisibility}
-                    />
-                  ) : (
-                    <EyeIcon icon={faEye} onClick={togglePasswordVisibility} />
-                  )
-                }
-                fullWidth
-              />
-              <CustomInput
-                label="Confirmar Contraseña"
-                type={isShowPasswordNew ? "text" : "password"}
-                name="newPassword"
-                autocomplete="new-password"
-                error={errors.password?.message || ""}
-                control={control}
-                icon={
-                  isShowPasswordNew ? (
-                    <EyeIcon
-                      icon={faEyeSlash}
-                      onClick={togglePasswordVisibilityNew}
-                    />
-                  ) : (
-                    <EyeIcon
-                      icon={faEye}
-                      onClick={togglePasswordVisibilityNew}
-                    />
-                  )
-                }
-                fullWidth
-              />
-              <GridButton>
-                <CustomButton
-                  type="submit"
-                  buttonText="Actualizar"
-                  onClick={handleSubmit(onSubmit)}
-                />
-                <CustomButton
-                  buttonText="Cancelar"
-                  customDesign
-                  onClick={handleGoBack}
-                />
-              </GridButton>
-            </FormStyled>
-          </GridForm>
-        </GridContainer>
+              <Company>Powered by GanadoLink</Company>
+            </div>
+          </FormStyled>
+        </GridForm>
       ) : (
         <p>Cargando datos del usuario...</p>
       )}
-    </>
+    </Container>
   );
 };
 

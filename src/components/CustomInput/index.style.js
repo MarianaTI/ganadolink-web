@@ -6,7 +6,7 @@ export const InputStyled = styled.input`
   height: 45px;
   margin: 4px 0px 8px 0px;
   border-radius: 5px;
-  border: 1px solid #414141;
+  border: ${(props) => (props.borderLight ? "1px solid #bbb" : "1px solid #414141")};
   background-color: transparent;
   font-size: 16px;
   font-weight: 400;
@@ -42,8 +42,8 @@ export const InputWrapper = styled.div`
 export const IconWrapper = styled.div`
   position: absolute;
   right: 10px;
-  top: 50%;
-  transform: translateY(-58%);
+  top: 47%;
+  transform: translateY(-50%);
   font-size: 24px;
   cursor: pointer;
 `;

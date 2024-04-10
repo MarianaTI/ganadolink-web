@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import {
+  ButtonStyled,
+  Company,
   Container,
   EyeIcon,
   FormStyled,
-  GridContainer,
   GridForm,
+  HeaderSection,
 } from "@/styles/Register.style";
-import Image from "next/image";
 import CustomInput from "@/components/CustomInput";
 import { useForm } from "react-hook-form";
 import CustomButton from "@/components/CustomButton";
@@ -16,6 +17,8 @@ import UserRepo from "@/infraestructure/implementation/httpRequest/axios/UserRep
 import SignUpUserUseCase from "@/application/usecases/userUseCase/SignUpUserCase";
 import { useRouter } from "next/router";
 import withAuth from "@/components/Authenticated";
+import { Icon } from "@/styles/Index.style";
+import { faAngleLeft } from "@fortawesome/free-solid-svg-icons";
 
 const SignUp = () => {
   const route = useRouter();
@@ -52,48 +55,62 @@ const SignUp = () => {
 
   return (
     <Container>
-      <GridContainer>
-        <GridForm>
-          <Image src="/img/Logo.png" alt="logo" width={148} height={150} />
-          <FormStyled onSubmit={handleSubmit(onSignUpSubmit)}>
-            <CustomInput
-              label="Nombre"
-              name="name"
-              control={control}
-              fullWidth
-            />
-            <CustomInput
-              label="Email"
-              name="email"
-              control={control}
-              fullWidth
-            />
-            <CustomInput
-              type={isShowPassword ? "text" : "password"}
-              fullWidth
-              label="Contraseña"
-              name="password"
-              control={control}
-              icon={
-                isShowPassword ? (
-                  <EyeIcon
-                    icon={faEyeSlash}
-                    onClick={togglePasswordVisibility}
-                  />
-                ) : (
-                  <EyeIcon icon={faEye} onClick={togglePasswordVisibility} />
-                )
-              }
-            />
+      <GridForm>
+        <ButtonStyled onClick={() => route.push("/user")}><Icon style={{color: "#F27D16"}} icon={faAngleLeft}/> Regresar</ButtonStyled>
+        <HeaderSection>
+          <h1>Registro de usuarios</h1>
+          <span className="text">
+            Utilice este formulario para registrar a los nuevos usuarios en
+            nuestro portal. Les damos la bienvenida a nuestra comunidad con
+            gusto.
+          </span>
+        </HeaderSection>
+        <FormStyled onSubmit={handleSubmit(onSignUpSubmit)}>
+          <CustomInput
+            label="Nombre"
+            name="name"
+            control={control}
+            fullWidth
+            borderLight
+          />
+          <CustomInput
+            label="Email"
+            name="email"
+            control={control}
+            fullWidth
+            borderLight
+          />
+          <CustomInput
+            type={isShowPassword ? "text" : "password"}
+            fullWidth
+            borderLight
+            label="Contraseña"
+            name="password"
+            control={control}
+            icon={
+              isShowPassword ? (
+                <EyeIcon icon={faEyeSlash} onClick={togglePasswordVisibility} />
+              ) : (
+                <EyeIcon icon={faEye} onClick={togglePasswordVisibility} />
+              )
+            }
+          />
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
             <CustomButton
-              buttonText="Registrar"
-              fullWidth
+              buttonText="Aceptar"
               type="submit"
               onClick={handleSubmit(onSignUpSubmit)}
             />
-          </FormStyled>
-        </GridForm>
-      </GridContainer>
+            <Company>Powered by GanadoLink</Company>
+          </div>
+        </FormStyled>
+      </GridForm>
     </Container>
   );
 };

@@ -6,12 +6,12 @@ export const ButtonStyled = styled.button`
   position: relative;
   box-sizing: border-box;
   background-repeat: no-repeat;
-  height: 45px;
-  border-radius: 5px;
+  height: 43px;
+  border-radius: 10px;
   background: #f27d16;
   font-family: Poppins;
   color: #fff;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 500;
   border: none;
   margin: 24px 0px;
