@@ -121,7 +121,7 @@ export const generatePDF = (order) => {
   const paginationY = doc.internal.pageSize.height - 10;
   doc.setFont("helvetica", "normal");
   doc.setFontSize(10);
-  doc.setTextColor(150);
+  doc.setTextColor(200);
   doc.text(`Página ${doc.internal.getNumberOfPages()}`, paginationX, paginationY, { align: "center" });
 
   // Guardar y descargar el PDF
