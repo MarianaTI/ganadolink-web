@@ -20,7 +20,7 @@ import { useRouter } from "next/router";
 import CryptoJS from "crypto-js";
 import { useDispatch } from "react-redux";
 import { setUser } from "@/actions/userActions";
-import AlertComponent from "@/components/CustomAlert";
+import CustomAlerts from "@/components/CustomAlerts";
 
 const Login = () => {
   const route = useRouter();
@@ -33,7 +33,6 @@ const Login = () => {
     text: "",
   });
 
-  
   const {
     control,
     handleSubmit,
@@ -129,19 +128,15 @@ const Login = () => {
         </GridImage>
       </GridContainer>
       {alertInfo.show && (
-          <AlertComponent
-            open={alertInfo}
-            onClose={() => setAlertInfo(false)}
-            imageSrc={
-              alertInfo.title === "Creado correctamente"
-                ? "/img/success.png"
-                : "/img/error.png"
-            }
-            title={alertInfo.title}
-            text={alertInfo.text}
-          />
-        )}
-
+        <CustomAlerts
+          open={alertInfo}
+          onClose={() => setAlertInfo(false)}
+          title={alertInfo.title}
+          text={alertInfo.text}
+          acceptButton="Aceptar"
+          error
+        />
+      )}
     </Container>
   );
 };
