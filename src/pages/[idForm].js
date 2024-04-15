@@ -259,7 +259,7 @@ const IdForm = () => {
   const handleCancelClick = () => {
     switch (activeTab) {
       case 0:
-        router.push("/catalogue");
+        route.push("/catalogue");
         break;
       case 1:
         setActiveTab(0);
