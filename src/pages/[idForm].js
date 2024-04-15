@@ -40,6 +40,7 @@ import UpdateOrderUseCase from "@/application/usecases/orderUseCase/UpdateOrderU
 import Order from "@/domain/entities/order";
 import { useSelector } from "react-redux";
 import AlertComponent from "@/components/CustomAlert";
+import CustomAlerts from "@/components/CustomAlerts";
 
 const IdForm = () => {
   const route = useRouter();
@@ -599,17 +600,13 @@ const IdForm = () => {
           </TabContent>
         </FormContainerDatosGenerales>
         {alertInfo.show && (
-            <AlertComponent
-              open={alertInfo}
-              onClose={() => setAlertInfo(false)}
-              imageSrc={
-                alertInfo.title === "Actualizado correctamente"
-                  ? "/img/success.png"
-                  : "/img/error.png"
-              }
-              title={alertInfo.title}
-              text={alertInfo.text}
-            />
+            <CustomAlerts
+            open={alertInfo}
+            onClose={() => setAlertInfo(false)}
+            title={alertInfo.title}
+            text={alertInfo.text}
+            login
+          />
           )}
       </Container>
     </div>

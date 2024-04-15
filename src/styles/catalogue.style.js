@@ -50,7 +50,7 @@ export const SearchIcon = styled.button`
   top: 50%;
   left: 12px;
   transform: translateY(-40%);
-  z-index: 10;
+  z-index: 1;
   border: none;
   background: none;
   cursor: pointer;

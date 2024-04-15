@@ -42,7 +42,7 @@ import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import { Skeleton } from "@mui/material";
 import withAuth from "@/components/Authenticated";
-import AlertComponent from "@/components/CustomAlert";
+import CustomAlerts from "@/components/CustomAlerts";
 
 const Form = () => {
   const router = useRouter();
@@ -388,7 +388,11 @@ const Form = () => {
                 </CheckboxContainer>
               </div>
               <ButtonsContainer>
-                <CustomButton customDesign buttonText="Cancelar" onClick={handleCancelClick}/>
+                <CustomButton
+                  customDesign
+                  buttonText="Cancelar"
+                  onClick={handleCancelClick}
+                />
                 <CustomButton buttonText="Continuar" type="submit" />
               </ButtonsContainer>
             </ContainerForm>
@@ -502,7 +506,11 @@ const Form = () => {
               </TableStyled>
             </div>
             <ButtonsContainer>
-              <CustomButton customDesign buttonText="Cancelar" onClick={handleCancelClick}/>
+              <CustomButton
+                customDesign
+                buttonText="Cancelar"
+                onClick={handleCancelClick}
+              />
               <CustomButton
                 buttonText="Continuar"
                 onClick={handleClickContinuar}
@@ -571,22 +579,22 @@ const Form = () => {
                 />
               </DetailsGrid>
               <ButtonsContainer>
-                <CustomButton customDesign buttonText="Cancelar" onClick={handleCancelClick}/>
+                <CustomButton
+                  customDesign
+                  buttonText="Cancelar"
+                  onClick={handleCancelClick}
+                />
                 <CustomButton buttonText="Confirmar" type="submit" />
               </ButtonsContainer>
             </ContainerForm>
           </TabContent>
           {alertInfo.show && (
-            <AlertComponent
+            <CustomAlerts
               open={alertInfo}
               onClose={() => setAlertInfo(false)}
-              imageSrc={
-                alertInfo.title === "Creado correctamente"
-                  ? "/img/success.png"
-                  : "/img/error.png"
-              }
               title={alertInfo.title}
               text={alertInfo.text}
+              login
             />
           )}
         </Container>

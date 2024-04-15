@@ -290,17 +290,6 @@ const CatalogPage = () => {
                                 >
                                   <CustomIcon icon={faTrash} />
                                 </IconButton>
-                                <CustomAlerts
-                                  error
-                                  open={isOpen}
-                                  onClose={toggleDeleteModal}
-                                  title="Eliminar"
-                                  text="¿Deseas eliminar la guía?"
-                                  acceptButton="Aceptar"
-                                  cancelButton="Cancelar"
-                                  onClickContinue={handleDeleteOrder}
-                                  onClickCancele={toggleDeleteModal}
-                                />
                               </div>
                             )}
                           </BottonContainer>
@@ -449,17 +438,26 @@ const CatalogPage = () => {
                 )}
               </tbody>
             </TableStyled>
+            <CustomAlerts
+              error
+              open={isOpen}
+              onClose={toggleDeleteModal}
+              title="Eliminar"
+              text="¿Deseas eliminar la guía?"
+              acceptButton="Aceptar"
+              cancelButton="Cancelar"
+              onClickContinue={handleDeleteOrder}
+              onClickCancele={toggleDeleteModal}
+            />
             {alertInfo.show && (
-              <AlertComponent
+              <CustomAlerts
                 open={alertInfo}
                 onClose={() => setAlertInfo(false)}
-                imageSrc={
-                  alertInfo.title === "Eliminado correctamente"
-                    ? "/img/success.png"
-                    : "/img/error.png"
-                }
                 title={alertInfo.title}
                 text={alertInfo.text}
+                acceptButton="Aceptar"
+                onClickContinue={() => setAlertInfo(false)}
+                login
               />
             )}
           </Container>
