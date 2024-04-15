@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export const Modal = styled.div`
-  display: block;
+  display: ${(props) => (props.open ? "block" : "none")};
   position: fixed;
   z-index: 1;
   left: 0;
@@ -22,7 +22,7 @@ export const Container = styled.div`
   border-radius: 10px;
   display: flex;
   align-items: start;
-  justify-content: center;
+  justify-content: start;
   gap: 16px;
   line-height: 20px;
   padding: 16px;
@@ -45,6 +45,7 @@ export const Content = styled.div`
   gap: 8px;
   font-family: Poppins;
   & h1 {
+    text-align: left;
     margin: 0;
     font-size: 16px;
     font-weight: bold;
@@ -59,8 +60,8 @@ export const Content = styled.div`
 
 export const ButtonContainer = styled.div`
   gap: 8px;
-  justify-content: end;
   display: ${({ noButtons }) => (noButtons ? "none" : "flex")};
+  justify-content: ${({ login }) => (login ? "end" : "none")};
 `;
 
 export const AcceptButton = styled.button`
@@ -82,6 +83,7 @@ export const AcceptButton = styled.button`
 `;
 
 export const CancelButton = styled.button`
+  display: ${({ login }) => (login ? "none" : "flex")};
   cursor: pointer;
   padding: 6px;
   background-color: ${({ error }) =>

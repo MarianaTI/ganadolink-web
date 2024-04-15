@@ -41,6 +41,7 @@ import {
   faPenToSquare,
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
+import CustomAlerts from "@/components/CustomAlerts";
 
 const CatalogPage = () => {
   const route = useRouter();
@@ -134,15 +135,9 @@ const CatalogPage = () => {
     try {
       const orderData = await getAllOrderUseCase.run();
       setOrders(orderData.orders);
-      console.log(orderData.orders);
     } catch (error) {
       console.log(error);
     }
-  };
-
-  // Función para manejar el envío del formulario (aún no implementada)
-  const onSubmit = (formData) => {
-    console.log(formData);
   };
 
   const handleRowToggle = (index) => {
@@ -295,38 +290,17 @@ const CatalogPage = () => {
                                 >
                                   <CustomIcon icon={faTrash} />
                                 </IconButton>
-                                <CustomModal
+                                <CustomAlerts
+                                  error
                                   open={isOpen}
                                   onClose={toggleDeleteModal}
                                   title="Eliminar"
-                                  message="¿Deseas eliminar este libro?"
-                                >
-                                  <ImagenD>
-                                    <Image
-                                      src="/img/borrar.png"
-                                      width={140}
-                                      height={140}
-                                      alt="logo"
-                                    />
-                                  </ImagenD>
-                                  <RowContainer>
-                                    <div style={{ width: "100%" }}>
-                                      <CustomButton
-                                        fullWidth
-                                        buttonText="Aceptar"
-                                        onClick={handleDeleteOrder}
-                                      />
-                                    </div>
-                                    <div style={{ width: "100%" }}>
-                                      <CustomButton
-                                        buttonText="Cancelar"
-                                        fullWidth
-                                        customDesign
-                                        onClick={toggleDeleteModal}
-                                      />
-                                    </div>
-                                  </RowContainer>
-                                </CustomModal>
+                                  text="¿Deseas eliminar la guía?"
+                                  acceptButton="Aceptar"
+                                  cancelButton="Cancelar"
+                                  onClickContinue={handleDeleteOrder}
+                                  onClickCancele={toggleDeleteModal}
+                                />
                               </div>
                             )}
                           </BottonContainer>

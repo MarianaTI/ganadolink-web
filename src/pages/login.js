@@ -85,10 +85,10 @@ const Login = () => {
           <FormStyled onSubmit={handleSubmit(onSubmit)}>
             <h1>Iniciar sesión</h1>
             <span>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer
-              et quam laoreet, molestie justo eu, tempus orci.
+              Es un placer darle la bienvenida de nuevo a nuestra plataforma.
+              Estamos encantados de tenerlo de vuelta con nosotros.
             </span>
-            <div style={{ padding: "32px 0px" }}>
+            <div style={{ padding: "20px 0px" }}>
               <CustomInput
                 label="Correo electronico"
                 name="email"
@@ -135,6 +135,8 @@ const Login = () => {
           text={alertInfo.text}
           acceptButton="Aceptar"
           error
+          login
+          onClickContinue={() => setAlertInfo(false)}
         />
       )}
     </Container>

@@ -22,7 +22,10 @@ const CustomAlerts = ({
   open,
   onClose,
   error,
-  noButtons
+  noButtons,
+  onClickContinue,
+  onClickCancele, 
+  login
 }) => {
   const icon = error ? faCircleXmark : faCircleCheck;
   return (
@@ -34,13 +37,13 @@ const CustomAlerts = ({
         <Content error={error}>
           <h1>{title}</h1>
           <span>{text}</span>
-          <ButtonContainer noButtons={noButtons}>
-            <AcceptButton type="button" error={error} onClick={onClose}>
+          <ButtonContainer noButtons={noButtons} login={login}>
+            <AcceptButton type="button" error={error} onClick={onClickContinue}>
               {acceptButton}
             </AcceptButton>
-            {/* <CancelButton type="button" error={error} onClose={onClose}>
+            <CancelButton type="button" login={login} error={error} onClick={onClickCancele}>
               {cancelButton}
-            </CancelButton> */}
+            </CancelButton>
           </ButtonContainer>
         </Content>
       </Container>
