@@ -332,7 +332,7 @@ const IdForm = () => {
           modelo: orderData.vehiculo.modelo || "",
           placa: orderData.vehiculo.placa || "",
           color: orderData.vehiculo.color || "",
-          nombre_operador_vehiculo: orderData.nombre_operador_vehiculo || "",
+          nombre_operador_vehiculo: orderData.vehiculo.nombre_operador_vehiculo || "",
         },
         ganado: orderData.ganado.map((animal) => ({
           patente: animal.patente || "",
@@ -623,7 +623,7 @@ const IdForm = () => {
                   name="brand"
                   defaultValue={orderData.vehiculo.marca}
                   control={control}
-                  // control={controlVehic}
+                  onChange={(e) => handleVehiculoChange("marca", e.target.value)}
                   fullWidth
                 />
                 <CustomInput
@@ -631,7 +631,7 @@ const IdForm = () => {
                   name="model"
                   defaultValue={orderData.vehiculo.modelo}
                   control={control}
-                  // control={controlVehic}
+                  onChange={(e) => handleVehiculoChange("modelo", e.target.value)}
                   fullWidth
                 />
                 <CustomInput
@@ -639,7 +639,7 @@ const IdForm = () => {
                   name="plate"
                   defaultValue={orderData.vehiculo.placa}
                   control={control}
-                  // control={controlVehic}
+                  onChange={(e) => handleVehiculoChange("placa", e.target.value)}
                   fullWidth
                 />
                 <div className="fullWidth">
@@ -660,6 +660,7 @@ const IdForm = () => {
                   label="Color"
                   name="trailerColor"
                   defaultValue={orderData.vehiculo.color}
+                  onChange={(e) => handleVehiculoChange("color", e.target.value)}
                   control={control}
                   className="halfWidth"
                   fullWidth
@@ -668,6 +669,7 @@ const IdForm = () => {
                   label="Nombre del operador del vehiculo"
                   name="vehicleName"
                   defaultValue={orderData.vehiculo.nombre_operador_vehiculo}
+                  onChange={(e) => handleVehiculoChange("nombre_operador_vehiculo", e.target.value)}
                   control={control}
                   className="halfWidth"
                   fullWidth
