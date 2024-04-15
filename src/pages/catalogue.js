@@ -387,7 +387,7 @@ const CatalogPage = () => {
                                   <TrStyled key={ganadoIndex}>
                                     <td>{ganadoItem.patente}</td>
                                     <td>{ganadoItem.sexo}</td>
-                                    <td>{ganadoItem.id_raza.name}</td>
+                                    <td>{ganadoItem.id_raza?.name}</td>
                                     <td>{ganadoItem.color}</td>
                                     <td>{ganadoItem.siniiga}</td>
                                     <td>
