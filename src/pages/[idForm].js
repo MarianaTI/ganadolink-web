@@ -213,7 +213,7 @@ const IdForm = () => {
       setAlertInfo({
         show: true,
         title: "Actualizado correctamente",
-        text: "La orden se ha creado actualizado",
+        text: "La orden se ha actualizado correctamente",
       });
       setTimeout(() => {
         route.push("/catalogue");

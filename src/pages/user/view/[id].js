@@ -27,6 +27,7 @@ import CustomCheckboxInput from "@/components/CustomRadioInput";
 import { LabelStyled } from "@/components/CustomInput/index.style";
 import { Icon } from "@/styles/Index.style";
 import { faAngleLeft } from "@fortawesome/free-solid-svg-icons";
+import CustomAlerts from "@/components/CustomAlerts";
 
 const loginSchema = yup.object().shape({
   name: yup.string().required("Ingresa el nombre completo"),
@@ -52,7 +53,11 @@ const EditUserPage = () => {
   const [isShowPassword, setShowPassword] = useState(false);
   const [isShowPasswordNew, setShowPasswordNew] = useState(false);
   const [selectedRoles, setSelectedRoles] = useState([]);
-
+  const [alertInfo, setAlertInfo] = useState({
+    show: false,
+    title: "",
+    text: "",
+  });
   const {
     control,
     handleSubmit,
@@ -62,7 +67,6 @@ const EditUserPage = () => {
     resolver: yupResolver(loginSchema),
   });
 
-  
   const getRoleLabel = (roleId) => {
     switch (roleId) {
       case "SuperAdmin":
@@ -81,11 +85,11 @@ const EditUserPage = () => {
     const getAllRol = new GetAllRoleRepo(roleRepo);
     try {
       const response = await getAllRol.run();
-      const rolesWithUpdatedNames = response.roles.map(role => ({
-      ...role,
-      name: getRoleLabel(role.name)
-    }));
-    setRoles(rolesWithUpdatedNames);
+      const rolesWithUpdatedNames = response.roles.map((role) => ({
+        ...role,
+        name: getRoleLabel(role.name),
+      }));
+      setRoles(rolesWithUpdatedNames);
     } catch (error) {
       console.log(error);
     }
@@ -138,10 +142,23 @@ const EditUserPage = () => {
 
     try {
       const response = await updateUserUseCase.run(updatedUser);
-
-      router.push("/user");
+      setAlertInfo({
+        show: true,
+        title: "Actualizado correctamente",
+        text: "El usuario se ha actualizado correctamente",
+      });
+      setTimeout(() => {
+        router.push("/user");
+      }, 2000);
     } catch (error) {
-      console.error("Error al actualizar el usuario:", error);
+      setAlertInfo({
+        show: true,
+        title: "Ocurrió un error al actualizar",
+        text: `${error.message} - ${error.response.data.message}` ||
+        "No se pudo completar la operación.",
+      });
+      setTimeout(() => {
+      }, 2000);
     }
   };
 
@@ -275,6 +292,18 @@ const EditUserPage = () => {
         </GridForm>
       ) : (
         <p>Cargando datos del usuario...</p>
+      )}
+      {alertInfo.show && (
+        <CustomAlerts
+          open={alertInfo}
+          onClose={() => setAlertInfo(false)}
+          title={alertInfo.title}
+          text={alertInfo.text}
+          login
+          error={alertInfo.title !== "Actualizado correctamente"}
+          acceptButton={alertInfo.title !== "Actualizado correctamente"}
+          onClickContinue={() => setAlertInfo(false)}
+        />
       )}
     </Container>
   );
