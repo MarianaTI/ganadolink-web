@@ -35,6 +35,7 @@ import {
   faTrash,
   faUserPlus,
 } from "@fortawesome/free-solid-svg-icons";
+import CustomAlerts from "@/components/CustomAlerts";
 
 const AllUser = () => {
   const router = useRouter();
@@ -209,59 +210,45 @@ const AllUser = () => {
                           <CustomIcon icon={faTrash} />
                         </IconButton>
                       ) : (
-                        <IconButton disabled style={{background: "rgba(219, 180, 147)", cursor: "auto"}}>
-                          <CustomIcon icon={faTrash} style={{color: "#404040"}}/>
+                        <IconButton
+                          disabled
+                          style={{
+                            background: "rgba(219, 180, 147)",
+                            cursor: "auto",
+                          }}
+                        >
+                          <CustomIcon
+                            icon={faTrash}
+                            style={{ color: "#404040" }}
+                          />
                         </IconButton>
                       )}
-                      <CustomModal
-                        open={isOpen}
-                        onClose={toggleDeleteModal}
-                        title="Eliminar"
-                        message="¿Deseas eliminar este libro?"
-                      >
-                        <ImagenD>
-                          <Image
-                            src="/img/borrar.png"
-                            width={140}
-                            height={140}
-                            alt="logo"
-                          />
-                        </ImagenD>
-                        <RowContainer>
-                          <div style={{ width: "100%" }}>
-                            <CustomButton
-                              fullWidth
-                              buttonText="Aceptar"
-                              onClick={handleDeleteUser}
-                            />
-                          </div>
-                          <div style={{ width: "100%" }}>
-                            <CustomButton
-                              buttonText="Cancelar"
-                              fullWidth
-                              customDesign
-                              onClick={toggleDeleteModal}
-                            />
-                          </div>
-                        </RowContainer>
-                      </CustomModal>
                     </BottonContainer>
                   </td>
                 </TrStyled>
               ))}
             </tbody>
           </TableStyled>
+          <CustomAlerts
+            error
+            open={isOpen}
+            onClose={toggleDeleteModal}
+            title="Eliminar"
+            text="¿Deseas eliminar este usuario?"
+            acceptButton="Aceptar"
+            cancelButton="Cancelar"
+            onClickContinue={handleDeleteUser}
+            onClickCancele={toggleDeleteModal}
+          />
           {alertInfo.show && (
-            <AlertComponent
+            <CustomAlerts
               open={alertInfo}
               onClose={() => setAlertInfo(false)}
-              imageSrc={
-                alertInfo.title === "Eliminado correctamente"
-                  ? "/img/success.png"
-                  : "/img/error.png"
-              }
               title={alertInfo.title}
               text={alertInfo.text}
+              acceptButton="Aceptar"
+              onClickContinue={() => setAlertInfo(false)}
+              login
             />
           )}
         </Container>
