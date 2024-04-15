@@ -16,7 +16,6 @@ import {
   CheckboxContainerBoolean,
   Container,
   DetailsGrid,
-  Form,
   FormContainer,
   FormContainerDatosGenerales,
   FormContent,
@@ -37,9 +36,10 @@ import MotivoRepo from "@/infraestructure/implementation/httpRequest/axios/Motiv
 import GetAllMotivoRepo from "@/application/usecases/motivoUseCase/GetAllMotivoRepo";
 import withAuth from "@/components/Authenticated";
 import UpdateOrderUseCase from "@/application/usecases/orderUseCase/UpdateOrderUseCase";
-import Order from "@/domain/entities/order";
 import { useSelector } from "react-redux";
 import AlertComponent from "@/components/CustomAlert";
+import RazaRepo from "@/infraestructure/implementation/httpRequest/axios/RazaRepo";
+import GetAllRazaCase from "@/application/usecases/razaUseCase/GetAllRazaCase";
 
 const IdForm = () => {
   const route = useRouter();
@@ -48,6 +48,8 @@ const IdForm = () => {
   const [activeTab, setActiveTab] = useState(0);
   const [especies, setEspecie] = useState([]);
   const [motivos, setMotivo] = useState([]);
+  const [razas, setRaza] = useState([]);
+  const [imageUrl, setImageUrl] = useState("");
   const userId = useSelector((state) => state.user._id);
   const [alertInfo, setAlertInfo] = useState({
     show: false,
@@ -72,19 +74,7 @@ const IdForm = () => {
       municipio: "",
       predio: "",
     },
-    ganado: [
-      {
-        patente: "",
-        sexo: "",
-        id_raza: {
-          _id: "",
-          name: "",
-        },
-        color: "",
-        siniiga: "",
-        figura_herraje: "",
-      },
-    ],
+    ganado: [],
     vehiculo: {
       tipo: "",
       marca: "",
@@ -104,6 +94,13 @@ const IdForm = () => {
     reset,
     handleSubmit,
     formState: { errors },
+  } = useForm({});
+
+  const {
+    control: controlGanado,
+    handleSubmit: handleSubbmitGanado,
+    reset: resetAnimal,
+    formState: { errors: errorsGanado },
   } = useForm({});
 
   useEffect(() => {
@@ -141,6 +138,17 @@ const IdForm = () => {
     try {
       const response = await getAllMotivo.run();
       setMotivo(response.motivos);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const fetchRaza = async () => {
+    const razaRepo = new RazaRepo();
+    const getAllRaza = new GetAllRazaCase(razaRepo);
+    try {
+      const response = await getAllRaza.run();
+      setRaza(response.razas);
     } catch (error) {
       console.log(error);
     }
@@ -201,10 +209,73 @@ const IdForm = () => {
     await onSubmit(datosGeneralesModificados);
   };
 
+  ///! funcion que recibe el objeto para pintar la tabla
+  const onSubmitAnimal = (data) => {
+    const newAnimal = {
+      patente: data.patente,
+      sexo: data.sexo,
+      id_raza: data.id_raza,
+      color: data.color,
+      siniiga: data.siniiga,
+      figura_herraje: imageUrl,
+    };
+
+    console.log("Nuevo animal:", newAnimal);
+
+    setOrderData((prevOrderData) => {
+      const updatedGanado = [...prevOrderData.ganado, newAnimal];
+      console.log("Datos de la orden previa:", prevOrderData);
+
+      const updatedOrderData = {
+        ...prevOrderData,
+        ganado: updatedGanado,
+      };
+
+      console.log(updatedOrderData);
+
+      return updatedOrderData;
+    });
+
+    // Clear the image state for the next selection
+    setImageUrl("");
+    resetAnimal({
+      patente: "",
+      sexo: "",
+      id_raza: "",
+      color: "",
+      siniiga: "",
+    });
+  };
+
+  const markGanadoForDeletion = (siniiga) => {
+    setOrderData((prevOrderData) => ({
+      ...prevOrderData,
+      ganado: prevOrderData.ganado.map((ganado) =>
+        ganado.siniiga === siniiga ? { ...ganado, b_eliminar: true } : ganado
+      ),
+    }));
+  };
+
+  const handleCancelClick = () => {
+    switch (activeTab) {
+      case 0:
+        router.push("/catalogue");
+        break;
+      case 1:
+        setActiveTab(0);
+        break;
+      case 2:
+        setActiveTab(1);
+        break;
+      default:
+        console.log("Tab no reconocido");
+    }
+  };
+
   const onSubmit = async (datosGeneralesModificados) => {
     const orderRepo = new OrderRepo(idForm);
     const updateOrderUseCase = new UpdateOrderUseCase(orderRepo);
-    
+
     try {
       const response = await updateOrderUseCase.run(datosGeneralesModificados);
       console.log(response);
@@ -228,8 +299,7 @@ const IdForm = () => {
         });
       }, 1000);
     }
-};
-
+  };
 
   useEffect(() => {
     console.log("Datos Generales Modificados:", datosGeneralesModificados);
@@ -238,6 +308,7 @@ const IdForm = () => {
   useEffect(() => {
     fetchEspecies();
     fetchMotivos();
+    fetchRaza();
     if (orderData) {
       setDatosGeneralesModificados({
         _id: orderData._id,
@@ -265,10 +336,11 @@ const IdForm = () => {
         ganado: orderData.ganado.map((animal) => ({
           patente: animal.patente || "",
           sexo: animal.sexo || "",
-          id_raza: animal.id_raza?._id || null,
+          id_raza: animal.id_raza?._id || animal.id_raza || null,
           color: animal.color || "",
           siniiga: animal.siniiga || "",
           figura_herraje: animal.figura_herraje || "",
+          b_eliminar: animal.b_eliminar,
         })),
       });
     }
@@ -398,7 +470,11 @@ const IdForm = () => {
               </CheckboxContainer>
             </div>
             <ButtonsContainer>
-              <CustomButton customDesign buttonText="Cancelar" />
+              <CustomButton
+                customDesign
+                buttonText="Cancelar"
+                onClick={handleCancelClick}
+              />
               <CustomButton
                 buttonText="Continuar"
                 type="button"
@@ -409,19 +485,22 @@ const IdForm = () => {
           {/* Tab Datos del ganado */}
           <TabContent active={activeTab === 1}>
             <AddContainer>
-              <CustomButton buttonText="Agregar" />
+              <CustomButton
+                buttonText="Agregar"
+                onClick={handleSubbmitGanado(onSubmitAnimal)}
+              />
             </AddContainer>
-            <FormContent>
+            <FormContainer onSubmit={handleSubbmitGanado(onSubmitAnimal)}>
               <CustomInput
                 label="Patente o factura"
                 name="patente"
-                control={control}
+                control={controlGanado}
                 fullWidth
               />
               <CustomSelect
                 label="Sexo"
                 name="sexo"
-                control={control}
+                control={controlGanado}
                 data={[
                   { value: "macho", label: "Macho" },
                   { value: "hembra", label: "Hembra" },
@@ -431,20 +510,20 @@ const IdForm = () => {
               <CustomSelect
                 label="Raza"
                 name="id_raza"
-                control={control}
-                // data={razas}
+                control={controlGanado}
+                data={razas}
                 fullWidth
               />
               <CustomInput
                 label="Color"
                 name="color"
-                control={control}
+                control={controlGanado}
                 fullWidth
               />
               <CustomInput
                 label="Arete siniiga"
                 name="siniiga"
-                control={control}
+                control={controlGanado}
                 fullWidth
               />
               <CustomImage
@@ -462,7 +541,7 @@ const IdForm = () => {
                   }
                 }}
               />
-            </FormContent>
+            </FormContainer>
             <div>
               <TableStyled>
                 <TheadStyled>
@@ -478,41 +557,47 @@ const IdForm = () => {
                   </TrStyled>
                 </TheadStyled>
                 <tbody>
-                  {orderData.ganado.map((order, index) => (
-                    <TrStyled key={order.siniiga}>
-                      <td>{index + 1}</td>
-                      <td>{order.patente}</td>
-                      <td>{order.sexo}</td>
-                      <td>{order.color}</td>
-                      <td>{order.id_raza.name}</td>
-                      <td>{order.siniiga}</td>
-                      <td>
-                        {order.figura_herraje && (
-                          <Image
-                            src={order.figura_herraje}
-                            alt="Animal"
-                            width={100}
-                            height={100}
-                            layout="fixed"
-                          />
-                        )}
-                      </td>
-
-                      <td>
-                        <AccionButton>
-                          <MarkIcon icon={faXmark} />
-                        </AccionButton>
-                        <AccionButton>
-                          <PenIcon icon={faPen} />
-                        </AccionButton>
-                      </td>
-                    </TrStyled>
-                  ))}
+                  {orderData.ganado
+                    .filter((ganado) => !ganado.b_eliminar)
+                    .map((order, index) => (
+                      <TrStyled key={order.siniiga}>
+                        <td>{index + 1}</td>
+                        <td>{order.patente}</td>
+                        <td>{order.sexo}</td>
+                        <td>{order.color}</td>
+                        <td>
+                          {order.id_raza ? order.id_raza.name : "Sin raza"}
+                        </td>
+                        <td>{order.siniiga}</td>
+                        <td>
+                          {order.figura_herraje && (
+                            <Image
+                              src={order.figura_herraje}
+                              alt="Animal"
+                              width={100}
+                              height={100}
+                              layout="fixed"
+                            />
+                          )}
+                        </td>
+                        <td>
+                          <AccionButton
+                            onClick={() => markGanadoForDeletion(order.siniiga)}
+                          >
+                            <MarkIcon icon={faXmark} />
+                          </AccionButton>
+                        </td>
+                      </TrStyled>
+                    ))}
                 </tbody>
               </TableStyled>
             </div>
             <ButtonsContainer>
-              <CustomButton customDesign buttonText="Cancelar" />
+              <CustomButton
+                customDesign
+                buttonText="Cancelar"
+                onClick={handleCancelClick}
+              />
               <CustomButton
                 buttonText="Continuar"
                 type="button"
@@ -588,7 +673,11 @@ const IdForm = () => {
                 />
               </DetailsGrid>
               <ButtonsContainer>
-                <CustomButton customDesign buttonText="Cancelar" />
+                <CustomButton
+                  customDesign
+                  buttonText="Cancelar"
+                  onClick={handleCancelClick}
+                />
                 <CustomButton
                   buttonText="Confirmar"
                   type="submit"
@@ -599,18 +688,18 @@ const IdForm = () => {
           </TabContent>
         </FormContainerDatosGenerales>
         {alertInfo.show && (
-            <AlertComponent
-              open={alertInfo}
-              onClose={() => setAlertInfo(false)}
-              imageSrc={
-                alertInfo.title === "Actualizado correctamente"
-                  ? "/img/success.png"
-                  : "/img/error.png"
-              }
-              title={alertInfo.title}
-              text={alertInfo.text}
-            />
-          )}
+          <AlertComponent
+            open={alertInfo}
+            onClose={() => setAlertInfo(false)}
+            imageSrc={
+              alertInfo.title === "Actualizado correctamente"
+                ? "/img/success.png"
+                : "/img/error.png"
+            }
+            title={alertInfo.title}
+            text={alertInfo.text}
+          />
+        )}
       </Container>
     </div>
   );
