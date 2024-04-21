@@ -112,7 +112,14 @@ export const generatePDF = (order) => {
   doc.text("Firma Digital:", firmaX, firmaY, { align: "left" }); // Ajustar alineación a la izquierda
   doc.setFont("times", "italic"); // Cambiar la fuente a cursiva
   doc.setFontSize(33); // Aumentar tamaño de la firma
-  doc.text("Danny", firmaX, firmaY + 15, { align: "left" }); // Ajustar alineación a la izquierda y posición vertical
+  doc.text("Ganado Link | Corps.", firmaX, firmaY + 15, { align: "left" }); // Ajustar alineación a la izquierda y posición vertical
+  // Agregar línea para simular la firma
+  doc.setFontSize(12);
+  doc.text("__________________________", firmaX, firmaY + 30, { align: "left" });
+  // Agregar texto del equipo
+  doc.setFontSize(10);
+  doc.setFont("Helvetica", "normal");
+  doc.text("Equipo #4 Master Mind", firmaX, firmaY + 35, { align: "left" });
 
   // Paginación
   const pageCount = doc.internal.getNumberOfPages();

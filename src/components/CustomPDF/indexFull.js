@@ -18,7 +18,7 @@ const DownloadAllPDF = ({ orders }) => {
     const cardPadding = 10;
     const cardDataYOffset = -5;
     const signatureTitleFontSize = 16;
-    const signatureNameFontSize = 13;
+    const signatureNameFontSize = 10;
     const pageNumberFontSize = 10;
 
     let currentPageIndex = 0;
@@ -47,7 +47,14 @@ const DownloadAllPDF = ({ orders }) => {
 
         doc.text("Firma Digital:", signatureXPos, signatureYPos);
         doc.setFontSize(signatureNameFontSize);
-        doc.text("Danny", signatureXPos, signatureYPos + 10);
+        doc.text("Ganado Link | Corps.", signatureXPos, signatureYPos + 10);
+        // Agregar dos espacios adicionales debajo del texto "Ganado Link | Corps."
+        doc.text("", signatureXPos, signatureYPos + 16);        
+        // Agregar línea debajo del texto "Ganado Link | Corps."
+        doc.line(signatureXPos, signatureYPos + 14, signatureXPos + 50, signatureYPos + 14);
+        // Agregar texto "Equipo #4 Master Mind"
+        doc.setFontSize(signatureNameFontSize);
+        doc.text("Equipo #4 Master Mind", signatureXPos, signatureYPos + 20); // Alejado un poco más
 
         // Número de página
         doc.setFontSize(pageNumberFontSize);
