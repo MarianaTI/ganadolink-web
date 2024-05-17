@@ -169,3 +169,16 @@ export const SubmitButtonsContainer = styled.div`
   gap: 32px;
   margin-top: 64px;
 `;
+
+export const TooltipContainer = styled.div`
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  gap: 16px;
+  margin: 8px 0;
+`;
+
+export const IconTooltip = styled(Icon)`
+  font-size: 20px;
+  cursor: pointer;
+`;

@@ -22,13 +22,19 @@ import {
   Form,
   GridContainer,
   Icon,
+  IconTooltip,
   SectionName,
   SubmitButtonsContainer,
   Subtitle,
   TableStyled,
   Title,
+  TooltipContainer,
 } from "@/styles/Guide.style";
-import { faCirclePlus } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCirclePlus,
+  faQuestionCircle,
+} from "@fortawesome/free-solid-svg-icons";
+import { ThemeProvider, Tooltip, createTheme } from "@mui/material";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -46,6 +52,21 @@ const NewForm = () => {
     handleSubmit,
     formState: { errors },
   } = useForm({});
+
+  const theme = createTheme({
+    components: {
+      MuiTooltip: {
+        styleOverrides: {
+          tooltip: {
+            fontFamily: '"Poppins", sans-serif',
+            textAlign: "center",
+            fontSize: "13px",
+          }
+        }
+      }
+    }
+  });
+  
 
   const [datosModificados, setDatosModificados] = useState({
     _id: null,
@@ -290,7 +311,14 @@ const NewForm = () => {
           <div />
           <span>DATOS DEL GANADO</span>
         </Subtitle>
-        <SectionName>Movilizacion de animales</SectionName>
+        <TooltipContainer>
+          <SectionName>Movilización de animales</SectionName>
+          <ThemeProvider theme={theme}>
+          <Tooltip placement="top" title="Rellena los datos y da click en el boton de 'Agregar' para añadir un animal a la tabla, usalo según lo necesario.">
+              <IconTooltip icon={faQuestionCircle} />
+          </Tooltip>
+          </ThemeProvider>
+        </TooltipContainer>
         <ButtonContainer>
           <AddButton>
             <Icon icon={faCirclePlus} />
@@ -447,7 +475,14 @@ const NewForm = () => {
             />
           </div>
         </GridContainer>
-        <SectionName>Remolque</SectionName>
+        <TooltipContainer>
+          <SectionName>Remolque</SectionName>
+          <ThemeProvider theme={theme}>
+          <Tooltip placement="top" title="Coloca 'Si' si tu vehiculo cuenta con remolque.">
+              <IconTooltip icon={faQuestionCircle} />
+          </Tooltip>
+          </ThemeProvider>
+        </TooltipContainer>
         <CheckboxContainer>
           <CustomCheckboxInput
             label="Opciones"
@@ -488,7 +523,7 @@ const NewForm = () => {
           </div>
         </GridContainer>
         <SubmitButtonsContainer>
-          <CustomButton type="submit" buttonText="Cancelar" customDesign/>
+          <CustomButton type="submit" buttonText="Cancelar" customDesign />
           <CustomButton type="submit" buttonText="Aceptar" />
         </SubmitButtonsContainer>
       </Form>
