@@ -6,7 +6,7 @@ export const InputStyled = styled.input`
   height: 45px;
   margin: 4px 0px 8px 0px;
   border-radius: 5px;
-  border: ${(props) => (props.borderLight ? "1px solid #bbb" : "1px solid #414141")};
+  border: ${(props) => (props.borderLight ? "1px solid #bbb" : "1px solid #A2A2A2")};
   background-color: transparent;
   font-size: 16px;
   font-weight: 400;

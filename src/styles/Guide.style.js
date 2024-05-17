@@ -1,0 +1,120 @@
+import styled from "@emotion/styled";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+export const Container = styled.div`
+  background-color: #fffbf6;
+  padding: 40px 188px;
+`;
+
+export const Title = styled.h1`
+  font-family: "Poppins", sans-serif;
+  font-size: 24px;
+  font-weight: 500;
+  margin: 0;
+`;
+
+export const Description = styled.span`
+  color: rgba(90, 90, 90, 0.8);
+  font-size: 14px;
+`;
+
+export const Form = styled.form`
+  width: 100%;
+  height: auto;
+  background-color: #fff;
+  margin: 32px 0;
+  padding: 24px 100px;
+  display: flex;
+  flex-direction: column;
+`;
+
+export const Subtitle = styled.div`
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  gap: 16px;
+  margin: 40px 0;
+  & div {
+    width: 5px;
+    height: 25px;
+    background-color: #f27d16;
+  }
+  & span {
+    font-size: 20px;
+    font-weight: 500;
+    color: #434242;
+  }
+`;
+
+export const SectionName = styled.span`
+  color: #434242;
+  font-size: 20px;
+  font-weight: 500;
+`;
+
+export const CheckboxContainer = styled.div`
+  gap: 72px;
+  display: flex;
+  margin: 24px 0;
+`;
+
+export const GridContainer = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 180px;
+`;
+
+export const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  margin: 40px 0;
+`;
+
+export const AddButton = styled.button`
+  height: 40px;
+  border-radius: 15px;
+  border: none;
+  background-color: #dbe4f2;
+  padding: 8px 16px;
+  color: #0f4ca9;
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);
+  position: relative;
+  overflow: hidden;
+  &:after {
+    content: "";
+    background-color: rgba(255, 255, 255, 0.1);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+  }
+  &:hover:after {
+    animation: ripple_401 1s ease-out;
+  }
+  @keyframes ripple_401 {
+    0% {
+      width: 5px;
+      height: 5px;
+      opacity: 1;
+    }
+    100% {
+      width: 200px;
+      height: 200px;
+    }
+  }
+`;
+
+export const Icon = styled(FontAwesomeIcon)`
+  font-size: 12px;
+  color: #0f4ca9;
+  padding-right: 8px;
+`;

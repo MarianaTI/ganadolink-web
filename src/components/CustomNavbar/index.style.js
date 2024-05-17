@@ -25,6 +25,7 @@ export const UserIcon = styled.div`
 export const LogoStyled = styled.div`
   display: flex;
   align-items: center;
+  justify-content: center;
   font-size: 18px;
   font-family: "Bitter", serif;
   font-weight: 600;
@@ -84,13 +85,13 @@ export const IconMenu = styled(FontAwesomeIcon)`
   font-size: 32px;
 `;
 
-export const NavStyled = styled.nav`
+export const NavStyled = styled.div`
   display: flex;
   justify-content: space-between;
   padding: 0px 32px;
   align-items: center;
   background-color: #fff;
-  height: 55px;
+  height: 50px;
   width: 100%;
   @media (max-width: 740px) {
     flex-direction: column;

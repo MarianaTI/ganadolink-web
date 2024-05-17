@@ -57,13 +57,12 @@ const CustomNavbar = () => {
   };
 
   return (
-    <div>
+    <>
       {isLoggedIn ? (
         <NavStyled>
           <Link href="/" passHref>
             <LogoStyled>
-              <img src="/img/Logo.png" width="50px" height="60px" />
-              <span>GanadoLink</span>
+              <img src="/img/ganadolink-icon.png" width="156px" height="21px" />
             </LogoStyled>
           </Link>
           <Menu onClick={toggleMenu}>
@@ -141,7 +140,7 @@ const CustomNavbar = () => {
           </LoginButton>
         </NavStyled>
       )}
-    </div>
+    </>
   );
 };
 

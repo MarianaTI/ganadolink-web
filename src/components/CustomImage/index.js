@@ -1,13 +1,13 @@
-import React from 'react';
-import { StyledFileInput } from './index.style';
+import React from "react";
+import { StyledFileInput } from "./index.style";
+import { LabelStyled } from "../CustomInput/index.style";
 
 const CustomImage = ({ name, onChange }) => {
   return (
-    <StyledFileInput
-      type="file"
-      name={name}
-      onChange={onChange}
-    />
+    <div>
+      <LabelStyled>Figura de herraje</LabelStyled>
+      <StyledFileInput type="file" name={name} onChange={onChange} />
+    </div>
   );
 };
 
