@@ -17,15 +17,18 @@ import {
   ButtonContainer,
   CheckboxContainer,
   Container,
+  DeleteButton,
   Description,
   Form,
   GridContainer,
   Icon,
   SectionName,
   Subtitle,
+  TableStyled,
   Title,
 } from "@/styles/Guide.style";
 import { faCirclePlus } from "@fortawesome/free-solid-svg-icons";
+import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
@@ -174,7 +177,6 @@ const NewForm = () => {
       siniiga: "",
     });
   };
-
 
   useEffect(() => {
     fetchEspecies();
@@ -359,6 +361,43 @@ const NewForm = () => {
             />
           </div>
         </GridContainer>
+        <TableStyled>
+          <thead>
+            <tr>
+              <th>Número de animales</th>
+              <th>Patente ó factura</th>
+              <th>Sexo</th>
+              <th>Color</th>
+              <th>Raza</th>
+              <th>Arete</th>
+              <th>Figura de herraje</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td>SED34DF4RF</td>
+              <td>Femenino</td>
+              <td>Hereford</td>
+              <td>Rojo</td>
+              <td>WD3RF41</td>
+              <td>
+                <Image
+                  src="/img/aboutus.jpg"
+                  alt="Animal"
+                  width={100}
+                  height={100}
+                  layout="fixed"
+                  style={{objectFit: "cover", borderRadius: "15px"}}
+                />
+              </td>
+              <td>
+                <DeleteButton>Eliminar</DeleteButton>
+              </td>
+            </tr>
+          </tbody>
+        </TableStyled>
         <Subtitle>
           <div />
           <span>DATOS DEL VEHICULO</span>

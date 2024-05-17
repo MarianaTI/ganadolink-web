@@ -80,14 +80,14 @@ export const AddButton = styled.button`
   color: #0f4ca9;
   font-family: "Poppins", sans-serif;
   font-weight: 600;
-  font-size: 16px;
+  font-size: 14px;
   cursor: pointer;
-  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);
+  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.15);
   position: relative;
   overflow: hidden;
   &:after {
     content: "";
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: rgba(255, 255, 255, 0.3);
     position: absolute;
     top: 50%;
     left: 50%;
@@ -117,4 +117,49 @@ export const Icon = styled(FontAwesomeIcon)`
   font-size: 12px;
   color: #0f4ca9;
   padding-right: 8px;
+`;
+
+export const TableStyled = styled.table`
+  width: 100%;
+  margin: 64px 0px;
+  border-collapse: separate;
+  border-spacing: 0;
+  text-align: center;
+  border-radius: 10px;
+  overflow: hidden;
+  thead {
+    background-color: #f4ece1;
+
+  }
+  th,
+  td {
+    color: #434343;
+    font-family: "Poppins", sans-serif;
+    font-weight: 500;
+    font-size: 14px;
+    padding: 10px;
+  }
+  tbody {
+    background-color: #f4ece1;
+    tr:last-child td {
+      border-bottom: none;
+    }
+  }
+  td {
+    vertical-align: middle;
+  }
+  
+`;
+
+export const DeleteButton = styled.button`
+  background: none;
+  border: none;
+  color: #0f4ca9;
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  :hover {
+    text-decoration: underline;
+  }
 `;
