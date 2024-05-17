@@ -42,6 +42,9 @@ import { useSelector } from "react-redux";
 
 const NewForm = () => {
   const userId = useSelector((state) => state.user._id);
+  const [selectedEspecie, setSelectedEspecie] = useState("");
+  const [selectedMotivo, setSelectedMotivo] = useState("");
+  const [selectedBoolean, setSelectedBoolean] = useState("");
   const [especies, setEspecie] = useState([]);
   const [motivos, setMotivo] = useState([]);
   const [razas, setRaza] = useState([]);
@@ -61,12 +64,11 @@ const NewForm = () => {
             fontFamily: '"Poppins", sans-serif',
             textAlign: "center",
             fontSize: "13px",
-          }
-        }
-      }
-    }
+          },
+        },
+      },
+    },
   });
-  
 
   const [datosModificados, setDatosModificados] = useState({
     _id: null,
@@ -94,6 +96,16 @@ const NewForm = () => {
       nombre_operador_vehiculo: "",
     },
   });
+
+  const handleInputChange = (section, field, value) => {
+    setDatosModificados((prevState) => ({
+      ...prevState,
+      [section]: {
+        ...prevState[section],
+        [field]: value,
+      },
+    }));
+  };
 
   const onSubmit = async (data) => {
     const orderData = {
@@ -145,11 +157,16 @@ const NewForm = () => {
     }
   };
 
-  const handleInputChange = (field, value) => {
-    setDatosModificados((prevState) => ({
-      ...prevState,
-      [field]: value,
-    }));
+  const handleEspecieChange = (id) => {
+    setSelectedEspecie(id);
+  };
+
+  const handleMotivoChange = (id) => {
+    setSelectedMotivo(id);
+  };
+
+  const handleOptionsChange = (id) => {
+    setSelectedBoolean(id);
   };
 
   const fetchEspecies = async () => {
@@ -201,6 +218,10 @@ const NewForm = () => {
   };
 
   useEffect(() => {
+    console.log("Datos Generales Modificados:", datosModificados);
+  }, [datosModificados]);
+
+  useEffect(() => {
     fetchEspecies();
     fetchMotivos();
     fetchRaza();
@@ -225,7 +246,7 @@ const NewForm = () => {
           <CustomCheckboxInput
             data={especies}
             name="id_especie"
-            //   onSelectionChange={handleEspecieChange}
+            onSelectionChange={handleEspecieChange}
           />
         </CheckboxContainer>
         <GridContainer>
@@ -233,69 +254,69 @@ const NewForm = () => {
             <SectionName>Datos del remitente (vendedor)</SectionName>
             <CustomInput
               control={control}
-              onChange={(e) =>
-                handleInputChange("vendedor.nombre", e.target.value)
-              }
               name="seller-name"
               label="Nombre"
               fullWidth
+              onChange={(e) =>
+                handleInputChange("vendedor", "nombre", e.target.value)
+              }
             />
             <CustomInput
               control={control}
-              onChange={(e) =>
-                handleInputChange("vendedor.domicilio", e.target.value)
-              }
               name="seller-address"
               label="Domicilio"
               fullWidth
+              onChange={(e) =>
+                handleInputChange("vendedor", "domicilio", e.target.value)
+              }
             />
             <CustomInput
               control={control}
-              onChange={(e) =>
-                handleInputChange("vendedor.municipio", e.target.value)
-              }
               name="seller-town"
               label="Municipio"
               fullWidth
+              onChange={(e) =>
+                handleInputChange("vendedor", "municipio", e.target.value)
+              }
             />
           </div>
           <div>
             <SectionName>Datos del destinario (comprador)</SectionName>
             <CustomInput
               control={control}
-              onChange={(e) =>
-                handleInputChange("comprador.nombre", e.target.value)
-              }
               name="buyer-name"
               label="Nombre"
               fullWidth
+              onChange={(e) =>
+                handleInputChange("comprador", "nombre", e.target.value)
+              }
             />
             <CustomInput
               control={control}
-              onChange={(e) =>
-                handleInputChange("comprador.domicilio", e.target.value)
-              }
               name="buyer-address"
               label="Domicilio"
               fullWidth
+              onChange={(e) =>
+                handleInputChange("comprador", "domicilio", e.target.value)
+              }
             />
             <CustomInput
               control={control}
-              onChange={(e) =>
-                handleInputChange("comprador.municipio", e.target.value)
-              }
               name="buyer-town"
               label="Municipio"
               fullWidth
+              onChange={(e) =>
+                handleInputChange("comprador", "municipio", e.target.value)
+              }
             />
             <CustomInput
               control={control}
-              onChange={(e) =>
-                handleInputChange("comprador.predio", e.target.value)
-              }
               name="buyer-farm"
               label="Rancho o predo"
               fullWidth
+              onChange={(e) =>
+                handleInputChange("comprador", "predio", e.target.value)
+              }
             />
           </div>
         </GridContainer>
@@ -304,7 +325,7 @@ const NewForm = () => {
           <CustomCheckboxInput
             data={motivos}
             name="id_motivo"
-            //   onSelectionChange={handleMotivoChange}
+            onSelectionChange={handleMotivoChange}
           />
         </CheckboxContainer>
         <Subtitle>
@@ -314,9 +335,12 @@ const NewForm = () => {
         <TooltipContainer>
           <SectionName>Movilización de animales</SectionName>
           <ThemeProvider theme={theme}>
-          <Tooltip placement="top" title="Rellena los datos y da click en el boton de 'Agregar' para añadir un animal a la tabla, usalo según lo necesario.">
+            <Tooltip
+              placement="top"
+              title="Rellena los datos y da click en el boton de 'Agregar' para añadir un animal a la tabla, usalo según lo necesario."
+            >
               <IconTooltip icon={faQuestionCircle} />
-          </Tooltip>
+            </Tooltip>
           </ThemeProvider>
         </TooltipContainer>
         <ButtonContainer>
@@ -329,9 +353,6 @@ const NewForm = () => {
           <div>
             <CustomInput
               control={control}
-              onChange={(e) =>
-                handleInputChange("ganado.patente", e.target.value)
-              }
               name="animal-patent"
               label="Patente o factura"
               fullWidth
@@ -345,9 +366,6 @@ const NewForm = () => {
             />
             <CustomInput
               control={control}
-              onChange={(e) =>
-                handleInputChange("ganado.siniiga", e.target.value)
-              }
               name="animal-earring"
               label="Arete siiniga"
               fullWidth
@@ -366,9 +384,6 @@ const NewForm = () => {
             />
             <CustomInput
               control={control}
-              onChange={(e) =>
-                handleInputChange("ganado.color", e.target.value)
-              }
               name="animal-color"
               label="Color"
               fullWidth
@@ -436,51 +451,54 @@ const NewForm = () => {
           <div>
             <CustomInput
               control={control}
-              onChange={(e) =>
-                handleInputChange("vehiculo.tipo", e.target.value)
-              }
               name="transport-type"
               label="Tipo"
               fullWidth
+              onChange={(e) =>
+                handleInputChange("vehiculo", "tipo", e.target.value)
+              }
             />
             <CustomInput
               control={control}
-              onChange={(e) =>
-                handleInputChange("vehiculo.modelo", e.target.value)
-              }
               name="transport-model"
               label="Modelo"
               fullWidth
+              onChange={(e) =>
+                handleInputChange("vehiculo", "modelo", e.target.value)
+              }
             />
           </div>
           <div>
             <CustomInput
               control={control}
-              onChange={(e) =>
-                handleInputChange("vehiculo.marca", e.target.value)
-              }
               name="transport-brand"
               label="Marca"
               fullWidth
+              onChange={(e) =>
+                handleInputChange("vehiculo", "marca", e.target.value)
+              }
             />
 
             <CustomInput
               control={control}
-              onChange={(e) =>
-                handleInputChange("vehiculo.placa", e.target.value)
-              }
               name="transport-plate"
               label="Placa"
               fullWidth
+              onChange={(e) =>
+                handleInputChange("vehiculo", "placa", e.target.value)
+              }
             />
           </div>
         </GridContainer>
         <TooltipContainer>
           <SectionName>Remolque</SectionName>
           <ThemeProvider theme={theme}>
-          <Tooltip placement="top" title="Coloca 'Si' si tu vehiculo cuenta con remolque.">
+            <Tooltip
+              placement="top"
+              title="Coloca 'Si' si tu vehiculo cuenta con remolque."
+            >
               <IconTooltip icon={faQuestionCircle} />
-          </Tooltip>
+            </Tooltip>
           </ThemeProvider>
         </TooltipContainer>
         <CheckboxContainer>
@@ -492,6 +510,7 @@ const NewForm = () => {
               { value: "no", label: "No" },
             ]}
             control={control}
+            onSelectionChange={handleOptionsChange}
             fullWidth
           />
         </CheckboxContainer>
@@ -499,26 +518,23 @@ const NewForm = () => {
           <div>
             <CustomInput
               control={control}
-              onChange={(e) =>
-                handleInputChange("vehiculo.color", e.target.value)
-              }
               name="transport-color"
               label="Color"
               fullWidth
+              onChange={(e) =>
+                handleInputChange("vehiculo", "color", e.target.value)
+              }
             />
           </div>
           <div>
             <CustomInput
               control={control}
-              onChange={(e) =>
-                handleInputChange(
-                  "vehiculo.nombre_operador_vehiculo",
-                  e.target.value
-                )
-              }
               name="transport-operator-name"
               label="Nombre del operador"
               fullWidth
+              onChange={(e) =>
+                handleInputChange("vehiculo", "nombre_operador_vehiculo", e.target.value)
+              }
             />
           </div>
         </GridContainer>

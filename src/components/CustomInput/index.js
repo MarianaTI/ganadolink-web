@@ -50,7 +50,7 @@ const CustomInput = ({
             }
           }}
           onBlur={field.onBlur}
-          value={field.value}
+          value={field.value || ""}
           name={field.name}
           customFormDesign={customFormDesign}
           inputRef={field.ref}
