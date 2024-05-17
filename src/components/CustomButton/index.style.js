@@ -25,42 +25,40 @@ export const ButtonStyled = styled.button`
   transition: all 0.3s ease-in-out;
   z-index: 1;
   overflow: hidden;
-  &::before {
+  &:after {
     content: "";
-    background-color: #f48d33;
-    width: 0;
-    height: 100%;
+    background-color: rgba(255, 255, 255, 0.3);
     position: absolute;
-    top: 0;
-    left: 0;
-    z-index: -1;
-    transition: width 700ms ease-in-out;
-    display: inline-block;
+    top: 50%;
+    left: 50%;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
   }
-  &:hover::before {
-    width: 100%;
+  &:hover:after {
+    animation: ripple_401 1s ease-out;
+  }
+  @keyframes ripple_401 {
+    0% {
+      width: 5px;
+      height: 5px;
+      opacity: 1;
+    }
+    100% {
+      width: 200px;
+      height: 200px;
+    }
   }
   ${(props) =>
     props.customDesign &&
     css`
-      border-radius: 5px;
-      border: 2px solid #bababa;
-      background-color: transparent;
-      color: #bababa;
-      &::before {
-        content: "";
-        background-color: rgba(186, 186, 186, 0.10);
-        width: 0;
-        height: 100%;
-        position: absolute;
-        top: 0;
-        left: 0;
-        z-index: -1;
-        transition: width 700ms ease-in-out;
-        display: inline-block;
-      }
-      &:hover::before {
-        width: 100%;
+      border-radius: 10px;
+      background-color: #fde5d0;
+      color: #f27d16;
+      &:after {
+        background-color: rgba(242, 125, 22, 0.2);
       }
     `}
   ${(props) =>

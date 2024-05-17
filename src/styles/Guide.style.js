@@ -23,7 +23,7 @@ export const Form = styled.form`
   height: auto;
   background-color: #fff;
   margin: 32px 0;
-  padding: 24px 100px;
+  padding: 32px 124px;
   display: flex;
   flex-direction: column;
 `;
@@ -50,12 +50,13 @@ export const SectionName = styled.span`
   color: #434242;
   font-size: 20px;
   font-weight: 500;
+  margin: 16px 0;
 `;
 
 export const CheckboxContainer = styled.div`
   gap: 72px;
   display: flex;
-  margin: 24px 0;
+  margin: 8px 0 32px 0;
 `;
 
 export const GridContainer = styled.div`
@@ -129,7 +130,6 @@ export const TableStyled = styled.table`
   overflow: hidden;
   thead {
     background-color: #f4ece1;
-
   }
   th,
   td {
@@ -148,7 +148,6 @@ export const TableStyled = styled.table`
   td {
     vertical-align: middle;
   }
-  
 `;
 
 export const DeleteButton = styled.button`
@@ -162,4 +161,11 @@ export const DeleteButton = styled.button`
   :hover {
     text-decoration: underline;
   }
+`;
+
+export const SubmitButtonsContainer = styled.div`
+  display: flex;
+  justify-content: end;
+  gap: 32px;
+  margin-top: 64px;
 `;

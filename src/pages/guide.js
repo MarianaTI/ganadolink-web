@@ -23,6 +23,7 @@ import {
   GridContainer,
   Icon,
   SectionName,
+  SubmitButtonsContainer,
   Subtitle,
   TableStyled,
   Title,
@@ -389,7 +390,7 @@ const NewForm = () => {
                   width={100}
                   height={100}
                   layout="fixed"
-                  style={{objectFit: "cover", borderRadius: "15px"}}
+                  style={{ objectFit: "cover", borderRadius: "15px" }}
                 />
               </td>
               <td>
@@ -446,6 +447,19 @@ const NewForm = () => {
             />
           </div>
         </GridContainer>
+        <SectionName>Remolque</SectionName>
+        <CheckboxContainer>
+          <CustomCheckboxInput
+            label="Opciones"
+            name="remolque"
+            data={[
+              { value: "si", label: "Si" },
+              { value: "no", label: "No" },
+            ]}
+            control={control}
+            fullWidth
+          />
+        </CheckboxContainer>
         <GridContainer>
           <div>
             <CustomInput
@@ -473,8 +487,10 @@ const NewForm = () => {
             />
           </div>
         </GridContainer>
-
-        <CustomButton type="submit" buttonText="Aceptar" />
+        <SubmitButtonsContainer>
+          <CustomButton type="submit" buttonText="Cancelar" customDesign/>
+          <CustomButton type="submit" buttonText="Aceptar" />
+        </SubmitButtonsContainer>
       </Form>
     </Container>
   );
