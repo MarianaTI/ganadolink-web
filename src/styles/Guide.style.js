@@ -131,6 +131,9 @@ export const TableStyled = styled.table`
   thead {
     background-color: #f4ece1;
   }
+  th {
+    border-bottom: 28px solid #fff;
+  }
   th,
   td {
     color: #434343;
@@ -144,6 +147,13 @@ export const TableStyled = styled.table`
     tr:last-child td {
       border-bottom: none;
     }
+  }
+  ::after {
+    content: "";
+    display: block;
+    height: 1.5em;
+    width: 100%;
+    background: white;
   }
   td {
     vertical-align: middle;
