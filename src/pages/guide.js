@@ -107,56 +107,74 @@ const NewForm = () => {
     }));
   };
 
-  const onSubmit = async (data) => {
-    const orderData = {
-      vendedor: {
-        nombre: data["seller-name"],
-        domicilio: data["seller-address"],
-        municipio: data["seller-town"],
-      },
-      comprador: {
-        nombre: data["buyer-name"],
-        domicilio: data["buyer-address"],
-        municipio: data["buyer-town"],
-        predio: data["buyer-farm"],
-      },
-      ganado: [
-        {
-          patente: data["animal-patent"],
-          color: data["animal-color"],
-          siniiga: data["animal-earring"],
-        },
-      ],
-      vehiculo: {
-        tipo: data["transport-type"],
-        marca: data["transport-brand"],
-        modelo: data["transport-model"],
-        placa: data["transport-plate"],
-        color: data["transport-color"],
-        nombre_operador_vehiculo: data["transport-operator-name"],
-      },
-    };
+  // const onSubmit = async (data) => {
+  //   const orderData = {
+  //     vendedor: {
+  //       nombre: data["seller-name"],
+  //       domicilio: data["seller-address"],
+  //       municipio: data["seller-town"],
+  //     },
+  //     comprador: {
+  //       nombre: data["buyer-name"],
+  //       domicilio: data["buyer-address"],
+  //       municipio: data["buyer-town"],
+  //       predio: data["buyer-farm"],
+  //     },
+  //     ganado: [
+  //       {
+  //         patente: data["animal-patent"],
+  //         color: data["animal-color"],
+  //         siniiga: data["animal-earring"],
+  //       },
+  //     ],
+  //     vehiculo: {
+  //       tipo: data["transport-type"],
+  //       marca: data["transport-brand"],
+  //       modelo: data["transport-model"],
+  //       placa: data["transport-plate"],
+  //       color: data["transport-color"],
+  //       nombre_operador_vehiculo: data["transport-operator-name"],
+  //     },
+  //   };
 
-    const order = new Order(
-      null,
-      null,
-      null,
-      userId,
-      orderData.vendedor,
-      orderData.comprador,
-      orderData.ganado,
-      orderData.vehiculo
-    );
-    const orderRepo = new OrderRepo();
-    const createOrderUseCase = new CreateOrderUseCase(orderRepo);
-    try {
-      const createdOrder = await createOrderUseCase.run(order);
-      console.log("Orden creada:", createdOrder);
-    } catch (error) {
-      console.error("Error al crear la orden:", error);
-    }
-  };
+  //   const order = new Order(
+  //     null,
+  //     null,
+  //     null,
+  //     userId,
+  //     orderData.vendedor,
+  //     orderData.comprador,
+  //     orderData.ganado,
+  //     orderData.vehiculo
+  //   );
+  //   const orderRepo = new OrderRepo();
+  //   const createOrderUseCase = new CreateOrderUseCase(orderRepo);
+  //   try {
+  //     const createdOrder = await createOrderUseCase.run(order);
+  //     console.log("Orden creada:", createdOrder);
+  //   } catch (error) {
+  //     console.error("Error al crear la orden:", error);
+  //   }
+  // };
 
+
+  // const onSubmitAnimal = (data) => {
+  //   const completeData = { ...data, figura_herraje: imageUrl };
+  //   setRegisterAnimals((currentRegister) => [...currentRegister, completeData]);
+
+  //   // Limpia el estado de la imagen para la próxima selección
+  //   setImageUrl("");
+  //   reset({
+  //     patente: "",
+  //     sexo: "",
+  //     id_raza: "",
+  //     color: "",
+  //     siniiga: "",
+  //   });
+  // };
+
+  //! selects
+  
   const handleEspecieChange = (id) => {
     setSelectedEspecie(id);
   };
@@ -202,30 +220,16 @@ const NewForm = () => {
     }
   };
 
-  const onSubmitAnimal = (data) => {
-    const completeData = { ...data, figura_herraje: imageUrl };
-    setRegisterAnimals((currentRegister) => [...currentRegister, completeData]);
-
-    // Limpia el estado de la imagen para la próxima selección
-    setImageUrl("");
-    reset({
-      patente: "",
-      sexo: "",
-      id_raza: "",
-      color: "",
-      siniiga: "",
-    });
-  };
-
-  useEffect(() => {
-    console.log("Datos Generales Modificados:", datosModificados);
-  }, [datosModificados]);
-
   useEffect(() => {
     fetchEspecies();
     fetchMotivos();
     fetchRaza();
   }, []);
+
+  
+  useEffect(() => {
+    console.log("Datos Generales Modificados:", datosModificados);
+  }, [datosModificados]);
 
   return (
     <Container>
