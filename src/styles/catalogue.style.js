@@ -6,8 +6,17 @@ export const Container = styled.div`
   flex-direction: center;
   align-items: flex;
   justify-content: flex;
-  padding: 20px;
+  padding: 20px 56px;
 `;
+
+export const Title = styled.h1`
+  font-size: 24px;
+  font-weight: 500;
+  color: #434242;
+  text-align: start;
+  width: 100%;
+`;
+
 export const InputContainer = styled.div`
   position: relative;
   width: 30%;
@@ -16,28 +25,21 @@ export const InputContainer = styled.div`
 `;
 
 export const Input = styled.input`
-  padding: 10px;
-  padding-left: 40px;
-  border: 1px solid #ccc;
+  padding: 8px;
+  padding-left: 45px;
+  border: none;
+  background-color: #f1f1f1;
   font-family: Poppins;
-  border-radius: 10px;
+  border-radius: 15px;
   font-size: 16px;
   width: 350px;
-  color: #6d6d6d;
+  color: rgba(67, 66, 66, 0.5);
   font-weight: 500;
   &:focus {
     outline: none;
-    border-color: #f7ae6d;
-    background-color: #fff;
-    caret-color: #f7ae6d;
+    caret-color: #0f4ca9;
+    background-color: #f1f1f1;
   }
-`;
-
-export const ImagenD = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 8px;
 `;
 
 export const RowContainer = styled.div`
@@ -52,46 +54,171 @@ export const SearchIcon = styled.button`
   transform: translateY(-40%);
   z-index: 1;
   border: none;
+  border-right: 1px solid rgba(67, 66, 66, 0.15);
+  padding-right: 8px;
   background: none;
   cursor: pointer;
+`;
+
+export const PDFButton = styled.button`
+  background-color: #dbe4f2;
+  border: none;
+  height: 40px;
+  padding: 8px 16px;
+  border-radius: 15px;
+  color: #0f4ca9;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: "Poppins", sans-serif;
+  transition: background-color 0.5s ease;
+  cursor: pointer;
+  :hover {
+    background-color: #c3d2e9;
+  }
+`;
+
+export const Icon = styled(FontAwesomeIcon)`
+  font-size: 16px;
+  font-weight: 600;
+  color: #0f4ca9;
+  margin-right: 12px;
+`;
+
+export const HeaderContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin: 32px 0;
+`;
+
+export const Section = styled(HeaderContainer)`
+  font-family: "Poppins", sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  span:first-child {
+    color: #434343;
+  }
+  span:last-child {
+    color: rgba(67, 67, 67, 0.35);
+  }
 `;
 
 export const TableStyled = styled.table`
   width: 100%;
   text-align: center;
   margin: 16px 0;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: 10px;
+  overflow: hidden;
+  thead {
+    background: #dbe4f2;
+    color: #0f4ca9;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 10px;
+  }
+  th {
+    padding: 8px;
+  }
+  tbody {
+    background: #f6f8fc;
+    font-size: 14px;
+    font-weight: 500;
+    color: rgba(24, 24, 24, 0.9);
+  }
+  td {
+    padding: 20px;
+  }
+`;
+
+export const TableButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f6f8fc;
+  font-family: "Poppins", sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: #0f4ca9;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: color 0.3s;
+  &:hover {
+    text-decoration: underline;
+  }
+`;
+
+export const Line = styled.div`
+  width: 1px;
+  height: 15px;
+  background-color: rgba(67, 66, 66, 0.5);
+`;
+
+export const TdCollapsibleStyled = styled.td`
+  background-color: #eaf1ff;
+  padding: 16px 32px;
+`;
+
+export const DataInfo = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 32px;
+  color: #181818;
+  .title {
+    font-size: 18px;
+    font-weight: 500;
+  }
+  .date {
+    font-size: 16px;
+  }
+`;
+
+export const DateIcon = styled(Icon)`
+  font-size: 14px;
+  color: rgba(24, 24, 24, 0.5);
 `;
 
 export const TableCollapsibleStyled = styled.table`
   width: 100%;
   text-align: center;
   margin: 4px 0;
-  border-collapse: collapse;
+`;
+
+export const DataContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  text-align: left;
+  background-color: rgba(255, 255, 255, 0.5);
+  padding: 12px 32px;
+  border-radius: 15px;
+  margin: 20px;
+  .title {
+    font-size: 14px;
+    font-weight: 600;
+    color: rgba(67, 66, 66, 0.5);
+  }
+  .name {
+    font-size: 18px;
+    font-weight: 600;
+    color: #181818;
+  }
 `;
 
 export const TrStyled = styled.tr`
   & th {
-    color: #2a2a2a;
+    color: #0f4ca9;
     font-family: Poppins;
-    font-size: 16px;
-    font-weight: 500;
+    font-size: 14px;
+    font-weight: 600;
     padding: 8px;
-    border: 1px solid rgba(242, 125, 22, 0.4);
-    background: #ffe5c5;
+    background: #dbe4f2;
   }
   & td {
     padding: 8px;
     border: 1px solid rgba(242, 125, 22, 0.3);
-  }
-  .title {
-    color: #2a2a2a;
-    font-family: Poppins;
-    font-size: 16px;
-    font-weight: 500;
-    padding: 8px;
-    border: 1px solid rgba(242, 125, 22, 0.7);
-    background: #facea8;
   }
 `;
 
@@ -112,71 +239,6 @@ export const TdStyled = styled.tr`
   }
 `;
 
-export const IconButton = styled.button`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  transition: color 0.3s;
-  background: rgba(250, 206, 168, 0.7);
-  border-radius: 15px;
-  &:hover {
-    background-color: rgba(255, 229, 197);
-  }
-`;
-
-export const CustomIcon = styled(FontAwesomeIcon)`
-  font-size: 18px;
-  color: #555555;
-`;
-
-export const DownloadPdfButton = styled.button`
-  width: 200px;
-  height: 45px;
-  border-radius: 5px;
-  background: #fff;
-  font-family: Poppins;
-  color: #bababa;
-  font-size: 18px;
-  font-weight: 500;
-  border: 2px solid #bababa;
-  padding: 10px 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: background-color 0.3s, color 0.3s, border-color 0.3s;
-  svg {
-    margin-left: 5px;
-  }
-  &:hover {
-    background-color: #f27d16;
-    color: white;
-    border-color: #f27d16;
-  }
-`;
-
-export const Title = styled.h1`
-  font-size: 24px;
-  font-weight: 500;
-  padding: 0px 34px;
-  color: #454545;
-  text-align: start;
-  width: 100%;
-`;
-
-export const Line = styled.hr`
-  border: 0;
-  border-top: 1px solid #ccc;
-  width: 100%;
-  margin-top: -8px;
-  margin-bottom: 32px;
-`;
-
 export const TitleTable = styled.div`
   padding: 16px;
   & span {
@@ -184,28 +246,6 @@ export const TitleTable = styled.div`
     font-weight: 600;
     color: #3f3f3f;
   }
-`;
-
-export const DataInfo = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 16px 32px;
-  .title {
-    font-size: 18px;
-    font-weight: 600;
-    color: #3f3f3f;
-  }
-  .text {
-    font-size: 18px;
-    color: #3f3f3f;
-  }
-`;
-
-export const HeaderContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
 `;
 
 export const BottonContainer = styled.div`
@@ -227,11 +267,4 @@ export const ImageStyled = styled.img`
   object-fit: cover;
 `;
 
-export const TdCollapsibleStyled = styled.td`
-  border: 1px solid rgba(242, 125, 22, 0.3);
-  padding: 16px 32px;
-`;
-
-export const TrEmptyState = styled.tr`
-  
-`;
+export const TrEmptyState = styled.tr``;

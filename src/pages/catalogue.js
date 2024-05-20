@@ -6,20 +6,20 @@ import {
   SearchIcon,
   Title,
   Line,
-  IconButton,
   TableStyled,
   TrStyled,
-  ImagenD,
-  RowContainer,
   DataInfo,
   TitleTable,
   TableCollapsibleStyled,
-  CustomIcon,
   HeaderContainer,
   BottonContainer,
-  TableCollapsible,
   ImageStyled,
   TdCollapsibleStyled,
+  Section,
+  TableButton,
+  DateIcon,
+  DataBuyerSeller,
+  DataContainer,
 } from "../styles/catalogue.style";
 import { FaSearch } from "react-icons/fa";
 import { generatePDF } from "../components/CustomPDF/index";
@@ -31,17 +31,14 @@ import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import withAuth from "@/components/Authenticated";
 import DeleteOrderUseCase from "@/application/usecases/orderUseCase/DeleteOrderUseCase";
-import AlertComponent from "@/components/CustomAlert";
-import CustomModal from "@/components/CustomModal";
-import CustomButton from "@/components/CustomButton";
-import Image from "next/image";
-import {
-  faEye,
-  faFileDownload,
-  faPenToSquare,
-  faTrash,
-} from "@fortawesome/free-solid-svg-icons";
 import CustomAlerts from "@/components/CustomAlerts";
+import { faCalendar } from "@fortawesome/free-regular-svg-icons";
+import {
+  faLocationDot,
+  faMapLocationDot,
+  faTrailer,
+  faTruck,
+} from "@fortawesome/free-solid-svg-icons";
 
 const CatalogPage = () => {
   const route = useRouter();
@@ -224,7 +221,6 @@ const CatalogPage = () => {
         <div>
           <Container>
             <Title>Catálogo</Title>
-            <Line />
             <HeaderContainer>
               <InputContainer>
                 <SearchIcon onClick={handleSearchClick}>
@@ -240,24 +236,28 @@ const CatalogPage = () => {
               </InputContainer>
               <DownloadAllPDF orders={orders} />
             </HeaderContainer>
+            <Section>
+              <span>Todas las guías</span>
+              <span>18 guías de tránsito</span>
+            </Section>
             <TableStyled>
               <thead>
-                <TrStyled>
-                  <th className="title">Folio</th>
-                  <th className="title">Patente o factura</th>
-                  <th className="title">Nombre del vendedor</th>
-                  <th className="title">Nombre del comprador</th>
-                  <th className="title">Tipo de Raza</th>
-                  <th className="title">Arete siniiga</th>
-                  <th className="title">Modelo del vehiculo</th>
-                  <th className="title">Acciones</th>
-                </TrStyled>
+                <tr>
+                  <th>Folio</th>
+                  <th>Patente o factura</th>
+                  <th>Nombre del vendedor</th>
+                  <th>Nombre del comprador</th>
+                  <th>Tipo de Raza</th>
+                  <th>Arete siniiga</th>
+                  <th>Modelo del vehiculo</th>
+                  <th>Acciones</th>
+                </tr>
               </thead>
               <tbody>
                 {filteredOrders && filteredOrders.length > 0 ? (
                   filteredOrders.map((item, index) => (
                     <React.Fragment key={index}>
-                      <TrStyled>
+                      <tr>
                         <td>{item._id}</td>
                         <td>{item.ganado[0].patente}</td>
                         <td>{item.vendedor.nombre}</td>
@@ -267,107 +267,132 @@ const CatalogPage = () => {
                         <td>{item?.vehiculo?.marca}</td>
                         <td>
                           <BottonContainer>
-                            <IconButton onClick={() => handleDownloadPDF(item)}>
-                              <CustomIcon icon={faFileDownload} />
-                            </IconButton>
-                            <IconButton
+                            <TableButton
+                              onClick={() => handleDownloadPDF(item)}
+                            >
+                              Descargar
+                            </TableButton>
+                            <Line />
+                            <TableButton
                               onClick={() => handleViewClick(item._id)}
                             >
-                              <CustomIcon icon={faEye} />
-                            </IconButton>
+                              Ver
+                            </TableButton>
+                            <Line />
                             {(userRole === "SuperAdmin" ||
                               userRole === "admin") && (
-                              <IconButton
+                              <TableButton
                                 onClick={() => handleEditClick(item._id)}
                               >
-                                <CustomIcon icon={faPenToSquare} />
-                              </IconButton>
+                                Editar
+                              </TableButton>
                             )}
+                            <Line />
                             {userRole === "SuperAdmin" && (
                               <div>
-                                <IconButton
+                                <TableButton
                                   onClick={() => handleDeleteClick(item._id)}
                                 >
-                                  <CustomIcon icon={faTrash} />
-                                </IconButton>
+                                  Eliminar
+                                </TableButton>
                               </div>
                             )}
                           </BottonContainer>
                         </td>
-                      </TrStyled>
+                      </tr>
                       {openRow === index && (
                         <tr>
                           <TdCollapsibleStyled colSpan="8">
                             <DataInfo>
-                              <div style={{ textAlign: "left" }}>
-                                <div>
-                                  <span className="title">Especie: </span>
-                                  <span className="text">
-                                    {item.id_especie.name}
-                                  </span>
-                                </div>
-                                <div>
-                                  <span className="title">Motivo: </span>
-                                  <span className="text">
-                                    {item.id_motivo.name}
-                                  </span>
-                                </div>
+                              <div>
+                                <span className="title">
+                                  {item.id_especie.name} - {item.id_motivo.name}
+                                </span>
                               </div>
                               <div>
-                                <span className="title">Fecha: </span>
-                                <span className="text">
+                                <DateIcon icon={faCalendar} />
+                                <span className="date">
                                   {item.createdAt
                                     ? formatCreatedAt(item.createdAt)
                                     : "-"}
                                 </span>
                               </div>
                             </DataInfo>
-                            <TableCollapsible>
-                              <div style={{ flex: 1 }}>
-                                <TitleTable>
-                                  <span>Datos del vendedor</span>
-                                </TitleTable>
-                                <TableCollapsibleStyled>
-                                  <thead>
-                                    <TrStyled>
-                                      <th>Nombre</th>
-                                      <th>Domicilio</th>
-                                      <th>Municipio</th>
-                                    </TrStyled>
-                                  </thead>
-                                  <tbody>
-                                    <TrStyled key={index}>
-                                      <td>{item.vendedor.nombre}</td>
-                                      <td>{item.vendedor.domicilio}</td>
-                                      <td>{item.vendedor.municipio}</td>
-                                    </TrStyled>
-                                  </tbody>
-                                </TableCollapsibleStyled>
+                            <DataContainer>
+                              <div style={{ padding: "0 32px" }}>
+                                <span className="title">
+                                  Datos del vendedor
+                                </span>
+                                <div
+                                  key={index}
+                                  style={{
+                                    display: "flex",
+                                    flexDirection: "column",
+                                  }}
+                                >
+                                  <span className="name">
+                                    {item.vendedor.nombre}
+                                  </span>
+                                  <span>
+                                    <DateIcon icon={faLocationDot} />
+                                    {item.vendedor.domicilio},{" "}
+                                    {item.vendedor.municipio}
+                                  </span>
+                                </div>
                               </div>
-                              <div style={{ flex: 1 }}>
-                                <TitleTable>
-                                  <span>Datos del Comprador</span>
-                                </TitleTable>
-                                <TableCollapsibleStyled>
-                                  <thead>
-                                    <TrStyled>
-                                      <th>Nombre</th>
-                                      <th>Domicilio</th>
-                                      <th>Municipio</th>
-                                      <th>Predio</th>
-                                    </TrStyled>
-                                  </thead>
-                                  <tbody>
-                                    <TrStyled>
-                                      <td>{item.comprador.nombre}</td>
-                                      <td>{item.comprador.domicilio}</td>
-                                      <td>{item.comprador.municipio}</td>
-                                      <td>{item.comprador.predio}</td>
-                                    </TrStyled>
-                                  </tbody>
-                                </TableCollapsibleStyled>
+                              <div div style={{ padding: "0 32px" }}>
+                                <span className="title">
+                                  Datos del Comprador
+                                </span>
+                                <div
+                                  style={{
+                                    display: "flex",
+                                    flexDirection: "column",
+                                  }}
+                                >
+                                  <span className="name">
+                                    {item.comprador.nombre}
+                                  </span>
+                                  <span>
+                                    <DateIcon icon={faLocationDot} />
+                                    {item.comprador.domicilio},{" "}
+                                    {item.comprador.municipio}
+                                  </span>
+                                  <span>
+                                    <DateIcon icon={faMapLocationDot} />
+                                    {item.comprador.predio}
+                                  </span>
+                                </div>
                               </div>
-                            </TableCollapsible>
+                            </DataContainer>
+                            <DataContainer>
+                              <div
+                                style={{
+                                  display: "flex",
+                                  flexDirection: "column",
+                                  padding: "0 32px",
+                                }}
+                              >
+                                <span className="title">
+                                  Datos del vehículo
+                                </span>
+                                <span className="name">
+                                  {item.vehiculo.nombre_operador_vehiculo}
+                                </span>
+                                <span>
+                                <DateIcon icon={faTruck} />
+                                  {item.vehiculo.tipo} marca{" "}
+                                  {item.vehiculo.marca} modelo{" "}
+                                  {item.vehiculo.modelo} con placa{" "}
+                                  {item.vehiculo.placa}
+                                </span>
+                                <span>
+                                  <DateIcon icon={faTrailer} />
+                                  Remolque color {item.vehiculo.color} con placa{" "}
+                                  {item.vehiculo.placa}
+                                </span>
+                              </div>
+                            </DataContainer>
                             <TitleTable>
                               <span>Datos del ganado</span>
                             </TitleTable>
@@ -397,33 +422,6 @@ const CatalogPage = () => {
                                     </td>
                                   </TrStyled>
                                 ))}
-                              </tbody>
-                            </TableCollapsibleStyled>
-                            <TitleTable>
-                              <span>Datos del vehículo</span>
-                            </TitleTable>
-                            <TableCollapsibleStyled>
-                              <thead>
-                                <TrStyled>
-                                  <th>Tipo</th>
-                                  <th>Marca</th>
-                                  <th>Modelo</th>
-                                  <th>Placa</th>
-                                  <th>Color</th>
-                                  <th>Operador de vehículo</th>
-                                </TrStyled>
-                              </thead>
-                              <tbody>
-                                <TrStyled key={index}>
-                                  <td>{item.vehiculo.tipo}</td>
-                                  <td>{item.vehiculo.marca}</td>
-                                  <td>{item.vehiculo.modelo}</td>
-                                  <td>{item.vehiculo.placa}</td>
-                                  <td>{item.vehiculo.color}</td>
-                                  <td>
-                                    {item.vehiculo.nombre_operador_vehiculo}
-                                  </td>
-                                </TrStyled>
                               </tbody>
                             </TableCollapsibleStyled>
                           </TdCollapsibleStyled>

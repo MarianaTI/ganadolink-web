@@ -1,7 +1,7 @@
 import { jsPDF } from "jspdf";
 import "jspdf-autotable";
-import { ButtonStyled, Icon } from "@/styles/Index.style";
-import { faFilePdf } from "@fortawesome/free-solid-svg-icons";
+import { faDownload } from "@fortawesome/free-solid-svg-icons";
+import { Icon, PDFButton } from "@/styles/catalogue.style";
 
 const DownloadAllPDF = ({ orders }) => {
   const generatePDF = () => {
@@ -218,10 +218,10 @@ const DownloadAllPDF = ({ orders }) => {
 
   return (
     <div>
-      <ButtonStyled style={{borderRadius: "10px"}} type="button" onClick={generatePDF}>
+      <PDFButton type="button" onClick={generatePDF}>
+        <Icon icon={faDownload} />
         <span>Descargar PDF</span>
-        <Icon icon={faFilePdf} />
-      </ButtonStyled>
+      </PDFButton>
     </div>
   );
 };
