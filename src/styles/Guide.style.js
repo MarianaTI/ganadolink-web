@@ -192,3 +192,9 @@ export const IconTooltip = styled(Icon)`
   font-size: 20px;
   cursor: pointer;
 `;
+
+export const FormGrid = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 180px;
+`;

@@ -21,6 +21,7 @@ import {
   DeleteButton,
   Description,
   Form,
+  FormGrid,
   GridContainer,
   Icon,
   IconTooltip,
@@ -43,6 +44,8 @@ import { useSelector } from "react-redux";
 
 const NewForm = () => {
   const userId = useSelector((state) => state.user._id);
+  const [orderData, setOrderData] = useState(null);
+  const [orderDataGanado, setOrderDataGanado] = useState({ ganado: [] });
   const [selectedEspecie, setSelectedEspecie] = useState("");
   const [selectedMotivo, setSelectedMotivo] = useState("");
   const [selectedBoolean, setSelectedBoolean] = useState("");
@@ -98,46 +101,14 @@ const NewForm = () => {
     },
   });
 
-  const handleInputChange = (section, field, value) => {
-    setDatosModificados((prevState) => ({
-      ...prevState,
-      [section]: {
-        ...prevState[section],
-        [field]: value,
-      },
-    }));
-  };
+  const {
+    control: controlGanado,
+    handleSubmit: handleSubbmitGanado,
+    reset: resetAnimal,
+    formState: { errors: errorsGanado },
+  } = useForm({});
 
   const onSubmit = async (data) => {
-    const orderData = {
-      vendedor: {
-        nombre: data["seller-name"],
-        domicilio: data["seller-address"],
-        municipio: data["seller-town"],
-      },
-      comprador: {
-        nombre: data["buyer-name"],
-        domicilio: data["buyer-address"],
-        municipio: data["buyer-town"],
-        predio: data["buyer-farm"],
-      },
-      ganado: [
-        {
-          patente: data["animal-patent"],
-          color: data["animal-color"],
-          siniiga: data["animal-earring"],
-        },
-      ],
-      vehiculo: {
-        tipo: data["transport-type"],
-        marca: data["transport-brand"],
-        modelo: data["transport-model"],
-        placa: data["transport-plate"],
-        color: data["transport-color"],
-        nombre_operador_vehiculo: data["transport-operator-name"],
-      },
-    };
-
     const order = new Order(
       null,
       null,
@@ -158,35 +129,54 @@ const NewForm = () => {
     }
   };
 
-
-  // const onSubmitAnimal = (data) => {
-  //   const completeData = { ...data, figura_herraje: imageUrl };
-  //   setRegisterAnimals((currentRegister) => [...currentRegister, completeData]);
-
-  //   // Limpia el estado de la imagen para la próxima selección
-  //   setImageUrl("");
-  //   reset({
-  //     patente: "",
-  //     sexo: "",
-  //     id_raza: "",
-  //     color: "",
-  //     siniiga: "",
-  //   });
-  // };
-
-  //! selects
-  
   const handleEspecieChange = (id) => {
-    setSelectedEspecie(id);
+    setDatosModificados((prevState) => ({
+      ...prevState,
+      id_especie: id,
+    }));
   };
 
   const handleMotivoChange = (id) => {
-    setSelectedMotivo(id);
+    setDatosModificados((prevState) => ({
+      ...prevState,
+      id_motivo: id,
+    }));
+  };
+
+  const handleVendedorChange = (field, value) => {
+    setDatosModificados((prevState) => ({
+      ...prevState,
+      vendedor: {
+        ...prevState.vendedor,
+        [field]: value,
+      },
+    }));
+  };
+
+  const handleCompradorChange = (field, value) => {
+    setDatosModificados((prevState) => ({
+      ...prevState,
+      comprador: {
+        ...prevState.comprador,
+        [field]: value,
+      },
+    }));
+  };
+
+  const handleVehiculoChange = (field, value) => {
+    setDatosModificados((prevState) => ({
+      ...prevState,
+      vehiculo: {
+        ...prevState.vehiculo,
+        [field]: value,
+      },
+    }));
   };
 
   const handleOptionsChange = (id) => {
     setSelectedBoolean(id);
-  };
+  }
+
 
   const fetchEspecies = async () => {
     const especieRepo = new EspecieRepo();
@@ -221,13 +211,38 @@ const NewForm = () => {
     }
   };
 
+  const onSubmitAnimal = (data) => {
+    const newAnimal = {
+      patente: data.patente,
+      sexo: data.sexo,
+      id_raza: data.id_raza,
+      color: data.color,
+      siniiga: data.siniiga,
+      figura_herraje: imageUrl,
+    };
+
+    console.log("Nuevo animal:", newAnimal);
+
+    setOrderDataGanado((prevOrderData) => ({
+      ganado: [...prevOrderData.ganado, newAnimal],
+    }));
+
+    setImageUrl("");
+    resetAnimal({
+      patente: "",
+      sexo: "",
+      id_raza: "",
+      color: "",
+      siniiga: "",
+    });
+  };
+
   useEffect(() => {
     fetchEspecies();
     fetchMotivos();
     fetchRaza();
   }, []);
 
-  
   useEffect(() => {
     console.log("Datos Generales Modificados:", datosModificados);
   }, [datosModificados]);
@@ -241,7 +256,7 @@ const NewForm = () => {
         precisa y completa. Esto nos permitirá procesar tu solicitud de manera
         eficiente.
       </Description>
-      <SectionActive/>
+      <SectionActive />
       <Form onSubmit={handleSubmit(onSubmit)}>
         <Subtitle>
           <div />
@@ -350,29 +365,29 @@ const NewForm = () => {
           </ThemeProvider>
         </TooltipContainer>
         <ButtonContainer>
-          <AddButton>
+          <AddButton onClick={handleSubbmitGanado(onSubmitAnimal)}>
             <Icon icon={faCirclePlus} />
             Agregar
           </AddButton>
         </ButtonContainer>
-        <GridContainer>
+        <FormGrid onSubmit={handleSubbmitGanado(onSubmitAnimal)}>
           <div>
             <CustomInput
-              control={control}
-              name="animal-patent"
+              control={controlGanado}
+              name="patente"
               label="Patente o factura"
               fullWidth
             />
             <CustomSelect
               label="Raza"
               name="id_raza"
-              control={control}
+              control={controlGanado}
               data={razas}
               fullWidth
             />
             <CustomInput
-              control={control}
-              name="animal-earring"
+              control={controlGanado}
+              name="siniiga"
               label="Arete siiniga"
               fullWidth
             />
@@ -381,7 +396,7 @@ const NewForm = () => {
             <CustomSelect
               label="Sexo"
               name="sexo"
-              control={control}
+              control={controlGanado}
               data={[
                 { value: "macho", label: "Macho" },
                 { value: "hembra", label: "Hembra" },
@@ -389,8 +404,8 @@ const NewForm = () => {
               fullWidth
             />
             <CustomInput
-              control={control}
-              name="animal-color"
+              control={controlGanado}
+              name="color"
               label="Color"
               fullWidth
             />
@@ -410,7 +425,7 @@ const NewForm = () => {
               }}
             />
           </div>
-        </GridContainer>
+        </FormGrid>
         <TableStyled>
           <thead>
             <tr>
@@ -425,27 +440,30 @@ const NewForm = () => {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>1</td>
-              <td>SED34DF4RF</td>
-              <td>Femenino</td>
-              <td>Hereford</td>
-              <td>Rojo</td>
-              <td>WD3RF41</td>
-              <td>
-                <Image
-                  src="/img/aboutus.jpg"
-                  alt="Animal"
-                  width={100}
-                  height={100}
-                  layout="fixed"
-                  style={{ objectFit: "cover", borderRadius: "15px" }}
-                />
-              </td>
-              <td>
-                <DeleteButton>Eliminar</DeleteButton>
-              </td>
-            </tr>
+            {orderDataGanado.ganado.map((order, index) => (
+              <tr key={index}>
+                <td>{index + 1}</td>
+                <td>{order.patente}</td>
+                <td>{order.sexo}</td>
+                <td>{order.color}</td>
+                <td>{order.id_raza ? order.id_raza.name : "Sin raza"}</td>
+                <td>{order.siniiga}</td>
+                <td>
+                  {order.figura_herraje && (
+                    <Image
+                      src={order.figura_herraje}
+                      alt="Animal"
+                      width={100}
+                      height={100}
+                      layout="fixed"
+                    />
+                  )}
+                </td>
+                <td>
+                  <DeleteButton>Eliminar</DeleteButton>
+                </td>
+              </tr>
+            ))}
           </tbody>
         </TableStyled>
         <Subtitle>
@@ -539,7 +557,11 @@ const NewForm = () => {
               label="Nombre del operador"
               fullWidth
               onChange={(e) =>
-                handleInputChange("vehiculo", "nombre_operador_vehiculo", e.target.value)
+                handleInputChange(
+                  "vehiculo",
+                  "nombre_operador_vehiculo",
+                  e.target.value
+                )
               }
             />
           </div>

@@ -95,7 +95,7 @@ export const Section = styled(HeaderContainer)`
   font-family: "Poppins", sans-serif;
   font-size: 14px;
   font-weight: 500;
-  span:first-child {
+  span:first-of-type {
     color: #434343;
   }
   span:last-child {

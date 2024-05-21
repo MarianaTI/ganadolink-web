@@ -119,7 +119,6 @@ const CatalogPage = () => {
 
       setOrders(orders.filter((order) => order._id !== orderIdToDelete));
     } catch (error) {
-      console.log(error);
       setAlertInfo({
         show: true,
         title: "Error",
@@ -445,7 +444,7 @@ const CatalogPage = () => {
               </tbody>
             </TableStyled>
             <CustomAlerts
-              error
+              error="true"
               open={isOpen}
               onClose={toggleDeleteModal}
               title="Eliminar"
