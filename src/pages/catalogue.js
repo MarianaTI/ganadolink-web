@@ -240,7 +240,7 @@ const CatalogPage = () => {
             </HeaderContainer>
             <Section>
               <span>Todas las guías</span>
-              <span>18 guías de tránsito</span>
+              <span>{filteredOrders.length} guías de tránsito disponibles</span>
             </Section>
             <TableStyled>
               <thead>

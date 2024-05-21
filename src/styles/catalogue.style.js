@@ -127,6 +127,7 @@ export const TableStyled = styled.table`
     font-weight: 500;
     color: rgba(24, 24, 24, 0.9);
   }
+  
   td {
     padding: 20px;
   }
@@ -272,33 +273,33 @@ export const TableContainer = styled.div`
 `;
 
 export const TableStyledAnimals = styled.table`
-width: 100%;
-margin: 16px 0px;
-border-collapse: separate;
-border-spacing: 0;
-text-align: center;
-overflow: hidden;
-thead {
-  background-color: rgba(255, 255, 255, 0.5);
-}
-th {
-  border-bottom: 28px solid #EAF1FF;
-}
-th,
-td {
-  color: #181818;
-  font-family: "Poppins", sans-serif;
-  font-weight: 500;
-  font-size: 14px;
-  padding: 10px;
-}
-tbody {
-  background-color: rgba(255, 255, 255, 0.5);
-  tr:last-child td {
-    border-bottom: none;
+  width: 100%;
+  margin: 16px 0px;
+  border-collapse: separate;
+  border-spacing: 0;
+  text-align: center;
+  overflow: hidden;
+  thead {
+    background-color: rgba(255, 255, 255, 0.5);
   }
-}
-td {
-  vertical-align: middle;
-}
+  th {
+    border-bottom: 28px solid #eaf1ff;
+  }
+  th,
+  td {
+    color: #181818;
+    font-family: "Poppins", sans-serif;
+    font-weight: 500;
+    font-size: 14px;
+    padding: 10px;
+  }
+  tbody {
+    background-color: rgba(255, 255, 255, 0.5);
+    tr:last-child td {
+      border-bottom: none;
+    }
+  }
+  td {
+    vertical-align: middle;
+  }
 `;
