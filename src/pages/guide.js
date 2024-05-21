@@ -7,6 +7,7 @@ import CustomImage from "@/components/CustomImage";
 import CustomInput from "@/components/CustomInput";
 import CustomCheckboxInput from "@/components/CustomRadioInput";
 import CustomSelect from "@/components/CustomSelect";
+import SectionActive from "@/components/SectionActive";
 import Order from "@/domain/entities/order";
 import EspecieRepo from "@/infraestructure/implementation/httpRequest/axios/EspecieRepo";
 import MotivoRepo from "@/infraestructure/implementation/httpRequest/axios/MotivoRepo";
@@ -240,6 +241,7 @@ const NewForm = () => {
         precisa y completa. Esto nos permitirá procesar tu solicitud de manera
         eficiente.
       </Description>
+      <SectionActive/>
       <Form onSubmit={handleSubmit(onSubmit)}>
         <Subtitle>
           <div />
