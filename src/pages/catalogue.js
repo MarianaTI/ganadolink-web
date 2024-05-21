@@ -20,6 +20,8 @@ import {
   DateIcon,
   DataBuyerSeller,
   DataContainer,
+  TableContainer,
+  TableStyledAnimals,
 } from "../styles/catalogue.style";
 import { FaSearch } from "react-icons/fa";
 import { generatePDF } from "../components/CustomPDF/index";
@@ -380,7 +382,7 @@ const CatalogPage = () => {
                                   {item.vehiculo.nombre_operador_vehiculo}
                                 </span>
                                 <span>
-                                <DateIcon icon={faTruck} />
+                                  <DateIcon icon={faTruck} />
                                   {item.vehiculo.tipo} marca{" "}
                                   {item.vehiculo.marca} modelo{" "}
                                   {item.vehiculo.modelo} con placa{" "}
@@ -393,37 +395,43 @@ const CatalogPage = () => {
                                 </span>
                               </div>
                             </DataContainer>
-                            <TitleTable>
-                              <span>Datos del ganado</span>
-                            </TitleTable>
-                            <TableCollapsibleStyled>
-                              <thead>
-                                <TrStyled>
-                                  <th>Patente</th>
-                                  <th>Sexo</th>
-                                  <th>Raza</th>
-                                  <th>Color</th>
-                                  <th>Arete siniiga</th>
-                                  <th>Figura de herraje</th>
-                                </TrStyled>
-                              </thead>
-                              <tbody>
-                                {item.ganado.map((ganadoItem, ganadoIndex) => (
-                                  <TrStyled key={ganadoIndex}>
-                                    <td>{ganadoItem.patente}</td>
-                                    <td>{ganadoItem.sexo}</td>
-                                    <td>{ganadoItem.id_raza?.name}</td>
-                                    <td>{ganadoItem.color}</td>
-                                    <td>{ganadoItem.siniiga}</td>
-                                    <td>
-                                      <ImageStyled
-                                        src={ganadoItem.figura_herraje}
-                                      />
-                                    </td>
-                                  </TrStyled>
-                                ))}
-                              </tbody>
-                            </TableCollapsibleStyled>
+                            <TableContainer>
+                              <TitleTable>
+                                <span>Datos del ganado</span>
+                              </TitleTable>
+                              <TableStyledAnimals>
+                                <thead>
+                                  <tr>
+                                    <th>#</th>
+                                    <th>Patente</th>
+                                    <th>Sexo</th>
+                                    <th>Raza</th>
+                                    <th>Color</th>
+                                    <th>Arete siniiga</th>
+                                    <th>Figura de herraje</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {item.ganado.map(
+                                    (ganadoItem, ganadoIndex) => (
+                                      <tr key={ganadoIndex}>
+                                        <td>{ganadoIndex + 1}</td>
+                                        <td>{ganadoItem.patente}</td>
+                                        <td>{ganadoItem.sexo}</td>
+                                        <td>{ganadoItem.id_raza?.name}</td>
+                                        <td>{ganadoItem.color}</td>
+                                        <td>{ganadoItem.siniiga}</td>
+                                        <td>
+                                          <ImageStyled
+                                            src={ganadoItem.figura_herraje}
+                                          />
+                                        </td>
+                                      </tr>
+                                    )
+                                  )}
+                                </tbody>
+                              </TableStyledAnimals>
+                            </TableContainer>
                           </TdCollapsibleStyled>
                         </tr>
                       )}

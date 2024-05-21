@@ -181,12 +181,6 @@ export const DateIcon = styled(Icon)`
   color: rgba(24, 24, 24, 0.5);
 `;
 
-export const TableCollapsibleStyled = styled.table`
-  width: 100%;
-  text-align: center;
-  margin: 4px 0;
-`;
-
 export const DataContainer = styled.div`
   display: flex;
   justify-content: space-between;
@@ -240,11 +234,13 @@ export const TdStyled = styled.tr`
 `;
 
 export const TitleTable = styled.div`
-  padding: 16px;
+  padding: 16px 8px;
+  display: flex;
+  justify-content: start;
   & span {
-    font-size: 18px;
+    font-size: 14px;
     font-weight: 600;
-    color: #3f3f3f;
+    color: rgba(67, 66, 66, 0.5);
   }
 `;
 
@@ -265,6 +261,44 @@ export const ImageStyled = styled.img`
   height: 100px;
   width: 100px;
   object-fit: cover;
+  border-radius: 15px;
 `;
 
-export const TrEmptyState = styled.tr``;
+export const TableContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  padding: 0 24px;
+`;
+
+export const TableStyledAnimals = styled.table`
+width: 100%;
+margin: 16px 0px;
+border-collapse: separate;
+border-spacing: 0;
+text-align: center;
+overflow: hidden;
+thead {
+  background-color: rgba(255, 255, 255, 0.5);
+}
+th {
+  border-bottom: 28px solid #EAF1FF;
+}
+th,
+td {
+  color: #181818;
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  padding: 10px;
+}
+tbody {
+  background-color: rgba(255, 255, 255, 0.5);
+  tr:last-child td {
+    border-bottom: none;
+  }
+}
+td {
+  vertical-align: middle;
+}
+`;
