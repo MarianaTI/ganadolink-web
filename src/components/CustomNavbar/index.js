@@ -77,7 +77,7 @@ const CustomNavbar = () => {
               </Link>
             </li>
             <li>
-              <Link href="/form" passHref>
+              <Link href="/guide" passHref>
                 <TabStyled
                   className={router.pathname === "/form" ? "active" : ""}
                 >

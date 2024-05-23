@@ -132,7 +132,7 @@ export const TableStyled = styled.table`
     background-color: #f4ece1;
   }
   th {
-    border-bottom: 28px solid #fff;
+    border-bottom: 16px solid #fff;
   }
   th,
   td {

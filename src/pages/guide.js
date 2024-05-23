@@ -8,7 +8,6 @@ import CustomInput from "@/components/CustomInput";
 import CustomCheckboxInput from "@/components/CustomRadioInput";
 import CustomSelect from "@/components/CustomSelect";
 import SectionActive from "@/components/SectionActive";
-import Order from "@/domain/entities/order";
 import EspecieRepo from "@/infraestructure/implementation/httpRequest/axios/EspecieRepo";
 import MotivoRepo from "@/infraestructure/implementation/httpRequest/axios/MotivoRepo";
 import OrderRepo from "@/infraestructure/implementation/httpRequest/axios/OrderRepo";
@@ -42,17 +41,14 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 
-const NewForm = () => {
+const Guide = () => {
   const userId = useSelector((state) => state.user._id);
-  const [orderData, setOrderData] = useState(null);
   const [orderDataGanado, setOrderDataGanado] = useState({ ganado: [] });
-  const [selectedEspecie, setSelectedEspecie] = useState("");
-  const [selectedMotivo, setSelectedMotivo] = useState("");
   const [selectedBoolean, setSelectedBoolean] = useState("");
   const [especies, setEspecie] = useState([]);
   const [motivos, setMotivo] = useState([]);
   const [razas, setRaza] = useState([]);
-  const [imageUrl, setImageUrl] = useState("");
+  const [imageUrl, setImageUrl] = useState(""); 
   const {
     control,
     reset,
@@ -108,27 +104,6 @@ const NewForm = () => {
     formState: { errors: errorsGanado },
   } = useForm({});
 
-  const onSubmit = async (data) => {
-    const order = new Order(
-      null,
-      null,
-      null,
-      userId,
-      orderData.vendedor,
-      orderData.comprador,
-      orderData.ganado,
-      orderData.vehiculo
-    );
-    const orderRepo = new OrderRepo();
-    const createOrderUseCase = new CreateOrderUseCase(orderRepo);
-    try {
-      const createdOrder = await createOrderUseCase.run(order);
-      console.log("Orden creada:", createdOrder);
-    } catch (error) {
-      console.error("Error al crear la orden:", error);
-    }
-  };
-
   const handleEspecieChange = (id) => {
     setDatosModificados((prevState) => ({
       ...prevState,
@@ -175,8 +150,7 @@ const NewForm = () => {
 
   const handleOptionsChange = (id) => {
     setSelectedBoolean(id);
-  }
-
+  };
 
   const fetchEspecies = async () => {
     const especieRepo = new EspecieRepo();
@@ -212,7 +186,7 @@ const NewForm = () => {
   };
 
   const onSubmitAnimal = (data) => {
-    const newAnimal = {
+    const animal = {
       patente: data.patente,
       sexo: data.sexo,
       id_raza: data.id_raza,
@@ -221,10 +195,9 @@ const NewForm = () => {
       figura_herraje: imageUrl,
     };
 
-    console.log("Nuevo animal:", newAnimal);
-
     setOrderDataGanado((prevOrderData) => ({
-      ganado: [...prevOrderData.ganado, newAnimal],
+      ...prevOrderData,
+      ganado: [...prevOrderData.ganado, animal],
     }));
 
     setImageUrl("");
@@ -243,8 +216,30 @@ const NewForm = () => {
     fetchRaza();
   }, []);
 
+  
+  const onSubmit = async () => {
+    const order = {
+      id_especie: datosModificados.id_especie,
+      id_motivo: datosModificados.id_motivo,
+      id_user: datosModificados.id_user,
+      vendedor: datosModificados.vendedor,
+      comprador: datosModificados.comprador,
+      ganado: orderDataGanado.ganado,
+      vehiculo: datosModificados.vehiculo
+    };
+
+    const orderRepo = new OrderRepo();
+    const createOrderUseCase = new CreateOrderUseCase(orderRepo);
+    try {
+      const createdOrder = await createOrderUseCase.run(order);
+      console.log("Orden creada:", createdOrder);
+    } catch (error) {
+      console.error("Error al crear la orden:", error);
+    }
+  };
+
   useEffect(() => {
-    console.log("Datos Generales Modificados:", datosModificados);
+    console.log("Datos enviados:", datosModificados);
   }, [datosModificados]);
 
   return (
@@ -279,7 +274,7 @@ const NewForm = () => {
               label="Nombre"
               fullWidth
               onChange={(e) =>
-                handleInputChange("vendedor", "nombre", e.target.value)
+                handleVendedorChange("nombre", e.target.value)
               }
             />
             <CustomInput
@@ -288,16 +283,16 @@ const NewForm = () => {
               label="Domicilio"
               fullWidth
               onChange={(e) =>
-                handleInputChange("vendedor", "domicilio", e.target.value)
+                handleVendedorChange("domicilio", e.target.value)
               }
             />
             <CustomInput
               control={control}
-              name="seller-town"
+              name="seller-city"
               label="Municipio"
               fullWidth
               onChange={(e) =>
-                handleInputChange("vendedor", "municipio", e.target.value)
+                handleVendedorChange("municipio", e.target.value)
               }
             />
           </div>
@@ -309,7 +304,7 @@ const NewForm = () => {
               label="Nombre"
               fullWidth
               onChange={(e) =>
-                handleInputChange("comprador", "nombre", e.target.value)
+                handleCompradorChange("nombre", e.target.value)
               }
             />
             <CustomInput
@@ -318,25 +313,25 @@ const NewForm = () => {
               label="Domicilio"
               fullWidth
               onChange={(e) =>
-                handleInputChange("comprador", "domicilio", e.target.value)
+                handleCompradorChange("domicilio", e.target.value)
               }
             />
             <CustomInput
               control={control}
-              name="buyer-town"
+              name="buyer-city"
               label="Municipio"
               fullWidth
               onChange={(e) =>
-                handleInputChange("comprador", "municipio", e.target.value)
+                handleCompradorChange("municipio", e.target.value)
               }
             />
             <CustomInput
               control={control}
-              name="buyer-farm"
+              name="buyer-ranch"
               label="Rancho o predo"
               fullWidth
               onChange={(e) =>
-                handleInputChange("comprador", "predio", e.target.value)
+                handleCompradorChange("predio", e.target.value)
               }
             />
           </div>
@@ -440,30 +435,36 @@ const NewForm = () => {
             </tr>
           </thead>
           <tbody>
-            {orderDataGanado.ganado.map((order, index) => (
-              <tr key={index}>
-                <td>{index + 1}</td>
-                <td>{order.patente}</td>
-                <td>{order.sexo}</td>
-                <td>{order.color}</td>
-                <td>{order.id_raza ? order.id_raza.name : "Sin raza"}</td>
-                <td>{order.siniiga}</td>
-                <td>
-                  {order.figura_herraje && (
-                    <Image
-                      src={order.figura_herraje}
-                      alt="Animal"
-                      width={100}
-                      height={100}
-                      layout="fixed"
-                    />
-                  )}
-                </td>
-                <td>
-                  <DeleteButton>Eliminar</DeleteButton>
-                </td>
+            {orderDataGanado.ganado.length === 0 ? (
+              <tr>
+                <td colSpan="8">Aún no hay animales registrados</td>
               </tr>
-            ))}
+            ) : (
+              orderDataGanado.ganado.map((order, index) => (
+                <tr key={index}>
+                  <td>{index + 1}</td>
+                  <td>{order.patente}</td>
+                  <td>{order.sexo}</td>
+                  <td>{order.color}</td>
+                  <td>{order.id_raza}</td>
+                  <td>{order.siniiga}</td>
+                  <td>
+                    {order.figura_herraje && (
+                      <Image
+                        src={order.figura_herraje}
+                        alt="Animal"
+                        width={100}
+                        height={100}
+                        layout="fixed"
+                      />
+                    )}
+                  </td>
+                  <td>
+                    <DeleteButton>Eliminar</DeleteButton>
+                  </td>
+                </tr>
+              ))
+            )}
           </tbody>
         </TableStyled>
         <Subtitle>
@@ -479,7 +480,7 @@ const NewForm = () => {
               label="Tipo"
               fullWidth
               onChange={(e) =>
-                handleInputChange("vehiculo", "tipo", e.target.value)
+                handleVehiculoChange("tipo", e.target.value)
               }
             />
             <CustomInput
@@ -488,7 +489,7 @@ const NewForm = () => {
               label="Modelo"
               fullWidth
               onChange={(e) =>
-                handleInputChange("vehiculo", "modelo", e.target.value)
+                handleVehiculoChange("modelo", e.target.value)
               }
             />
           </div>
@@ -499,7 +500,7 @@ const NewForm = () => {
               label="Marca"
               fullWidth
               onChange={(e) =>
-                handleInputChange("vehiculo", "marca", e.target.value)
+                handleVehiculoChange("marca", e.target.value)
               }
             />
 
@@ -509,7 +510,7 @@ const NewForm = () => {
               label="Placa"
               fullWidth
               onChange={(e) =>
-                handleInputChange("vehiculo", "placa", e.target.value)
+                handleVehiculoChange("placa", e.target.value)
               }
             />
           </div>
@@ -546,7 +547,7 @@ const NewForm = () => {
               label="Color"
               fullWidth
               onChange={(e) =>
-                handleInputChange("vehiculo", "color", e.target.value)
+                handleVehiculoChange("color", e.target.value)
               }
             />
           </div>
@@ -557,8 +558,7 @@ const NewForm = () => {
               label="Nombre del operador"
               fullWidth
               onChange={(e) =>
-                handleInputChange(
-                  "vehiculo",
+                handleVehiculoChange(
                   "nombre_operador_vehiculo",
                   e.target.value
                 )
@@ -575,4 +575,4 @@ const NewForm = () => {
   );
 };
 
-export default NewForm;
+export default Guide;
