@@ -2,6 +2,7 @@ import GetAllEspecieRepo from "@/application/usecases/especieUseCase/GetAllEspec
 import GetAllMotivoRepo from "@/application/usecases/motivoUseCase/GetAllMotivoRepo";
 import CreateOrderUseCase from "@/application/usecases/orderUseCase/CreateOrderUseCase";
 import GetAllRazaCase from "@/application/usecases/razaUseCase/GetAllRazaCase";
+import CustomAlerts from "@/components/CustomAlerts";
 import CustomButton from "@/components/CustomButton";
 import CustomImage from "@/components/CustomImage";
 import CustomInput from "@/components/CustomInput";
@@ -37,18 +38,25 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { ThemeProvider, Tooltip, createTheme } from "@mui/material";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 
 const Guide = () => {
+  const router = useRouter();
   const userId = useSelector((state) => state.user._id);
   const [orderDataGanado, setOrderDataGanado] = useState({ ganado: [] });
   const [selectedBoolean, setSelectedBoolean] = useState("");
   const [especies, setEspecie] = useState([]);
   const [motivos, setMotivo] = useState([]);
   const [razas, setRaza] = useState([]);
-  const [imageUrl, setImageUrl] = useState(""); 
+  const [imageUrl, setImageUrl] = useState("");
+  const [alertInfo, setAlertInfo] = useState({
+    show: false,
+    title: "",
+    text: "",
+  });
   const {
     control,
     reset,
@@ -216,7 +224,6 @@ const Guide = () => {
     fetchRaza();
   }, []);
 
-  
   const onSubmit = async () => {
     const order = {
       id_especie: datosModificados.id_especie,
@@ -225,7 +232,7 @@ const Guide = () => {
       vendedor: datosModificados.vendedor,
       comprador: datosModificados.comprador,
       ganado: orderDataGanado.ganado,
-      vehiculo: datosModificados.vehiculo
+      vehiculo: datosModificados.vehiculo,
     };
 
     const orderRepo = new OrderRepo();
@@ -233,8 +240,57 @@ const Guide = () => {
     try {
       const createdOrder = await createOrderUseCase.run(order);
       console.log("Orden creada:", createdOrder);
+
+      setAlertInfo({
+        show: true,
+        title: "Creado correctamente",
+        text: "La orden se ha creado exitosamente",
+      });
+
+      reset();
+      setDatosModificados({
+        _id: null,
+        id_user: userId,
+        id_especie: null,
+        id_motivo: null,
+        vendedor: {
+          nombre: "",
+          domicilio: "",
+          municipio: "",
+        },
+        comprador: {
+          nombre: "",
+          domicilio: "",
+          municipio: "",
+          predio: "",
+        },
+        ganado: [],
+        vehiculo: {
+          tipo: "",
+          marca: "",
+          modelo: "",
+          placa: "",
+          color: "",
+          nombre_operador_vehiculo: "",
+        },
+      });
+      setOrderDataGanado({
+        ganado: [],
+      });
+
+      setTimeout(() => {
+        router.push("/catalogue");
+      }, 1500);
     } catch (error) {
-      console.error("Error al crear la orden:", error);
+      setTimeout(() => {
+        setAlertInfo({
+          show: true,
+          title: "Ocurrió un Error Inesperado",
+          text:
+            `${error.message} - ${error.response.data.message}` ||
+            "No se pudo completar la operación.",
+        });
+      }, 1000);
     }
   };
 
@@ -273,9 +329,7 @@ const Guide = () => {
               name="seller-name"
               label="Nombre"
               fullWidth
-              onChange={(e) =>
-                handleVendedorChange("nombre", e.target.value)
-              }
+              onChange={(e) => handleVendedorChange("nombre", e.target.value)}
             />
             <CustomInput
               control={control}
@@ -303,9 +357,7 @@ const Guide = () => {
               name="buyer-name"
               label="Nombre"
               fullWidth
-              onChange={(e) =>
-                handleCompradorChange("nombre", e.target.value)
-              }
+              onChange={(e) => handleCompradorChange("nombre", e.target.value)}
             />
             <CustomInput
               control={control}
@@ -330,9 +382,7 @@ const Guide = () => {
               name="buyer-ranch"
               label="Rancho o predo"
               fullWidth
-              onChange={(e) =>
-                handleCompradorChange("predio", e.target.value)
-              }
+              onChange={(e) => handleCompradorChange("predio", e.target.value)}
             />
           </div>
         </GridContainer>
@@ -479,18 +529,14 @@ const Guide = () => {
               name="transport-type"
               label="Tipo"
               fullWidth
-              onChange={(e) =>
-                handleVehiculoChange("tipo", e.target.value)
-              }
+              onChange={(e) => handleVehiculoChange("tipo", e.target.value)}
             />
             <CustomInput
               control={control}
               name="transport-model"
               label="Modelo"
               fullWidth
-              onChange={(e) =>
-                handleVehiculoChange("modelo", e.target.value)
-              }
+              onChange={(e) => handleVehiculoChange("modelo", e.target.value)}
             />
           </div>
           <div>
@@ -499,9 +545,7 @@ const Guide = () => {
               name="transport-brand"
               label="Marca"
               fullWidth
-              onChange={(e) =>
-                handleVehiculoChange("marca", e.target.value)
-              }
+              onChange={(e) => handleVehiculoChange("marca", e.target.value)}
             />
 
             <CustomInput
@@ -509,9 +553,7 @@ const Guide = () => {
               name="transport-plate"
               label="Placa"
               fullWidth
-              onChange={(e) =>
-                handleVehiculoChange("placa", e.target.value)
-              }
+              onChange={(e) => handleVehiculoChange("placa", e.target.value)}
             />
           </div>
         </GridContainer>
@@ -520,7 +562,7 @@ const Guide = () => {
           <ThemeProvider theme={theme}>
             <Tooltip
               placement="top"
-              title="Coloca 'Si' si tu vehiculo cuenta con remolque."
+              title="Coloca 'Si' si tu vehiculo cuenta con remolque para continuar rellenando los datos correspondientes."
             >
               <IconTooltip icon={faQuestionCircle} />
             </Tooltip>
@@ -546,9 +588,7 @@ const Guide = () => {
               name="transport-color"
               label="Color"
               fullWidth
-              onChange={(e) =>
-                handleVehiculoChange("color", e.target.value)
-              }
+              onChange={(e) => handleVehiculoChange("color", e.target.value)}
             />
           </div>
           <div>
@@ -558,10 +598,7 @@ const Guide = () => {
               label="Nombre del operador"
               fullWidth
               onChange={(e) =>
-                handleVehiculoChange(
-                  "nombre_operador_vehiculo",
-                  e.target.value
-                )
+                handleVehiculoChange("nombre_operador_vehiculo", e.target.value)
               }
             />
           </div>
@@ -571,6 +608,15 @@ const Guide = () => {
           <CustomButton type="submit" buttonText="Aceptar" />
         </SubmitButtonsContainer>
       </Form>
+      {alertInfo.show && (
+        <CustomAlerts
+          open={alertInfo}
+          onClose={() => setAlertInfo(false)}
+          title={alertInfo.title}
+          text={alertInfo.text}
+          login
+        />
+      )}
     </Container>
   );
 };
