@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export const Container = styled.div`
-  background-color: #fffbf6;
+  background-color: #FFF6EE;
   padding: 40px 188px;
 `;
 
@@ -26,6 +26,7 @@ export const Form = styled.form`
   padding: 32px 124px;
   display: flex;
   flex-direction: column;
+  border-radius: 15px;
 `;
 
 export const Subtitle = styled.div`
