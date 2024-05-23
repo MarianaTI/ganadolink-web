@@ -188,6 +188,7 @@ const Guide = () => {
     try {
       const response = await getAllRaza.run();
       setRaza(response.razas);
+      console.log(response.razas);
     } catch (error) {
       console.log(error);
     }
@@ -293,6 +294,11 @@ const Guide = () => {
       }, 1000);
     }
   };
+
+  const getRazaNameId = (id) => {
+    const raza = razas.find((raza) => raza._id === id)
+    return raza ? raza.name : '';
+  }
 
   useEffect(() => {
     console.log("Datos enviados:", datosModificados);
@@ -496,7 +502,7 @@ const Guide = () => {
                   <td>{order.patente}</td>
                   <td>{order.sexo}</td>
                   <td>{order.color}</td>
-                  <td>{order.id_raza}</td>
+                  <td>{getRazaNameId(order.id_raza)}</td>
                   <td>{order.siniiga}</td>
                   <td>
                     {order.figura_herraje && (
@@ -506,6 +512,7 @@ const Guide = () => {
                         width={100}
                         height={100}
                         layout="fixed"
+                        style={{borderRadius: "15px"}}
                       />
                     )}
                   </td>
