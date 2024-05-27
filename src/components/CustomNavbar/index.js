@@ -62,7 +62,7 @@ const CustomNavbar = () => {
         <NavStyled>
           <Link href="/" passHref>
             <LogoStyled>
-              <img src="/img/ganadolink-icon.png" width="156px" height="21px" />
+              <img src="/img/ganadolink-icon.png" />
             </LogoStyled>
           </Link>
           <Menu onClick={toggleMenu}>

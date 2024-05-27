@@ -300,6 +300,18 @@ const Guide = () => {
     return raza ? raza.name : '';
   }
 
+  const handleDeleteAnimal = (index) => {
+    setOrderDataGanado((prevOrderData) => {
+      const updatedGanado = [...prevOrderData.ganado];
+      updatedGanado.splice(index, 1);
+      return {
+        ...prevOrderData,
+        ganado: updatedGanado
+      };
+    });
+  };
+  
+
   useEffect(() => {
     console.log("Datos enviados:", datosModificados);
   }, [datosModificados]);
@@ -421,7 +433,7 @@ const Guide = () => {
             Agregar
           </AddButton>
         </ButtonContainer>
-        <FormGrid onSubmit={handleSubbmitGanado(onSubmitAnimal)}>
+        <GridContainer onSubmit={handleSubbmitGanado(onSubmitAnimal)}>
           <div>
             <CustomInput
               control={controlGanado}
@@ -476,7 +488,7 @@ const Guide = () => {
               }}
             />
           </div>
-        </FormGrid>
+        </GridContainer>
         <TableStyled>
           <thead>
             <tr>
@@ -517,7 +529,7 @@ const Guide = () => {
                     )}
                   </td>
                   <td>
-                    <DeleteButton>Eliminar</DeleteButton>
+                  <DeleteButton type="button" onClick={() => handleDeleteAnimal(index)}>Eliminar</DeleteButton>
                   </td>
                 </tr>
               ))

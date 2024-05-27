@@ -1,9 +1,22 @@
 import styled from "@emotion/styled";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
+const responsive = {
+  ch: "400px",
+  md: "768px",
+  lg: "1440px",
+  xl: "1920px",
+};
+
 export const Container = styled.div`
   background-color: #FFF6EE;
   padding: 40px 188px;
+  @media (max-width: ${responsive.md}) {
+    padding: 40px 40px;
+  }
+  @media (max-width: ${responsive.ch}) {
+    padding: 40px 20px;
+  }
 `;
 
 export const Title = styled.h1`
@@ -27,6 +40,9 @@ export const Form = styled.form`
   display: flex;
   flex-direction: column;
   border-radius: 15px;
+  @media (max-width: ${responsive.md}) {
+    padding: 10px 40px;
+  }
 `;
 
 export const Subtitle = styled.div`
@@ -58,12 +74,22 @@ export const CheckboxContainer = styled.div`
   gap: 72px;
   display: flex;
   margin: 8px 0 32px 0;
+  @media (max-width: ${responsive.ch}) {
+    flex-direction: column;
+    gap: 16px;
+  }
 `;
 
 export const GridContainer = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 180px;
+  @media (max-width: ${responsive.md}) {
+    gap: 32px;
+  }
+  @media (max-width: ${responsive.ch}) {
+    grid-template-columns: 1fr;
+  }
 `;
 
 export const ButtonContainer = styled.div`
@@ -128,7 +154,14 @@ export const TableStyled = styled.table`
   border-spacing: 0;
   text-align: center;
   border-radius: 10px;
-  overflow: hidden;
+  overflow-x: auto; 
+  overflow-y: hidden; 
+  @media (max-width: 390px) {
+    display: block; 
+    max-width: 100%;
+    overflow-x: auto; /* Activa el scroll horizontal */
+    white-space: nowrap;
+  }
   thead {
     background-color: #f4ece1;
   }
@@ -194,8 +227,8 @@ export const IconTooltip = styled(Icon)`
   cursor: pointer;
 `;
 
-export const FormGrid = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 180px;
-`;
+// export const FormGrid = styled.div`
+//   display: grid;
+//   grid-template-columns: 1fr 1fr;
+//   gap: 180px;
+// `;

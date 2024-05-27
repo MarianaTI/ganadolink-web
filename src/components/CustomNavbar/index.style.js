@@ -30,6 +30,13 @@ export const LogoStyled = styled.div`
   font-family: "Bitter", serif;
   font-weight: 600;
   color: #261704;
+  img{
+    width: 156px;
+    height: 21px;
+    @media (max-width: 400px) {
+    height: 21px;
+  }
+  }
 `;
 
 export const Menu = styled.div`
