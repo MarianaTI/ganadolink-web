@@ -21,7 +21,6 @@ import {
   DeleteButton,
   Description,
   Form,
-  FormGrid,
   GridContainer,
   Icon,
   IconTooltip,
@@ -39,7 +38,7 @@ import {
 import { ThemeProvider, Tooltip, createTheme } from "@mui/material";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 
@@ -52,6 +51,7 @@ const Guide = () => {
   const [motivos, setMotivo] = useState([]);
   const [razas, setRaza] = useState([]);
   const [imageUrl, setImageUrl] = useState("");
+  const fileInputRef = useRef(null);
   const [alertInfo, setAlertInfo] = useState({
     show: false,
     title: "",
@@ -217,6 +217,9 @@ const Guide = () => {
       color: "",
       siniiga: "",
     });
+    if (fileInputRef.current) {
+      fileInputRef.current.value = ""; // Reset file input
+    }
   };
 
   useEffect(() => {
@@ -486,6 +489,7 @@ const Guide = () => {
                   reader.readAsDataURL(file);
                 }
               }}
+              ref={fileInputRef}
             />
           </div>
         </GridContainer>
