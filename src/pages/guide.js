@@ -41,17 +41,18 @@ import { useRouter } from "next/router";
 import React, { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
+import { AnimatePresence, motion } from "framer-motion";
 
 const Guide = () => {
   const router = useRouter();
   const userId = useSelector((state) => state.user._id);
   const [orderDataGanado, setOrderDataGanado] = useState({ ganado: [] });
-  const [selectedBoolean, setSelectedBoolean] = useState("");
   const [especies, setEspecie] = useState([]);
   const [motivos, setMotivo] = useState([]);
   const [razas, setRaza] = useState([]);
   const [imageUrl, setImageUrl] = useState("");
   const fileInputRef = useRef(null);
+  const [showGrid, setShowGrid] = useState(false);
   const [alertInfo, setAlertInfo] = useState({
     show: false,
     title: "",
@@ -156,8 +157,8 @@ const Guide = () => {
     }));
   };
 
-  const handleOptionsChange = (id) => {
-    setSelectedBoolean(id);
+  const handleOptionsChange = (selectedOption) => {
+    setShowGrid(selectedOption === "si");
   };
 
   const fetchEspecies = async () => {
@@ -299,9 +300,9 @@ const Guide = () => {
   };
 
   const getRazaNameId = (id) => {
-    const raza = razas.find((raza) => raza._id === id)
-    return raza ? raza.name : '';
-  }
+    const raza = razas.find((raza) => raza._id === id);
+    return raza ? raza.name : "";
+  };
 
   const handleDeleteAnimal = (index) => {
     setOrderDataGanado((prevOrderData) => {
@@ -309,11 +310,10 @@ const Guide = () => {
       updatedGanado.splice(index, 1);
       return {
         ...prevOrderData,
-        ganado: updatedGanado
+        ganado: updatedGanado,
       };
     });
   };
-  
 
   useEffect(() => {
     console.log("Datos enviados:", datosModificados);
@@ -528,12 +528,17 @@ const Guide = () => {
                         width={100}
                         height={100}
                         layout="fixed"
-                        style={{borderRadius: "15px"}}
+                        style={{ borderRadius: "15px" }}
                       />
                     )}
                   </td>
                   <td>
-                  <DeleteButton type="button" onClick={() => handleDeleteAnimal(index)}>Eliminar</DeleteButton>
+                    <DeleteButton
+                      type="button"
+                      onClick={() => handleDeleteAnimal(index)}
+                    >
+                      Eliminar
+                    </DeleteButton>
                   </td>
                 </tr>
               ))
@@ -604,28 +609,44 @@ const Guide = () => {
             fullWidth
           />
         </CheckboxContainer>
-        <GridContainer>
-          <div>
-            <CustomInput
-              control={control}
-              name="transport-color"
-              label="Color"
-              fullWidth
-              onChange={(e) => handleVehiculoChange("color", e.target.value)}
-            />
-          </div>
-          <div>
-            <CustomInput
-              control={control}
-              name="transport-operator-name"
-              label="Nombre del operador"
-              fullWidth
-              onChange={(e) =>
-                handleVehiculoChange("nombre_operador_vehiculo", e.target.value)
-              }
-            />
-          </div>
-        </GridContainer>
+        <AnimatePresence>
+        {showGrid && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.3 }}
+          >
+            <GridContainer>
+              <div>
+                <CustomInput
+                  control={control}
+                  name="transport-color"
+                  label="Color"
+                  fullWidth
+                  onChange={(e) =>
+                    handleVehiculoChange("color", e.target.value)
+                  }
+                />
+              </div>
+              <div>
+                <CustomInput
+                  control={control}
+                  name="transport-operator-name"
+                  label="Nombre del operador"
+                  fullWidth
+                  onChange={(e) =>
+                    handleVehiculoChange(
+                      "nombre_operador_vehiculo",
+                      e.target.value
+                    )
+                  }
+                />
+              </div>
+            </GridContainer>
+          </motion.div>
+        )}
+        </AnimatePresence>
         <SubmitButtonsContainer>
           <CustomButton type="submit" buttonText="Cancelar" customDesign />
           <CustomButton type="submit" buttonText="Aceptar" />
