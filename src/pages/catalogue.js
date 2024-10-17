@@ -26,6 +26,7 @@ import {
 import { FaSearch } from "react-icons/fa";
 import { generatePDF } from "../components/CustomPDF/index";
 import DownloadAllPDF from "../components/CustomPDF/indexFull";
+import PreviewAllPDF from "@/components/CustomPDF/previewPDF";
 import OrderRepo from "@/infraestructure/implementation/httpRequest/axios/OrderRepo";
 import GetAllOrderUseCase from "@/application/usecases/orderUseCase/GetAllOrderUseCase";
 import { Skeleton } from "@mui/material";
@@ -237,6 +238,7 @@ const CatalogPage = () => {
                 />
               </InputContainer>
               <DownloadAllPDF orders={orders} />
+              <PreviewAllPDF orders={orders} />
             </HeaderContainer>
             <Section>
               <span>Todas las guías</span>
