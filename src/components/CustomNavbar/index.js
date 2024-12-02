@@ -62,7 +62,7 @@ const CustomNavbar = () => {
         <NavStyled>
           <Link href="/" passHref>
             <LogoStyled>
-              <img src="/img/ganadolink-icon.png" />
+              {/* <img src="/img/ganadolink-icon.png" /> */}
             </LogoStyled>
           </Link>
           <Menu onClick={toggleMenu}>
@@ -79,7 +79,7 @@ const CustomNavbar = () => {
             <li>
               <Link href="/guide" passHref>
                 <TabStyled
-                  className={router.pathname === "/form" ? "active" : ""}
+                  className={router.pathname === "/guide" ? "active" : ""}
                 >
                   Formularios
                 </TabStyled>
@@ -119,7 +119,7 @@ const CustomNavbar = () => {
         <NavStyled>
           <Link href="/" passHref>
             <LogoStyled>
-              <img src="/img/Logo.png" width="50px" height="60px" />
+              {/* <img src="/img/Logo.png" width="50px" height="60px" /> */}
               <span>GanadoLink</span>
             </LogoStyled>
           </Link>

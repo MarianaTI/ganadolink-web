@@ -13,6 +13,7 @@ import EspecieRepo from "@/infraestructure/implementation/httpRequest/axios/Espe
 import MotivoRepo from "@/infraestructure/implementation/httpRequest/axios/MotivoRepo";
 import OrderRepo from "@/infraestructure/implementation/httpRequest/axios/OrderRepo";
 import RazaRepo from "@/infraestructure/implementation/httpRequest/axios/RazaRepo";
+import withAuth from "@/components/Authenticated";
 import {
   AddButton,
   ButtonContainer,
@@ -24,6 +25,7 @@ import {
   GridContainer,
   Icon,
   IconTooltip,
+  Main,
   SectionName,
   SubmitButtonsContainer,
   Subtitle,
@@ -321,14 +323,16 @@ const Guide = () => {
 
   return (
     <Container>
-      <Title>Comienza con el formulario</Title>
-      <Description>
-        {" "}
-        Agradecemos tu colaboración para completar el formulario con información
-        precisa y completa. Esto nos permitirá procesar tu solicitud de manera
-        eficiente.
-      </Description>
-      <SectionActive />
+      <div>
+        <Title>Comienza con el formulario</Title>
+        <Description>
+          {" "}
+          Agradecemos tu colaboración para completar el formulario con
+          información precisa y completa. Esto nos permitirá procesar tu
+          solicitud de manera eficiente.
+        </Description>
+        <SectionActive />
+      </div>
       <Form onSubmit={handleSubmit(onSubmit)}>
         <Subtitle>
           <div />
@@ -610,42 +614,42 @@ const Guide = () => {
           />
         </CheckboxContainer>
         <AnimatePresence>
-        {showGrid && (
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.3 }}
-          >
-            <GridContainer>
-              <div>
-                <CustomInput
-                  control={control}
-                  name="transport-color"
-                  label="Color"
-                  fullWidth
-                  onChange={(e) =>
-                    handleVehiculoChange("color", e.target.value)
-                  }
-                />
-              </div>
-              <div>
-                <CustomInput
-                  control={control}
-                  name="transport-operator-name"
-                  label="Nombre del operador"
-                  fullWidth
-                  onChange={(e) =>
-                    handleVehiculoChange(
-                      "nombre_operador_vehiculo",
-                      e.target.value
-                    )
-                  }
-                />
-              </div>
-            </GridContainer>
-          </motion.div>
-        )}
+          {showGrid && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.3 }}
+            >
+              <GridContainer>
+                <div>
+                  <CustomInput
+                    control={control}
+                    name="transport-color"
+                    label="Color"
+                    fullWidth
+                    onChange={(e) =>
+                      handleVehiculoChange("color", e.target.value)
+                    }
+                  />
+                </div>
+                <div>
+                  <CustomInput
+                    control={control}
+                    name="transport-operator-name"
+                    label="Nombre del operador"
+                    fullWidth
+                    onChange={(e) =>
+                      handleVehiculoChange(
+                        "nombre_operador_vehiculo",
+                        e.target.value
+                      )
+                    }
+                  />
+                </div>
+              </GridContainer>
+            </motion.div>
+          )}
         </AnimatePresence>
         <SubmitButtonsContainer>
           <CustomButton type="submit" buttonText="Cancelar" customDesign />
@@ -665,4 +669,4 @@ const Guide = () => {
   );
 };
 
-export default Guide;
+export default withAuth(Guide);

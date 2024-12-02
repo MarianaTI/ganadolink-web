@@ -1,14 +1,26 @@
 import React from "react";
-import { Active, Container, Disable, Finished, Line } from "./index.style";
+import { Active, Container, Disable, Finished, Line, Step } from "./index.style";
 
 const SectionActive = () => {
   return (
     <Container>
       <Finished>1</Finished>
-      <Line/>
+      <Step>
+        <span>Paso 1</span>
+        <span>Datos generales</span>
+      </Step>
+      <Line />
       <Active>2</Active>
-      <Line/>
+      <Step>
+        <span>Paso 1</span>
+        <span>Datos generales</span>
+      </Step>
+      <Line />
       <Disable>3</Disable>
+      <Step>
+        <span>Paso 1</span>
+        <span>Datos generales</span>
+      </Step>
     </Container>
   );
 };

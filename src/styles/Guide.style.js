@@ -19,6 +19,14 @@ export const Container = styled.div`
   }
 `;
 
+// export const Main = styled.div`
+//   position: fixed;
+//   z-index: 1;
+//   height: 150px;
+//   width: 100%;
+//   background-color: #FFF6EE;
+// `;
+
 export const Title = styled.h1`
   font-family: "Poppins", sans-serif;
   font-size: 24px;
@@ -27,8 +35,9 @@ export const Title = styled.h1`
 `;
 
 export const Description = styled.span`
-  color: rgba(90, 90, 90, 0.8);
+  color: rgba(90, 90, 90, 0.6);
   font-size: 14px;
+  font-weight: 500;
 `;
 
 export const Form = styled.form`

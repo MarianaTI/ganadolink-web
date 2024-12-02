@@ -8,6 +8,21 @@ export const Container = styled.div`
   gap: 16px;
 `;
 
+export const Step = styled.div`
+  display: flex;
+  flex-direction: column;
+  span:first-child{
+    color: rgba(90, 90, 90, 0.6);
+    font-size: 12px;
+    font-weight: 500;
+  }
+  span:last-child{
+    color: #2A2A2A;
+    font-size: 16px;
+    font-weight: 500;
+  }
+`;
+
 export const Finished = styled.div`
   display: flex;
   justify-content: center;
